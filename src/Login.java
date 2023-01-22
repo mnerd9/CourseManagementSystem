@@ -8,11 +8,20 @@
  * @author manoj
  */
 import java.sql.*;
+import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
-
+    String dbUser = "root";
+    String dbPassword = "";
+    String dbName = "cms";
+    String connectionURL = "jdbc:mysql://localhost:3306/" + dbName;
+    Connection dbConnection;
+    Statement prepareQuery;
+    ResultSet sqlQuery;
+    
+    
     /**
      * Creates new form Login
-     */
+    */
     public Login() {
         initComponents();
     }
@@ -77,6 +86,11 @@ public class Login extends javax.swing.JFrame {
         loginBTN.setForeground(new java.awt.Color(255, 255, 255));
         loginBTN.setText("Login");
         loginBTN.setToolTipText("");
+        loginBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginBTNActionPerformed(evt);
+            }
+        });
 
         passwordLabel1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         passwordLabel1.setText("Don't have an account?");
@@ -152,6 +166,32 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_uEmailInputActionPerformed
 
+    private void loginBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBTNActionPerformed
+        try {
+            Connection dbConnection = DriverManager.getConnection(connectionURL, dbUser, dbPassword);
+            String loginUsername = uEmailInput.getText();
+            String loginPassword = String.valueOf(passwordInput.getPassword());
+            prepareQuery = dbConnection.createStatement();
+            sqlQuery = prepareQuery.executeQuery("select * from students where username = '" + loginUsername + "' and password = '" + loginPassword + "'");
+            if (sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "You have sucessfully logged in!");
+                dispose();
+                StudentPortal showPage = new StudentPortal();
+                showPage.show();
+                dbConnection.close();
+                return;
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid username or password, Please try again!");
+                uEmailInput.setText("");
+                passwordInput.setText("");
+                dbConnection.close();
+                return;
+            }
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }//GEN-LAST:event_loginBTNActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -185,21 +225,6 @@ public class Login extends javax.swing.JFrame {
                 new Login().setVisible(true);
             }
         });
-        
-        // Database Connection
-        try {
-            String db = "cms";
-            String user = "root";
-            String password = "";
-            Connection connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+ db, user, password);
-              if(!connect.isClosed()) {
-                System.out.println("Successfully connected to "+ db);
-            }
-            //close the statment
-            connect.close();
-        } catch (Exception exp) {
-            System.out.println(exp);
-        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel email_username_label;
