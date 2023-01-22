@@ -8,8 +8,6 @@
  * @author manoj
  */
 import java.sql.*;
-import javax.swing.*;
-import java.awt.*;
 public class Login extends javax.swing.JFrame {
 
     /**
