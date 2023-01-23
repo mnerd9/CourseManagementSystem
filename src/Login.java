@@ -10,11 +10,6 @@
 import java.sql.*;
 import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
-    String dbUser = "root";
-    String dbPassword = "";
-    String dbName = "cms";
-    String connectionURL = "jdbc:mysql://localhost:3306/" + dbName;
-    Connection dbConnection;
     Statement prepareQuery;
     ResultSet sqlQuery;
     
@@ -99,6 +94,11 @@ public class Login extends javax.swing.JFrame {
         signupBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         signupBTN.setText("Signup");
         signupBTN.setToolTipText("");
+        signupBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                signupBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,18 +166,23 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_uEmailInputActionPerformed
 
+    public Connection checkConnection() {
+        db startDB = new db();
+        Connection confirmConn = startDB.checkConnection();
+        return confirmConn;
+    }
     private void loginBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBTNActionPerformed
         try {
-            Connection dbConnection = DriverManager.getConnection(connectionURL, dbUser, dbPassword);
-            String loginUsername = uEmailInput.getText();
+            Connection dbConnection = checkConnection();
+            String loginUEmail = uEmailInput.getText();
             String loginPassword = String.valueOf(passwordInput.getPassword());
             prepareQuery = dbConnection.createStatement();
-            sqlQuery = prepareQuery.executeQuery("select * from students where username = '" + loginUsername + "' and password = '" + loginPassword + "'");
+            sqlQuery = prepareQuery.executeQuery("select * from students where (username = '" + loginUEmail + "' or email = '" + loginUEmail + "') and password = '" + loginPassword + "'");
             if (sqlQuery.next()) {
                 JOptionPane.showMessageDialog(this, "You have sucessfully logged in!");
                 dispose();
                 StudentPortal showPage = new StudentPortal();
-                showPage.show();
+                showPage.setVisible(true);
                 dbConnection.close();
                 return;
             } else {
@@ -191,6 +196,12 @@ public class Login extends javax.swing.JFrame {
             System.out.println(exp);
         }
     }//GEN-LAST:event_loginBTNActionPerformed
+
+    private void signupBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupBTNActionPerformed
+        dispose();
+        Signup showSignup = new Signup();
+        showSignup.setVisible(true);
+    }//GEN-LAST:event_signupBTNActionPerformed
 
     /**
      * @param args the command line arguments
