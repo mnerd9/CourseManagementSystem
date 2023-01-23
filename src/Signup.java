@@ -11,7 +11,7 @@ import java.sql.*;
 import javax.swing.*;
 import java.awt.*;
 public class Signup extends javax.swing.JFrame {
-
+    Statement prepareQuery;
     /**
      * Creates new form Login
      */
@@ -29,8 +29,27 @@ public class Signup extends javax.swing.JFrame {
     private void initComponents() {
 
         headerLogo = new javax.swing.JLabel();
-        uEmailInput = new javax.swing.JTextField();
+        emailInput = new javax.swing.JTextField();
         email_username_label = new javax.swing.JLabel();
+        passwordLabel = new javax.swing.JLabel();
+        passInput = new javax.swing.JPasswordField();
+        email_username_label1 = new javax.swing.JLabel();
+        firstname = new javax.swing.JTextField();
+        email_username_label2 = new javax.swing.JLabel();
+        middlename = new javax.swing.JTextField();
+        email_username_label3 = new javax.swing.JLabel();
+        lastname = new javax.swing.JTextField();
+        passwordLabel1 = new javax.swing.JLabel();
+        confirmpassInput = new javax.swing.JPasswordField();
+        signupBTN = new javax.swing.JButton();
+        passwordLabel2 = new javax.swing.JLabel();
+        loginBTN = new javax.swing.JButton();
+        loginGroupLabel = new javax.swing.JLabel();
+        signupGroup = new javax.swing.JComboBox<>();
+        loginGroupLabel1 = new javax.swing.JLabel();
+        loginGroup1 = new javax.swing.JComboBox<>();
+        email_username_label4 = new javax.swing.JLabel();
+        usernameInput = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(java.awt.Color.white);
@@ -41,40 +60,255 @@ public class Signup extends javax.swing.JFrame {
         headerLogo.setText("Signup");
         headerLogo.setToolTipText("");
 
-        uEmailInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        emailInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
 
         email_username_label.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        email_username_label.setText("Username / Email");
+        email_username_label.setText("Email");
+
+        passwordLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        passwordLabel.setText("Password");
+
+        passInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        passInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passInputActionPerformed(evt);
+            }
+        });
+
+        email_username_label1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        email_username_label1.setText("Fiirstname");
+
+        firstname.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+
+        email_username_label2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        email_username_label2.setText("Middlename (Optional)");
+
+        middlename.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+
+        email_username_label3.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        email_username_label3.setText("Lastname");
+
+        lastname.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+
+        passwordLabel1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        passwordLabel1.setText("Confirm Password");
+
+        confirmpassInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        confirmpassInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmpassInputActionPerformed(evt);
+            }
+        });
+
+        signupBTN.setBackground(new java.awt.Color(51, 51, 51));
+        signupBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        signupBTN.setForeground(new java.awt.Color(255, 255, 255));
+        signupBTN.setText("Signup");
+        signupBTN.setToolTipText("");
+        signupBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                signupBTNActionPerformed(evt);
+            }
+        });
+
+        passwordLabel2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        passwordLabel2.setText("Already have an account?");
+
+        loginBTN.setBackground(new java.awt.Color(255, 255, 255));
+        loginBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        loginBTN.setText("Login");
+        loginBTN.setToolTipText("");
+        loginBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginBTNActionPerformed(evt);
+            }
+        });
+
+        loginGroupLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        loginGroupLabel.setText("Who are you?");
+
+        signupGroup.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        signupGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Teacher" }));
+
+        loginGroupLabel1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        loginGroupLabel1.setText("Select Course");
+
+        loginGroup1.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        loginGroup1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "BIT", "IBM", "MBA" }));
+
+        email_username_label4.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        email_username_label4.setText("Username");
+
+        usernameInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(103, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(email_username_label)
-                    .addComponent(uEmailInput, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(76, 76, 76))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(180, 180, 180)
-                .addComponent(headerLogo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(signupBTN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(passwordLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(loginBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(114, 114, 114))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(180, 180, 180)
+                                .addComponent(headerLogo))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(loginGroupLabel)
+                                    .addComponent(loginGroupLabel1))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(loginGroup1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(signupGroup, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(confirmpassInput)
+                            .addComponent(passInput)
+                            .addComponent(emailInput)
+                            .addComponent(usernameInput)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(firstname, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(email_username_label1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(email_username_label2)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(middlename))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(email_username_label3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lastname, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(email_username_label4)
+                                    .addComponent(email_username_label)
+                                    .addComponent(passwordLabel)
+                                    .addComponent(passwordLabel1))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(56, 56, 56)
                 .addComponent(headerLogo)
-                .addGap(66, 66, 66)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(email_username_label1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(firstname, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(email_username_label2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(middlename, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(email_username_label3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lastname, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(email_username_label4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(usernameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(email_username_label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(uEmailInput, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(303, Short.MAX_VALUE))
+                .addComponent(emailInput, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(passwordLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(passInput, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(passwordLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(confirmpassInput, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(loginGroupLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(signupGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(loginGroupLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(loginGroup1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(signupBTN)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(passwordLabel2)
+                    .addComponent(loginBTN))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void passInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passInputActionPerformed
+
+    private void confirmpassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmpassInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_confirmpassInputActionPerformed
+
+    public Connection checkConnection() {
+        db startDB = new db();
+        Connection confirmConn = startDB.checkConnection();
+        return confirmConn;
+    }
+    private void signupBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupBTNActionPerformed
+        try {
+            Connection dbConnection = checkConnection();
+            String getFirstname = firstname.getText();
+            String getMiddlename = middlename.getText();
+            String getLastname = lastname.getText();
+            String getUsername = usernameInput.getText();
+            String getEmail = emailInput.getText();
+            String password = String.valueOf(passInput.getPassword());
+            String confirmpassword = String.valueOf(confirmpassInput.getPassword());
+            prepareQuery = dbConnection.createStatement();
+            prepareQuery.executeUpdate("insert into students (firstname, middlename, lastname, username, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getUsername + "', '" + getEmail +"', '" + password + "')");
+            if (password.equals(confirmpassword)) {
+                JOptionPane.showMessageDialog(this, "You have successfully registered!");
+                dispose();
+                Login showPage = new Login();
+                showPage.setVisible(true);
+                dbConnection.close();
+                return;
+            } else {
+                JOptionPane.showMessageDialog(this, "Password Mismatch!");
+                firstname.setText("");
+                middlename.setText("");
+                lastname.setText("");
+                usernameInput.setText("");
+                emailInput.setText("");
+                passInput.setText("");
+                confirmpassInput.setText("");
+                dbConnection.close();
+                return;
+            }
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }//GEN-LAST:event_signupBTNActionPerformed
+
+    private void loginBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBTNActionPerformed
+        dispose();
+        Login showLogin = new Login();
+        showLogin.setVisible(true);
+    }//GEN-LAST:event_loginBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -124,8 +358,27 @@ public class Signup extends javax.swing.JFrame {
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPasswordField confirmpassInput;
+    private javax.swing.JTextField emailInput;
     private javax.swing.JLabel email_username_label;
+    private javax.swing.JLabel email_username_label1;
+    private javax.swing.JLabel email_username_label2;
+    private javax.swing.JLabel email_username_label3;
+    private javax.swing.JLabel email_username_label4;
+    private javax.swing.JTextField firstname;
     private javax.swing.JLabel headerLogo;
-    private javax.swing.JTextField uEmailInput;
+    private javax.swing.JTextField lastname;
+    private javax.swing.JButton loginBTN;
+    private javax.swing.JComboBox<String> loginGroup1;
+    private javax.swing.JLabel loginGroupLabel;
+    private javax.swing.JLabel loginGroupLabel1;
+    private javax.swing.JTextField middlename;
+    private javax.swing.JPasswordField passInput;
+    private javax.swing.JLabel passwordLabel;
+    private javax.swing.JLabel passwordLabel1;
+    private javax.swing.JLabel passwordLabel2;
+    private javax.swing.JButton signupBTN;
+    private javax.swing.JComboBox<String> signupGroup;
+    private javax.swing.JTextField usernameInput;
     // End of variables declaration//GEN-END:variables
 }
