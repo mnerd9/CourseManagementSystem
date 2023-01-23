@@ -14,6 +14,7 @@ public class StudentPortal extends javax.swing.JFrame {
      */
     public StudentPortal() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
