@@ -9,7 +9,6 @@
  */
 import java.sql.*;
 import javax.swing.*;
-import java.awt.*;
 public class Signup extends javax.swing.JFrame {
     Statement prepareQuery;
     /**
@@ -279,8 +278,33 @@ public class Signup extends javax.swing.JFrame {
             String password = String.valueOf(passInput.getPassword());
             String confirmpassword = String.valueOf(confirmpassInput.getPassword());
             prepareQuery = dbConnection.createStatement();
-            prepareQuery.executeUpdate("insert into students (firstname, middlename, lastname, username, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getUsername + "', '" + getEmail +"', '" + password + "')");
+            System.out.println(getFirstname instanceof String);
+            if (getFirstname.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter your first name!");
+                return;
+            } else if (getLastname.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter your last name!");
+                return;
+            } else if (getUsername.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter your username!");
+                return;
+            } else if (getEmail.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter your email!");
+                return;
+            } else if (password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter your password!");
+                return;
+            } else if (confirmpassword.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please confirm your password!");
+                return;
+            }
+            
             if (password.equals(confirmpassword)) {
+                if (getMiddlename != null) {
+                    prepareQuery.executeUpdate("insert into students (firstname, middlename, lastname, username, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getUsername + "', '" + getEmail +"', '" + password + "')");
+                } else {
+                    prepareQuery.executeUpdate("insert into students (firstname, lastname, username, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getUsername + "', '" + getEmail +"', '" + password + "')");
+                }
                 JOptionPane.showMessageDialog(this, "You have successfully registered!");
                 dispose();
                 Login showPage = new Login();
