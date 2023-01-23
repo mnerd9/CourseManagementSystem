@@ -30,100 +30,97 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="156" max="-2" attributes="0"/>
+              <Component id="headerLogo" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
           <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="386" max="-2" attributes="0"/>
-                      <Component id="signupBTN" min="-2" pref="88" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="firstname" alignment="0" min="-2" pref="136" max="-2" attributes="0"/>
+                          <Component id="email_username_label1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="firstname" alignment="0" min="-2" pref="136" max="-2" attributes="0"/>
-                                  <Component id="email_username_label1" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="email_username_label2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Component id="middlename" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="email_username_label3" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="lastname" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="email_username_label2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="confirmpassInput" alignment="1" max="32767" attributes="0"/>
-                          <Component id="passInput" alignment="1" max="32767" attributes="0"/>
-                          <Component id="emailInput" alignment="1" max="32767" attributes="0"/>
+                          <Component id="middlename" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="email_username_label3" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lastname" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Component id="confirmpassInput" alignment="1" max="32767" attributes="0"/>
+                  <Component id="passInput" alignment="1" max="32767" attributes="0"/>
+                  <Component id="emailInput" alignment="1" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="email" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="passwordLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="passwordLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="phoneInput" alignment="0" max="32767" attributes="0"/>
+                          <Component id="usernameInput" alignment="1" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="email_username_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="passwordLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="passwordLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="phoneLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="username" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="sexGroup" max="32767" attributes="0"/>
+                          <Component id="addressInput" alignment="1" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="loginGroupLabel" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Component id="signupGroup" max="32767" attributes="0"/>
+                                  <Component id="sexLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="addressLabel" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="loginGroup1" min="-2" pref="233" max="-2" attributes="0"/>
-                                  <Component id="loginGroupLabel1" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <EmptySpace min="-2" pref="208" max="-2" attributes="0"/>
                           </Group>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="loginGroupLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="roleGroup" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="courseInput" min="-2" pref="233" max="-2" attributes="0"/>
+                          <Component id="courseLabel" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="99" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="signupBTN" alignment="1" min="-2" pref="88" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="phoneInput" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="usernameInput" alignment="1" max="32767" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="phoneLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="email_username_label4" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="sexGroup" max="32767" attributes="0"/>
-                                  <Component id="addressInput" alignment="1" max="32767" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="sexLabel" min="-2" max="-2" attributes="0"/>
-                                          <Component id="addressLabel" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="208" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <Component id="loginLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="loginBTN" min="-2" pref="88" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="passwordLabel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="loginBTN" min="-2" pref="88" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="156" max="-2" attributes="0"/>
-              <Component id="headerLogo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -154,7 +151,7 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="email_username_label4" min="-2" max="-2" attributes="0"/>
+                  <Component id="username" min="-2" max="-2" attributes="0"/>
                   <Component id="sexLabel" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -175,7 +172,7 @@
                   <Component id="addressLabel" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="email_username_label" min="-2" max="-2" attributes="0"/>
+              <Component id="email" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="emailInput" min="-2" pref="39" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -188,24 +185,24 @@
               <Component id="confirmpassInput" min="-2" pref="39" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="loginGroupLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="loginGroupLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="courseLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="signupGroup" min="-2" pref="39" max="-2" attributes="0"/>
+                      <Component id="roleGroup" min="-2" pref="39" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                      <Component id="loginGroup1" min="-2" pref="39" max="-2" attributes="0"/>
+                      <Component id="courseInput" min="-2" pref="39" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="signupBTN" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="passwordLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="loginLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="loginBTN" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="20" max="32767" attributes="0"/>
@@ -230,7 +227,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="email_username_label">
+    <Component class="javax.swing.JLabel" name="email">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Poppins" size="14" style="0"/>
@@ -337,7 +334,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="signupBTNActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="passwordLabel2">
+    <Component class="javax.swing.JLabel" name="loginLabel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Poppins" size="14" style="0"/>
@@ -368,7 +365,7 @@
         <Property name="text" type="java.lang.String" value="Who are you?"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="signupGroup">
+    <Component class="javax.swing.JComboBox" name="roleGroup">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Poppins" size="12" style="0"/>
@@ -384,7 +381,7 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="loginGroupLabel1">
+    <Component class="javax.swing.JLabel" name="courseLabel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Poppins" size="14" style="0"/>
@@ -392,7 +389,7 @@
         <Property name="text" type="java.lang.String" value="Select Course"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="loginGroup1">
+    <Component class="javax.swing.JComboBox" name="courseInput">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Poppins" size="12" style="0"/>
@@ -409,7 +406,7 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="email_username_label4">
+    <Component class="javax.swing.JLabel" name="username">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Poppins" size="14" style="0"/>
