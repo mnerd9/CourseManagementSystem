@@ -139,7 +139,7 @@ public class Signup extends javax.swing.JFrame {
         loginGroupLabel.setText("Who are you?");
 
         roleGroup.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        roleGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Teacher" }));
+        roleGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Teacher", "Admin" }));
         roleGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 roleGroupActionPerformed(evt);
@@ -295,6 +295,7 @@ public class Signup extends javax.swing.JFrame {
                 .addComponent(passwordLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(confirmpassInput, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -311,7 +312,7 @@ public class Signup extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginLabel)
                     .addComponent(loginBTN))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -428,6 +429,30 @@ public class Signup extends javax.swing.JFrame {
                         prepareQuery.executeUpdate("insert into teachers (firstname, middlename, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
                     } else {
                         prepareQuery.executeUpdate("insert into teachers (firstname, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                    }
+                } else if (role == "Admin") {
+                    sqlQuery = prepareQuery.executeQuery("select username, phone, email from admin");
+                    if (sqlQuery.next()) {
+                        if (sqlQuery.getString("username").equals(getUsername)) {
+                            JOptionPane.showMessageDialog(this, "Sorry, this username is already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            dbConnection.close();
+                            return;
+                        }
+                        if (sqlQuery.getString("email").equals(getEmail)) {
+                            JOptionPane.showMessageDialog(this, "Sorry, this email is already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            dbConnection.close();
+                            return;
+                        }
+                        if (sqlQuery.getString("phone").equals(getPhone)) {
+                            JOptionPane.showMessageDialog(this, "Sorry, this phone number is already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            dbConnection.close();
+                            return;
+                        }
+                    }
+                    if (!getMiddlename.isEmpty()) {
+                        prepareQuery.executeUpdate("insert into admin (firstname, middlename, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                    } else {
+                        prepareQuery.executeUpdate("insert into admin (firstname, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "Something went wrong! Error Code: #3435", "ERROR", JOptionPane.ERROR_MESSAGE);
