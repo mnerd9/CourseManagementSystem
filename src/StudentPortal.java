@@ -1,3 +1,6 @@
+
+import java.awt.Toolkit;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -15,6 +18,7 @@ public class StudentPortal extends javax.swing.JFrame {
     public StudentPortal() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
     }
 
     /**
@@ -29,6 +33,7 @@ public class StudentPortal extends javax.swing.JFrame {
         headerLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("CMS | Student Panel");
 
         headerLogo.setFont(new java.awt.Font("Poppins", 1, 36)); // NOI18N
         headerLogo.setText("Student Portal");
