@@ -7,6 +7,7 @@
  *
  * @author manoj
  */
+import java.awt.Toolkit;
 import java.sql.*;
 import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
@@ -20,6 +21,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
     }
 
     /**
@@ -43,6 +45,7 @@ public class Login extends javax.swing.JFrame {
         signupBTN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("CMS | Login");
         setBackground(java.awt.Color.white);
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
@@ -75,7 +78,7 @@ public class Login extends javax.swing.JFrame {
         loginGroupLabel.setText("Who are you?");
 
         loginGroup.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        loginGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Teacher" }));
+        loginGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Teacher", "Admin" }));
 
         loginBTN.setBackground(new java.awt.Color(51, 51, 51));
         loginBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -177,19 +180,60 @@ public class Login extends javax.swing.JFrame {
             Connection dbConnection = checkConnection();
             String loginUEmail = uEmailInput.getText();
             String loginPassword = String.valueOf(passwordInput.getPassword());
+            String role = loginGroup.getSelectedItem().toString(); 
             prepareQuery = dbConnection.createStatement();
-            sqlQuery = prepareQuery.executeQuery("select * from students where (username = '" + loginUEmail + "' or email = '" + loginUEmail + "') and password = '" + loginPassword + "'");
-            if (sqlQuery.next()) {
-                JOptionPane.showMessageDialog(this, "You have sucessfully logged in!");
+            if (role == "Student") {
+                sqlQuery = prepareQuery.executeQuery("select username, email, password, course from students where (username = '" + loginUEmail + "' or email = '" + loginUEmail + "') and password = '" + loginPassword + "'");
+                if (!sqlQuery.next()) {
+                    JOptionPane.showMessageDialog(this, "Invalid username or password, Please try again!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    uEmailInput.setText("");
+                    passwordInput.setText("");
+                    dbConnection.close();
+                    return;
+                }
+                if (!sqlQuery.getString("course").equals("BIT")) {
+                    JOptionPane.showMessageDialog(this, "Sorry, this program is usable for BIT courses only!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    dbConnection.close();
+                    return;
+                }
+                JOptionPane.showMessageDialog(this, "You have sucessfully logged in!", "INFO", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
                 StudentPortal showPage = new StudentPortal();
                 showPage.setVisible(true);
                 dbConnection.close();
                 return;
+            } else if (role == "Teacher") {
+                sqlQuery = prepareQuery.executeQuery("select username, email, password from teachers where (username = '" + loginUEmail + "' or email = '" + loginUEmail + "') and password = '" + loginPassword + "'");
+                if (!sqlQuery.next()) {
+                    JOptionPane.showMessageDialog(this, "Invalid username or password, Please try again!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    uEmailInput.setText("");
+                    passwordInput.setText("");
+                    dbConnection.close();
+                    return;
+                }
+                JOptionPane.showMessageDialog(this, "You have sucessfully logged in!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+                TeacherPortal showPage = new TeacherPortal();
+                showPage.setVisible(true);
+                dbConnection.close();
+                return;
+            } else if (role == "Admin") {
+                sqlQuery = prepareQuery.executeQuery("select username, email, password from admin where (username = '" + loginUEmail + "' or email = '" + loginUEmail + "') and password = '" + loginPassword + "'");
+                if (!sqlQuery.next()) {
+                    JOptionPane.showMessageDialog(this, "Invalid username/email or password, Please try again!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    uEmailInput.setText("");
+                    passwordInput.setText("");
+                    dbConnection.close();
+                    return;
+                }
+                JOptionPane.showMessageDialog(this, "You have sucessfully logged in!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+                AdminPortal showPage = new AdminPortal();
+                showPage.setVisible(true);
+                dbConnection.close();
+                return;
             } else {
-                JOptionPane.showMessageDialog(this, "Invalid username or password, Please try again!");
-                uEmailInput.setText("");
-                passwordInput.setText("");
+                JOptionPane.showMessageDialog(this, "Something went wrong!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 dbConnection.close();
                 return;
             }
