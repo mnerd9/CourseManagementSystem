@@ -20,7 +20,6 @@ public class db {
     public Connection checkConnection() {
         try {
             dbConnection = DriverManager.getConnection(connectionURL, dbUser, dbPassword);
-            System.out.println("Database connection is alive!");
         } catch (Exception exp) {
             System.out.println(exp);
         }
