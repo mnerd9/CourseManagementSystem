@@ -7,16 +7,20 @@
  *
  * @author manoj
  */
+import java.awt.Toolkit;
 import java.sql.*;
 import javax.swing.*;
+import java.util.regex.Pattern;
 public class Signup extends javax.swing.JFrame {
     Statement prepareQuery;
+    ResultSet sqlQuery;
     /**
      * Creates new form Login
      */
     public Signup() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
     }
 
     /**
@@ -58,6 +62,7 @@ public class Signup extends javax.swing.JFrame {
         sexGroup = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("CMS | Signup");
         setBackground(java.awt.Color.white);
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
@@ -135,6 +140,11 @@ public class Signup extends javax.swing.JFrame {
 
         roleGroup.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         roleGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Teacher" }));
+        roleGroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roleGroupActionPerformed(evt);
+            }
+        });
 
         courseLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         courseLabel.setText("Select Course");
@@ -167,10 +177,6 @@ public class Signup extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(156, 156, 156)
-                .addComponent(headerLogo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,13 +241,17 @@ public class Signup extends javax.swing.JFrame {
                                 .addComponent(loginBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(92, 92, 92)))))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(165, 165, 165)
+                .addComponent(headerLogo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(38, 38, 38)
                 .addComponent(headerLogo)
-                .addGap(35, 35, 35)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
@@ -285,7 +295,6 @@ public class Signup extends javax.swing.JFrame {
                 .addComponent(passwordLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(confirmpassInput, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -329,56 +338,109 @@ public class Signup extends javax.swing.JFrame {
             String getLastname = lastname.getText();
             String getUsername = usernameInput.getText();
             String getEmail = emailInput.getText();
+            String availRegex = "^[\\S]+@(heraldcollege\\.edu\\.np|heraldcollegekathmandu\\.com)$";
             String getGender = sexGroup.getSelectedItem().toString();
             String getPhone = phoneInput.getText();
             String getAddress = addressInput.getText();
             String role = roleGroup.getSelectedItem().toString();
-            String getCourse = sexGroup.getSelectedItem().toString();
+            String getCourse = courseInput.getSelectedItem().toString();
             String password = String.valueOf(passInput.getPassword());
             String confirmpassword = String.valueOf(confirmpassInput.getPassword());
             prepareQuery = dbConnection.createStatement();
             
-            System.out.println(getGender);
             if (getFirstname.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter your first name!");
+                JOptionPane.showMessageDialog(this, "Please enter your first name!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (getLastname.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter your last name!");
+                JOptionPane.showMessageDialog(this, "Please enter your last name!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (getUsername.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter your username!");
+                JOptionPane.showMessageDialog(this, "Please enter your username!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (getPhone.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter your phone number!");
+                JOptionPane.showMessageDialog(this, "Please enter your phone number!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (getAddress.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter your address!");
+                JOptionPane.showMessageDialog(this, "Please enter your address!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (getEmail.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter your email!");
+                JOptionPane.showMessageDialog(this, "Please enter your email!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (password.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter your password!");
+                JOptionPane.showMessageDialog(this, "Please enter your password!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (confirmpassword.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please confirm your password!");
+                JOptionPane.showMessageDialog(this, "Please confirm your password!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            if (!Pattern.matches(availRegex, getEmail)) {
+                JOptionPane.showMessageDialog(this, "Please use the email provided by the college!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             
             if (password.equals(confirmpassword)) {
-                if (!getMiddlename.isEmpty()) {
-                    prepareQuery.executeUpdate("insert into students (firstname, middlename, lastname, sex, username, phone, address, email, course, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                if (role == "Student") {
+                    sqlQuery = prepareQuery.executeQuery("select username, phone, email from students");
+                    if (sqlQuery.next()) {
+                        if (sqlQuery.getString("username").equals(getUsername)) {
+                            JOptionPane.showMessageDialog(this, "Sorry, this username is already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            dbConnection.close();
+                            return;
+                        }
+                        if (sqlQuery.getString("email").equals(getEmail)) {
+                            JOptionPane.showMessageDialog(this, "Sorry, this email is already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            dbConnection.close();
+                            return;
+                        }
+                        if (sqlQuery.getString("phone").equals(getPhone)) {
+                            JOptionPane.showMessageDialog(this, "Sorry, this phone number is already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            dbConnection.close();
+                            return;
+                        }
+                    }
+                    
+                    if (!getMiddlename.isEmpty()) {
+                        prepareQuery.executeUpdate("insert into students (firstname, middlename, lastname, sex, username, phone, address, email, course, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                    } else {
+                        prepareQuery.executeUpdate("insert into students (firstname, lastname, sex, username, phone, address, email, course, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                    }
+                } else if (role == "Teacher") {
+                    sqlQuery = prepareQuery.executeQuery("select username, phone, email from teachers");
+                    if (sqlQuery.next()) {
+                        if (sqlQuery.getString("username").equals(getUsername)) {
+                            JOptionPane.showMessageDialog(this, "Sorry, this username is already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            dbConnection.close();
+                            return;
+                        }
+                        if (sqlQuery.getString("email").equals(getEmail)) {
+                            JOptionPane.showMessageDialog(this, "Sorry, this email is already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            dbConnection.close();
+                            return;
+                        }
+                        if (sqlQuery.getString("phone").equals(getPhone)) {
+                            JOptionPane.showMessageDialog(this, "Sorry, this phone number is already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            dbConnection.close();
+                            return;
+                        }
+                    }
+                    if (!getMiddlename.isEmpty()) {
+                        prepareQuery.executeUpdate("insert into teachers (firstname, middlename, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                    } else {
+                        prepareQuery.executeUpdate("insert into teachers (firstname, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                    }
                 } else {
-                    prepareQuery.executeUpdate("insert into students (firstname, lastname, sex, username, phone, address, email, course, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                    JOptionPane.showMessageDialog(this, "Something went wrong! Error Code: #3435", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
-                JOptionPane.showMessageDialog(this, "You have successfully registered, you may login now!");
+                JOptionPane.showMessageDialog(this, "You have successfully registered, you may login now!", "INFO", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
                 Login showPage = new Login();
                 showPage.setVisible(true);
                 dbConnection.close();
                 return;
             } else {
-                JOptionPane.showMessageDialog(this, "Password Mismatch!");
+                JOptionPane.showMessageDialog(this, "The password does not match!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 firstname.setText("");
                 middlename.setText("");
                 lastname.setText("");
@@ -399,6 +461,18 @@ public class Signup extends javax.swing.JFrame {
         Login showLogin = new Login();
         showLogin.setVisible(true);
     }//GEN-LAST:event_loginBTNActionPerformed
+
+    private void roleGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleGroupActionPerformed
+        String role = roleGroup.getSelectedItem().toString();
+        if (role != "Student") {
+            courseLabel.setVisible(false);
+            courseInput.setVisible(false);
+            return;
+        }
+        courseLabel.setVisible(true);
+        courseInput.setVisible(true);
+        return;
+    }//GEN-LAST:event_roleGroupActionPerformed
 
     /**
      * @param args the command line arguments
