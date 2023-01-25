@@ -1,5 +1,6 @@
 
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -30,34 +31,171 @@ public class StudentPortal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        headerLogo = new javax.swing.JLabel();
+        navBar = new javax.swing.JPanel();
+        profileName = new javax.swing.JButton();
+        starightLine = new javax.swing.JSeparator();
+        logoutBTN = new javax.swing.JButton();
+        homeBTN = new javax.swing.JButton();
+        CoursesBTN = new javax.swing.JButton();
+        headerLogo1 = new javax.swing.JLabel();
+        mainBody = new javax.swing.JPanel();
+        homeContent = new javax.swing.JPanel();
+        homeLabel = new javax.swing.JLabel();
+        coursesContent = new javax.swing.JPanel();
+        coursesLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CMS | Student Panel");
 
-        headerLogo.setFont(new java.awt.Font("Poppins", 1, 36)); // NOI18N
-        headerLogo.setText("Student Portal");
-        headerLogo.setToolTipText("");
+        navBar.setBackground(new java.awt.Color(51, 51, 51));
+
+        profileName.setBackground(new java.awt.Color(51, 51, 51));
+        profileName.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        profileName.setForeground(new java.awt.Color(255, 255, 255));
+        profileName.setText("Manoj");
+        profileName.setToolTipText("");
+        profileName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                profileNameActionPerformed(evt);
+            }
+        });
+
+        logoutBTN.setBackground(new java.awt.Color(51, 51, 51));
+        logoutBTN.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        logoutBTN.setForeground(new java.awt.Color(255, 255, 255));
+        logoutBTN.setText("Logout");
+        logoutBTN.setToolTipText("");
+        logoutBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutBTNActionPerformed(evt);
+            }
+        });
+
+        homeBTN.setBackground(new java.awt.Color(51, 51, 51));
+        homeBTN.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        homeBTN.setForeground(new java.awt.Color(255, 255, 255));
+        homeBTN.setText("Home");
+        homeBTN.setToolTipText("");
+        homeBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeBTNActionPerformed(evt);
+            }
+        });
+
+        CoursesBTN.setBackground(new java.awt.Color(51, 51, 51));
+        CoursesBTN.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        CoursesBTN.setForeground(new java.awt.Color(255, 255, 255));
+        CoursesBTN.setText("Courses");
+        CoursesBTN.setToolTipText("");
+        CoursesBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CoursesBTNActionPerformed(evt);
+            }
+        });
+
+        headerLogo1.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        headerLogo1.setForeground(new java.awt.Color(255, 255, 255));
+        headerLogo1.setText("Student Dashboard");
+        headerLogo1.setToolTipText("");
+
+        javax.swing.GroupLayout navBarLayout = new javax.swing.GroupLayout(navBar);
+        navBar.setLayout(navBarLayout);
+        navBarLayout.setHorizontalGroup(
+            navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(starightLine)
+            .addGroup(navBarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(headerLogo1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(profileName)
+                .addGap(16, 16, 16))
+            .addGroup(navBarLayout.createSequentialGroup()
+                .addGap(444, 444, 444)
+                .addComponent(homeBTN)
+                .addGap(18, 18, 18)
+                .addComponent(CoursesBTN)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(logoutBTN)
+                .addContainerGap(453, Short.MAX_VALUE))
+        );
+        navBarLayout.setVerticalGroup(
+            navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navBarLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(profileName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(headerLogo1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(starightLine, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(navBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(logoutBTN)
+                    .addComponent(CoursesBTN)
+                    .addComponent(homeBTN))
+                .addGap(18, 18, 18))
+        );
+
+        mainBody.setLayout(new java.awt.CardLayout());
+
+        homeContent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        homeLabel.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        homeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        homeLabel.setText("Home Content");
+        homeLabel.setToolTipText("");
+        homeContent.add(homeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 35));
+
+        mainBody.add(homeContent, "card2");
+
+        coursesContent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        coursesLabel.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        coursesLabel.setForeground(new java.awt.Color(255, 255, 255));
+        coursesLabel.setText("Courses Content");
+        coursesLabel.setToolTipText("");
+        coursesContent.add(coursesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 35));
+
+        mainBody.add(coursesContent, "card2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(454, 454, 454)
-                .addComponent(headerLogo)
-                .addContainerGap(491, Short.MAX_VALUE))
+            .addComponent(navBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mainBody, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(107, 107, 107)
-                .addComponent(headerLogo)
-                .addContainerGap(520, Short.MAX_VALUE))
+                .addComponent(navBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mainBody, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void profileNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileNameActionPerformed
+        JOptionPane.showMessageDialog(this, "Feature Unavailable!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_profileNameActionPerformed
+
+    private void logoutBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logoutBTNActionPerformed
+
+    private void homeBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBTNActionPerformed
+        mainBody.removeAll();
+        mainBody.add(homeContent);
+        mainBody.repaint();
+        mainBody.revalidate();
+    }//GEN-LAST:event_homeBTNActionPerformed
+
+    private void CoursesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CoursesBTNActionPerformed
+        mainBody.removeAll();
+        mainBody.add(coursesContent);
+        mainBody.repaint();
+        mainBody.revalidate();
+    }//GEN-LAST:event_CoursesBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -95,6 +233,17 @@ public class StudentPortal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel headerLogo;
+    private javax.swing.JButton CoursesBTN;
+    private javax.swing.JPanel coursesContent;
+    private javax.swing.JLabel coursesLabel;
+    private javax.swing.JLabel headerLogo1;
+    private javax.swing.JButton homeBTN;
+    private javax.swing.JPanel homeContent;
+    private javax.swing.JLabel homeLabel;
+    private javax.swing.JButton logoutBTN;
+    private javax.swing.JPanel mainBody;
+    private javax.swing.JPanel navBar;
+    private javax.swing.JButton profileName;
+    private javax.swing.JSeparator starightLine;
     // End of variables declaration//GEN-END:variables
 }
