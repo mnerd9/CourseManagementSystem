@@ -18,7 +18,7 @@ public class StudentPortal extends javax.swing.JFrame {
     public StudentPortal() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));      
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
     }
 
     /**
