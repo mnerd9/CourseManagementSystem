@@ -11,7 +11,7 @@ import java.awt.Toolkit;
 import java.sql.*;
 import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
-    Statement prepareQuery;
+    PreparedStatement createQuery;
     ResultSet sqlQuery;
     
     
@@ -78,7 +78,7 @@ public class Login extends javax.swing.JFrame {
         loginGroupLabel.setText("Who are you?");
 
         loginGroup.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        loginGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Teacher", "Admin" }));
+        loginGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Instructor", "Admin" }));
 
         loginBTN.setBackground(new java.awt.Color(51, 51, 51));
         loginBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -175,15 +175,19 @@ public class Login extends javax.swing.JFrame {
         Connection confirmConn = startDB.checkConnection();
         return confirmConn;
     }
+    
     private void loginBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBTNActionPerformed
         try {
             Connection dbConnection = checkConnection();
             String loginUEmail = uEmailInput.getText();
             String loginPassword = String.valueOf(passwordInput.getPassword());
-            String role = loginGroup.getSelectedItem().toString(); 
-            prepareQuery = dbConnection.createStatement();
+            String role = loginGroup.getSelectedItem().toString();
             if (role == "Student") {
-                sqlQuery = prepareQuery.executeQuery("select username, email, password, course from students where (username = '" + loginUEmail + "' or email = '" + loginUEmail + "') and password = '" + loginPassword + "'");
+                createQuery = dbConnection.prepareStatement("select id, username, email, password, course from students where (username = ? or email = ?) and password = ?");
+                createQuery.setString(1, loginUEmail);
+                createQuery.setString(2, loginUEmail);
+                createQuery.setString(3, loginPassword);
+                sqlQuery = createQuery.executeQuery();
                 if (!sqlQuery.next()) {
                     JOptionPane.showMessageDialog(this, "Invalid username or password, Please try again!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     uEmailInput.setText("");
@@ -202,8 +206,12 @@ public class Login extends javax.swing.JFrame {
                 showPage.setVisible(true);
                 dbConnection.close();
                 return;
-            } else if (role == "Teacher") {
-                sqlQuery = prepareQuery.executeQuery("select username, email, password from teachers where (username = '" + loginUEmail + "' or email = '" + loginUEmail + "') and password = '" + loginPassword + "'");
+            } else if (role == "Instructor") {
+                createQuery = dbConnection.prepareStatement("select id, username, email, password, course from instructors where (username = ? or email = ?) and password = ?");
+                createQuery.setString(1, loginUEmail);
+                createQuery.setString(2, loginUEmail);
+                createQuery.setString(3, loginPassword);
+                sqlQuery = createQuery.executeQuery();
                 if (!sqlQuery.next()) {
                     JOptionPane.showMessageDialog(this, "Invalid username or password, Please try again!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     uEmailInput.setText("");
@@ -213,12 +221,16 @@ public class Login extends javax.swing.JFrame {
                 }
                 JOptionPane.showMessageDialog(this, "You have sucessfully logged in!", "INFO", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
-                TeacherPortal showPage = new TeacherPortal();
+                InstructorPortal showPage = new InstructorPortal();
                 showPage.setVisible(true);
                 dbConnection.close();
                 return;
             } else if (role == "Admin") {
-                sqlQuery = prepareQuery.executeQuery("select username, email, password from admin where (username = '" + loginUEmail + "' or email = '" + loginUEmail + "') and password = '" + loginPassword + "'");
+                createQuery = dbConnection.prepareStatement("select id, username, email, password, course from admin where (username = ? or email = ?) and password = ?");
+                createQuery.setString(1, loginUEmail);
+                createQuery.setString(2, loginUEmail);
+                createQuery.setString(3, loginPassword);
+                sqlQuery = createQuery.executeQuery();
                 if (!sqlQuery.next()) {
                     JOptionPane.showMessageDialog(this, "Invalid username/email or password, Please try again!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     uEmailInput.setText("");
