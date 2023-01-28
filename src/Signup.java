@@ -139,7 +139,7 @@ public class Signup extends javax.swing.JFrame {
         loginGroupLabel.setText("Who are you?");
 
         roleGroup.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        roleGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Teacher", "Admin" }));
+        roleGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Instructor", "Admin" }));
         roleGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 roleGroupActionPerformed(evt);
@@ -405,7 +405,7 @@ public class Signup extends javax.swing.JFrame {
                     } else {
                         prepareQuery.executeUpdate("insert into students (firstname, lastname, sex, username, phone, address, email, course, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
                     }
-                } else if (role == "Teacher") {
+                } else if (role == "Instructor") {
                     sqlQuery = prepareQuery.executeQuery("select username, phone, email from teachers");
                     if (sqlQuery.next()) {
                         if (sqlQuery.getString("username").equals(getUsername)) {
@@ -425,9 +425,9 @@ public class Signup extends javax.swing.JFrame {
                         }
                     }
                     if (!getMiddlename.isEmpty()) {
-                        prepareQuery.executeUpdate("insert into teachers (firstname, middlename, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into instructors (firstname, middlename, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
                     } else {
-                        prepareQuery.executeUpdate("insert into teachers (firstname, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into instructors (firstname, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
                     }
                 } else if (role == "Admin") {
                     sqlQuery = prepareQuery.executeQuery("select username, phone, email from admin");
