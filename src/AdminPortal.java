@@ -104,6 +104,36 @@ public class AdminPortal extends javax.swing.JFrame {
         activityStudentBTN = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         activityLogs = new javax.swing.JTable();
+        profileContent = new javax.swing.JPanel();
+        nameLabel = new javax.swing.JLabel();
+        nameInput = new javax.swing.JTextField();
+        genderInput = new javax.swing.JTextField();
+        genderLabel = new javax.swing.JLabel();
+        emailInput = new javax.swing.JTextField();
+        emailLabel = new javax.swing.JLabel();
+        joinedLabel = new javax.swing.JLabel();
+        joinedInput = new javax.swing.JTextField();
+        savePassBTN = new javax.swing.JButton();
+        emailLabel2 = new javax.swing.JLabel();
+        usernameInput = new javax.swing.JTextField();
+        phoneLabel = new javax.swing.JLabel();
+        phoneInput = new javax.swing.JTextField();
+        addressLabel = new javax.swing.JLabel();
+        addressInput = new javax.swing.JTextField();
+        profileSeperator = new javax.swing.JSeparator();
+        HorizontalSeperator = new javax.swing.JSeparator();
+        mainProfileSeperator = new javax.swing.JSeparator();
+        personalDetailsSeperator = new javax.swing.JSeparator();
+        yourProfileLabel1 = new javax.swing.JLabel();
+        oldpassLabel = new javax.swing.JLabel();
+        oldpassInput = new javax.swing.JTextField();
+        privacyLine = new javax.swing.JSeparator();
+        privacyLabel = new javax.swing.JLabel();
+        newPassInput = new javax.swing.JTextField();
+        newPassLabel = new javax.swing.JLabel();
+        confirmPassInput = new javax.swing.JTextField();
+        confirmNewPassLabel = new javax.swing.JLabel();
+        editBTN1 = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -134,6 +164,11 @@ public class AdminPortal extends javax.swing.JFrame {
         homeBTN.setBackground(new java.awt.Color(102, 102, 102));
         homeBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         homeBTN.setText("Home");
+        homeBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeBTNActionPerformed(evt);
+            }
+        });
 
         coursesBTN.setBackground(new java.awt.Color(102, 102, 102));
         coursesBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -142,6 +177,11 @@ public class AdminPortal extends javax.swing.JFrame {
         profileBTN.setBackground(new java.awt.Color(102, 102, 102));
         profileBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         profileBTN.setText("Profile");
+        profileBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                profileBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout navMenuPanelLayout = new javax.swing.GroupLayout(navMenuPanel);
         navMenuPanel.setLayout(navMenuPanelLayout);
@@ -281,6 +321,212 @@ public class AdminPortal extends javax.swing.JFrame {
 
         mainBody.add(homeContent, "card2");
 
+        profileContent.setBackground(new java.awt.Color(255, 255, 255));
+        profileContent.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        profileContent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        nameLabel.setBackground(new java.awt.Color(0, 0, 0));
+        nameLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        nameLabel.setForeground(new java.awt.Color(0, 0, 0));
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nameLabel.setText("Name");
+        profileContent.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 100, 30));
+
+        nameInput.setEditable(false);
+        nameInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        nameInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(nameInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, 190, 30));
+
+        genderInput.setEditable(false);
+        genderInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        genderInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                genderInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(genderInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 190, 30));
+
+        genderLabel.setBackground(new java.awt.Color(0, 0, 0));
+        genderLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        genderLabel.setForeground(new java.awt.Color(0, 0, 0));
+        genderLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        genderLabel.setText("Gender");
+        profileContent.add(genderLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 100, 30));
+
+        emailInput.setEditable(false);
+        emailInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        emailInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(emailInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 160, 190, 30));
+
+        emailLabel.setBackground(new java.awt.Color(0, 0, 0));
+        emailLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        emailLabel.setForeground(new java.awt.Color(0, 0, 0));
+        emailLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        emailLabel.setText("Email");
+        profileContent.add(emailLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 160, 100, 30));
+
+        joinedLabel.setBackground(new java.awt.Color(0, 0, 0));
+        joinedLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        joinedLabel.setForeground(new java.awt.Color(0, 0, 0));
+        joinedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        joinedLabel.setText("Joined");
+        profileContent.add(joinedLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 100, 30));
+
+        joinedInput.setEditable(false);
+        joinedInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        joinedInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                joinedInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(joinedInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 210, 190, 30));
+
+        savePassBTN.setBackground(new java.awt.Color(51, 51, 51));
+        savePassBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        savePassBTN.setForeground(new java.awt.Color(255, 255, 255));
+        savePassBTN.setText("Submit");
+        savePassBTN.setToolTipText("");
+        savePassBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                savePassBTNActionPerformed(evt);
+            }
+        });
+        profileContent.add(savePassBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 490, 120, -1));
+
+        emailLabel2.setBackground(new java.awt.Color(0, 0, 0));
+        emailLabel2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        emailLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        emailLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        emailLabel2.setText("Username");
+        profileContent.add(emailLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 100, 30));
+
+        usernameInput.setEditable(false);
+        usernameInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        usernameInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usernameInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(usernameInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, 190, 30));
+
+        phoneLabel.setBackground(new java.awt.Color(0, 0, 0));
+        phoneLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        phoneLabel.setForeground(new java.awt.Color(0, 0, 0));
+        phoneLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        phoneLabel.setText("Phone");
+        profileContent.add(phoneLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, 100, 30));
+
+        phoneInput.setEditable(false);
+        phoneInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        phoneInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phoneInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(phoneInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 60, 190, 30));
+
+        addressLabel.setBackground(new java.awt.Color(0, 0, 0));
+        addressLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        addressLabel.setForeground(new java.awt.Color(0, 0, 0));
+        addressLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addressLabel.setText("Address");
+        profileContent.add(addressLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 100, 30));
+
+        addressInput.setEditable(false);
+        addressInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        addressInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addressInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(addressInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 110, 190, 30));
+        profileContent.add(profileSeperator, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 140, 10));
+        profileContent.add(HorizontalSeperator, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 630, 10));
+
+        mainProfileSeperator.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        profileContent.add(mainProfileSeperator, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 50, 10, 520));
+
+        personalDetailsSeperator.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        profileContent.add(personalDetailsSeperator, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, 10, 200));
+
+        yourProfileLabel1.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        yourProfileLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        yourProfileLabel1.setText("Personal Details");
+        profileContent.add(yourProfileLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
+
+        oldpassLabel.setBackground(new java.awt.Color(0, 0, 0));
+        oldpassLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        oldpassLabel.setForeground(new java.awt.Color(0, 0, 0));
+        oldpassLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        oldpassLabel.setText("Old Password");
+        profileContent.add(oldpassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 100, 30));
+
+        oldpassInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        oldpassInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                oldpassInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(oldpassInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 250, 30));
+        profileContent.add(privacyLine, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 160, 10));
+
+        privacyLabel.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        privacyLabel.setForeground(new java.awt.Color(0, 0, 0));
+        privacyLabel.setText("Privacy & Security");
+        profileContent.add(privacyLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, -1));
+
+        newPassInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        newPassInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newPassInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(newPassInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 350, 250, 30));
+
+        newPassLabel.setBackground(new java.awt.Color(0, 0, 0));
+        newPassLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        newPassLabel.setForeground(new java.awt.Color(0, 0, 0));
+        newPassLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        newPassLabel.setText("New Password");
+        profileContent.add(newPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 320, 100, 30));
+
+        confirmPassInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        confirmPassInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmPassInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(confirmPassInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, 250, 30));
+
+        confirmNewPassLabel.setBackground(new java.awt.Color(0, 0, 0));
+        confirmNewPassLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        confirmNewPassLabel.setForeground(new java.awt.Color(0, 0, 0));
+        confirmNewPassLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        confirmNewPassLabel.setText("Confirm New password");
+        profileContent.add(confirmNewPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 160, 30));
+
+        editBTN1.setBackground(new java.awt.Color(51, 51, 51));
+        editBTN1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editBTN1.setForeground(new java.awt.Color(255, 255, 255));
+        editBTN1.setText("Edit Profile");
+        editBTN1.setToolTipText("");
+        editBTN1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editBTN1ActionPerformed(evt);
+            }
+        });
+        profileContent.add(editBTN1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 210, 120, -1));
+
+        mainBody.add(profileContent, "card2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -340,6 +586,99 @@ public class AdminPortal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_logoutBTNActionPerformed
 
+    private void profileBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileBTNActionPerformed
+        mainBody.removeAll();
+        mainBody.add(profileContent);
+        mainBody.repaint();
+        mainBody.revalidate();
+        
+        nameInput.setText("");
+        genderInput.setText("");
+        usernameInput.setText("");
+        joinedInput.setText("");
+        phoneInput.setText("");
+        addressInput.setText("");
+        emailInput.setText("");
+        
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from admins where id = ?");
+            createQuery.setInt(1, userID);
+            sqlQuery = createQuery.executeQuery();
+            if (!sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "Something went wrong, #3436", "ERROR", JOptionPane.ERROR_MESSAGE);
+                dbConnection.close();
+                return;
+            }
+            
+            nameInput.setText(sqlQuery.getString("firstname") + " " + sqlQuery.getString("lastname"));
+            genderInput.setText(sqlQuery.getString("gender"));
+            usernameInput.setText(sqlQuery.getString("username"));
+            joinedInput.setText(sqlQuery.getString("updatedOn"));
+            phoneInput.setText(sqlQuery.getString("phone"));
+            addressInput.setText(sqlQuery.getString("address"));
+            emailInput.setText(sqlQuery.getString("email"));
+            return;
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }//GEN-LAST:event_profileBTNActionPerformed
+
+    private void homeBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBTNActionPerformed
+       mainBody.removeAll();
+       mainBody.add(homeContent);
+       mainBody.repaint();
+       mainBody.revalidate();
+    }//GEN-LAST:event_homeBTNActionPerformed
+
+    private void nameInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameInputActionPerformed
+
+    private void genderInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_genderInputActionPerformed
+
+    private void emailInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailInputActionPerformed
+
+    private void joinedInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinedInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_joinedInputActionPerformed
+
+    private void savePassBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePassBTNActionPerformed
+        JOptionPane.showMessageDialog(this, "Feature Unavailable!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_savePassBTNActionPerformed
+
+    private void usernameInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_usernameInputActionPerformed
+
+    private void phoneInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phoneInputActionPerformed
+
+    private void addressInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addressInputActionPerformed
+
+    private void oldpassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oldpassInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_oldpassInputActionPerformed
+
+    private void newPassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPassInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newPassInputActionPerformed
+
+    private void confirmPassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmPassInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_confirmPassInputActionPerformed
+
+    private void editBTN1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBTN1ActionPerformed
+        JOptionPane.showMessageDialog(this, "Feature Unavailable!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_editBTN1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -376,12 +715,23 @@ public class AdminPortal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSeparator HorizontalSeperator;
     private javax.swing.JButton activityAdminBTN;
     private javax.swing.JLabel activityLabel;
     private javax.swing.JTable activityLogs;
     private javax.swing.JButton activityStudentBTN;
     private javax.swing.JButton activityTeacherBTN;
+    private javax.swing.JTextField addressInput;
+    private javax.swing.JLabel addressLabel;
+    private javax.swing.JLabel confirmNewPassLabel;
+    private javax.swing.JTextField confirmPassInput;
     private javax.swing.JButton coursesBTN;
+    private javax.swing.JButton editBTN1;
+    private javax.swing.JTextField emailInput;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JLabel emailLabel2;
+    private javax.swing.JTextField genderInput;
+    private javax.swing.JLabel genderLabel;
     private javax.swing.JLabel headerText;
     private javax.swing.JButton homeBTN;
     private javax.swing.JPanel homeContent;
@@ -389,11 +739,30 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField joinedInput;
+    private javax.swing.JLabel joinedLabel;
     private javax.swing.JButton logoutBTN;
     private javax.swing.JPanel mainBody;
+    private javax.swing.JSeparator mainProfileSeperator;
+    private javax.swing.JTextField nameInput;
+    private javax.swing.JLabel nameLabel;
     private javax.swing.JPanel navBar;
     private javax.swing.JPanel navMenuPanel;
+    private javax.swing.JTextField newPassInput;
+    private javax.swing.JLabel newPassLabel;
+    private javax.swing.JTextField oldpassInput;
+    private javax.swing.JLabel oldpassLabel;
+    private javax.swing.JSeparator personalDetailsSeperator;
+    private javax.swing.JTextField phoneInput;
+    private javax.swing.JLabel phoneLabel;
+    private javax.swing.JLabel privacyLabel;
+    private javax.swing.JSeparator privacyLine;
     private javax.swing.JButton profileBTN;
+    private javax.swing.JPanel profileContent;
     private javax.swing.JLabel profileName;
+    private javax.swing.JSeparator profileSeperator;
+    private javax.swing.JButton savePassBTN;
+    private javax.swing.JTextField usernameInput;
+    private javax.swing.JLabel yourProfileLabel1;
     // End of variables declaration//GEN-END:variables
 }
