@@ -16,10 +16,10 @@ create table `instructors` (
     primary key(id)
 );
 
-create table `modules` (
+create table `courses` (
     `id` int(11) auto_increment,
     `code` varchar(20) default "none",
-    `course` varchar(255) default "none",
+    `module` varchar(255) default "none",
     `instructor` int,
     `updatedOn` datetime default current_timestamp() on update current_timestamp(),
     primary key (id),
