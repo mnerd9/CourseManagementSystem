@@ -1,5 +1,10 @@
 
 import java.awt.Toolkit;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -11,16 +16,66 @@ import java.awt.Toolkit;
  * @author manoj
  */
 public class AdminPortal extends javax.swing.JFrame {
-
-    /**
-     * Creates new form StudentPortal
-     */
-    public AdminPortal(int id, String course) {
+    PreparedStatement createQuery;
+    ResultSet sqlQuery;
+    int userID;
+    
+    public AdminPortal(int id) {
         super();
         initComponents();
         this.setLocationRelativeTo(null);
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
-        headerText1.setText(course);
+        this.userID = id;
+        setHeadLabel(id);
+        displayLogs("student");
+    }
+    
+    public Connection checkConnection() {
+        db startDB = new db();
+        Connection confirmConn = startDB.checkConnection();
+        return confirmConn;
+    }
+    
+    public void setHeadLabel(int id) {
+        try {
+            Connection dbConnection = checkConnection();
+            int userID = id;
+            createQuery = dbConnection.prepareStatement("select * from admins where id = ?");
+            createQuery.setInt(1, userID);
+            sqlQuery = createQuery.executeQuery();
+            if (!sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "Something went wrong, #3436", "ERROR", JOptionPane.ERROR_MESSAGE);
+                dbConnection.close();
+                return;
+            }
+            profileName.setText("Hello, " + sqlQuery.getString("firstname").toUpperCase());
+            return;
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }
+    
+    public void displayLogs(String type) {
+        DefaultTableModel tableModel = (DefaultTableModel)activityLogs.getModel();
+        tableModel.setRowCount(0); // clearing table data.
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from logs where type = ?");
+            createQuery.setString(1, type);
+            sqlQuery = createQuery.executeQuery();
+            
+            while (sqlQuery.next()) {
+                String id = String.valueOf(sqlQuery.getInt("id"));
+                String description = sqlQuery.getString("description");
+                String time = sqlQuery.getString("updatedOn");
+                String tableData[] = {id, description, time};
+                tableModel.addRow(tableData);
+                activityLogs.setEnabled(false);
+            }
+            return;
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
     }
 
     /**
@@ -40,7 +95,15 @@ public class AdminPortal extends javax.swing.JFrame {
         coursesBTN = new javax.swing.JButton();
         profileBTN = new javax.swing.JButton();
         mainBody = new javax.swing.JPanel();
-        headerText1 = new javax.swing.JLabel();
+        homeContent = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel1 = new javax.swing.JPanel();
+        activityLabel = new javax.swing.JLabel();
+        activityAdminBTN = new javax.swing.JButton();
+        activityTeacherBTN = new javax.swing.JButton();
+        activityStudentBTN = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        activityLogs = new javax.swing.JTable();
 
         jLabel1.setText("jLabel1");
 
@@ -51,7 +114,7 @@ public class AdminPortal extends javax.swing.JFrame {
 
         profileName.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         profileName.setForeground(new java.awt.Color(255, 255, 255));
-        profileName.setText("Hello, Manoj");
+        profileName.setText("Hello, Unknown");
 
         headerText.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         headerText.setForeground(new java.awt.Color(255, 255, 255));
@@ -62,6 +125,11 @@ public class AdminPortal extends javax.swing.JFrame {
         logoutBTN.setBackground(new java.awt.Color(102, 102, 102));
         logoutBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         logoutBTN.setText("Logout");
+        logoutBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutBTNActionPerformed(evt);
+            }
+        });
 
         homeBTN.setBackground(new java.awt.Color(102, 102, 102));
         homeBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -88,7 +156,7 @@ public class AdminPortal extends javax.swing.JFrame {
                 .addComponent(profileBTN)
                 .addGap(18, 18, 18)
                 .addComponent(logoutBTN)
-                .addContainerGap(398, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         navMenuPanelLayout.setVerticalGroup(
             navMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,27 +194,92 @@ public class AdminPortal extends javax.swing.JFrame {
         );
 
         mainBody.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        mainBody.setLayout(new java.awt.CardLayout());
 
-        headerText1.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
-        headerText1.setForeground(new java.awt.Color(0, 0, 0));
-        headerText1.setText("Home");
+        homeContent.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        homeContent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout mainBodyLayout = new javax.swing.GroupLayout(mainBody);
-        mainBody.setLayout(mainBodyLayout);
-        mainBodyLayout.setHorizontalGroup(
-            mainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainBodyLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(headerText1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        jSeparator1.setBackground(new java.awt.Color(255, 255, 255));
+        homeContent.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 50, 310, 10));
+
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+
+        activityLabel.setFont(new java.awt.Font("Poppins", 0, 24)); // NOI18N
+        activityLabel.setForeground(new java.awt.Color(255, 255, 255));
+        activityLabel.setText("Activity");
+
+        activityAdminBTN.setBackground(new java.awt.Color(102, 102, 102));
+        activityAdminBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        activityAdminBTN.setText("Admin");
+        activityAdminBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activityAdminBTNActionPerformed(evt);
+            }
+        });
+
+        activityTeacherBTN.setBackground(new java.awt.Color(102, 102, 102));
+        activityTeacherBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        activityTeacherBTN.setText("Teacher");
+        activityTeacherBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activityTeacherBTNActionPerformed(evt);
+            }
+        });
+
+        activityStudentBTN.setBackground(new java.awt.Color(102, 102, 102));
+        activityStudentBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        activityStudentBTN.setText("Student");
+        activityStudentBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activityStudentBTNActionPerformed(evt);
+            }
+        });
+
+        activityLogs.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Description", "Time"
+            }
+        ));
+        jScrollPane1.setViewportView(activityLogs);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(activityLabel)
+                .addGap(102, 102, 102))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(activityStudentBTN)
+                .addGap(18, 18, 18)
+                .addComponent(activityTeacherBTN)
+                .addGap(18, 18, 18)
+                .addComponent(activityAdminBTN)
+                .addContainerGap(14, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
-        mainBodyLayout.setVerticalGroup(
-            mainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainBodyLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(headerText1)
-                .addContainerGap(539, Short.MAX_VALUE))
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(activityLabel)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(activityAdminBTN)
+                    .addComponent(activityTeacherBTN)
+                    .addComponent(activityStudentBTN))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
         );
+
+        homeContent.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 0, 310, 570));
+
+        mainBody.add(homeContent, "card2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -162,13 +295,50 @@ public class AdminPortal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(navBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(mainBody, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mainBody, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void activityStudentBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activityStudentBTNActionPerformed
+        displayLogs("student");
+    }//GEN-LAST:event_activityStudentBTNActionPerformed
+
+    private void activityTeacherBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activityTeacherBTNActionPerformed
+        displayLogs("teacher");
+    }//GEN-LAST:event_activityTeacherBTNActionPerformed
+
+    private void activityAdminBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activityAdminBTNActionPerformed
+        displayLogs("admin");
+    }//GEN-LAST:event_activityAdminBTNActionPerformed
+
+    private void logoutBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBTNActionPerformed
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select username from admins where id = ?");
+            createQuery.setInt(1, userID);
+            sqlQuery = createQuery.executeQuery();
+            if (!sqlQuery.next()) {
+                System.out.println("Something went wrong with the userid");
+                return;
+            }
+            String Description = sqlQuery.getString("username") + " has logged out!";
+            String Type = "admin";
+            createQuery = dbConnection.prepareStatement("insert into logs (description, type) values (?, ?)");
+            createQuery.setString(1, Description);
+            createQuery.setString(2, Type);
+            createQuery.executeUpdate();
+            dispose();
+            Login showPage = new Login();
+            showPage.setVisible(true);
+        } catch (Exception exp) {
+            System.out.println(exp);
+            return;
+        }
+    }//GEN-LAST:event_logoutBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -200,21 +370,25 @@ public class AdminPortal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminPortal(0,"null").setVisible(true);
+                new AdminPortal(0).setVisible(true);
             }
         });
-        
-        
-      
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton activityAdminBTN;
+    private javax.swing.JLabel activityLabel;
+    private javax.swing.JTable activityLogs;
+    private javax.swing.JButton activityStudentBTN;
+    private javax.swing.JButton activityTeacherBTN;
     private javax.swing.JButton coursesBTN;
     private javax.swing.JLabel headerText;
-    private static javax.swing.JLabel headerText1;
     private javax.swing.JButton homeBTN;
+    private javax.swing.JPanel homeContent;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton logoutBTN;
     private javax.swing.JPanel mainBody;
     private javax.swing.JPanel navBar;
