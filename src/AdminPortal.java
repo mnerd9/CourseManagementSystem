@@ -1,5 +1,6 @@
 
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +16,8 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author manoj
  */
+import java.util.ArrayList;
+import javax.swing.JTextField;
 public class AdminPortal extends javax.swing.JFrame {
     PreparedStatement createQuery;
     ResultSet sqlQuery;
@@ -25,10 +28,58 @@ public class AdminPortal extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
+        activityLogs.getColumnModel().getColumn(0).setPreferredWidth(40);
+        activityLogs.getColumnModel().getColumn(1).setPreferredWidth(900);
+        activityLogs.getColumnModel().getColumn(2).setPreferredWidth(194);
         this.userID = id;
         setHeadLabel(id);
         displayLogs("student");
+        test();
+        
     }
+    
+    public void test() {
+        ArrayList<String> name = new ArrayList<String>();
+        name.add("a");
+        name.add("b");
+        
+        for(String student: name){
+            System.out.println(student);
+        }
+        
+        return;
+    }
+    
+    public void viewCoursesData() {
+        DefaultTableModel tableModel = (DefaultTableModel)listOfCoursesTable.getModel();
+        tableModel.setRowCount(0); // clearing table data.
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from courses");
+            sqlQuery = createQuery.executeQuery();
+            
+            while (sqlQuery.next()) {
+                String id = String.valueOf(sqlQuery.getInt("id"));
+                String name = sqlQuery.getString("name");
+                int isActive = sqlQuery.getInt("isActive");
+                String activeLabel = null;
+                if (isActive == 1) {
+                    activeLabel = "Available";
+                } else if (isActive == 0) {
+                    activeLabel = "Unavailable";
+                } else {
+                    activeLabel = "Error";
+                }
+                String tableData[] = {id, name, activeLabel};
+                tableModel.addRow(tableData);
+                listOfCoursesTable.setEnabled(false);
+            }
+            return;
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }
+    
     
     public Connection checkConnection() {
         db startDB = new db();
@@ -40,7 +91,7 @@ public class AdminPortal extends javax.swing.JFrame {
         try {
             Connection dbConnection = checkConnection();
             int userID = id;
-            createQuery = dbConnection.prepareStatement("select * from admins where id = ?");
+            createQuery = dbConnection.prepareStatement("select firstname from admins where id = ?");
             createQuery.setInt(1, userID);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
@@ -48,7 +99,7 @@ public class AdminPortal extends javax.swing.JFrame {
                 dbConnection.close();
                 return;
             }
-            profileName.setText("Hello, " + sqlQuery.getString("firstname").toUpperCase());
+            profileName.setText("Hello, " + sqlQuery.getString("firstname"));
             return;
         } catch (Exception exp) {
             System.out.println(exp);
@@ -85,7 +136,6 @@ public class AdminPortal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         navBar = new javax.swing.JPanel();
         profileName = new javax.swing.JLabel();
         headerText = new javax.swing.JLabel();
@@ -97,13 +147,12 @@ public class AdminPortal extends javax.swing.JFrame {
         mainBody = new javax.swing.JPanel();
         homeContent = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
-        jPanel1 = new javax.swing.JPanel();
-        activityLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        activityLogs = new javax.swing.JTable();
         activityAdminBTN = new javax.swing.JButton();
         activityTeacherBTN = new javax.swing.JButton();
         activityStudentBTN = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        activityLogs = new javax.swing.JTable();
+        activityLabel = new javax.swing.JLabel();
         profileContent = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
         nameInput = new javax.swing.JTextField();
@@ -126,16 +175,35 @@ public class AdminPortal extends javax.swing.JFrame {
         personalDetailsSeperator = new javax.swing.JSeparator();
         yourProfileLabel1 = new javax.swing.JLabel();
         oldpassLabel = new javax.swing.JLabel();
-        oldpassInput = new javax.swing.JTextField();
         privacyLine = new javax.swing.JSeparator();
         privacyLabel = new javax.swing.JLabel();
-        newPassInput = new javax.swing.JTextField();
         newPassLabel = new javax.swing.JLabel();
-        confirmPassInput = new javax.swing.JTextField();
         confirmNewPassLabel = new javax.swing.JLabel();
-        editBTN1 = new javax.swing.JButton();
-
-        jLabel1.setText("jLabel1");
+        confirmPassInput = new javax.swing.JPasswordField();
+        oldPassInput = new javax.swing.JPasswordField();
+        newPassInput = new javax.swing.JPasswordField();
+        personalDetailsSeperator1 = new javax.swing.JSeparator();
+        sidePanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        coursesContent = new javax.swing.JPanel();
+        viewModulesBTN = new javax.swing.JButton();
+        viewCoursesBTN = new javax.swing.JButton();
+        coursesPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listOfCoursesTable = new javax.swing.JTable();
+        listOfCoursesLabel = new javax.swing.JLabel();
+        courseDeleteBTN = new javax.swing.JButton();
+        courseAddBTN = new javax.swing.JButton();
+        courseEditBTN = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
+        modulesPanel = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        listOfModulesTable = new javax.swing.JTable();
+        listOfModulesLabel = new javax.swing.JLabel();
+        moduleDeleteBTN = new javax.swing.JButton();
+        moduleAddBTN = new javax.swing.JButton();
+        moduleEditBTN = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -173,6 +241,11 @@ public class AdminPortal extends javax.swing.JFrame {
         coursesBTN.setBackground(new java.awt.Color(102, 102, 102));
         coursesBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         coursesBTN.setText("Courses");
+        coursesBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                coursesBTNActionPerformed(evt);
+            }
+        });
 
         profileBTN.setBackground(new java.awt.Color(102, 102, 102));
         profileBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -240,13 +313,30 @@ public class AdminPortal extends javax.swing.JFrame {
         homeContent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jSeparator1.setBackground(new java.awt.Color(255, 255, 255));
-        homeContent.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 50, 310, 10));
+        homeContent.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 40, 90, 10));
 
-        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+        activityLogs.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        activityLogs.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        activityLabel.setFont(new java.awt.Font("Poppins", 0, 24)); // NOI18N
-        activityLabel.setForeground(new java.awt.Color(255, 255, 255));
-        activityLabel.setText("Activity");
+            },
+            new String [] {
+                "ID", "Description", "Time"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        activityLogs.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        activityLogs.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jScrollPane1.setViewportView(activityLogs);
+
+        homeContent.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 1140, 480));
 
         activityAdminBTN.setBackground(new java.awt.Color(102, 102, 102));
         activityAdminBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -256,6 +346,7 @@ public class AdminPortal extends javax.swing.JFrame {
                 activityAdminBTNActionPerformed(evt);
             }
         });
+        homeContent.add(activityAdminBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 60, -1, -1));
 
         activityTeacherBTN.setBackground(new java.awt.Color(102, 102, 102));
         activityTeacherBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -265,6 +356,7 @@ public class AdminPortal extends javax.swing.JFrame {
                 activityTeacherBTNActionPerformed(evt);
             }
         });
+        homeContent.add(activityTeacherBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 60, -1, -1));
 
         activityStudentBTN.setBackground(new java.awt.Color(102, 102, 102));
         activityStudentBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -274,50 +366,12 @@ public class AdminPortal extends javax.swing.JFrame {
                 activityStudentBTNActionPerformed(evt);
             }
         });
+        homeContent.add(activityStudentBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 60, -1, -1));
 
-        activityLogs.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Description", "Time"
-            }
-        ));
-        jScrollPane1.setViewportView(activityLogs);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(activityLabel)
-                .addGap(102, 102, 102))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(activityStudentBTN)
-                .addGap(18, 18, 18)
-                .addComponent(activityTeacherBTN)
-                .addGap(18, 18, 18)
-                .addComponent(activityAdminBTN)
-                .addContainerGap(14, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(activityLabel)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(activityAdminBTN)
-                    .addComponent(activityTeacherBTN)
-                    .addComponent(activityStudentBTN))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
-        );
-
-        homeContent.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 0, 310, 570));
+        activityLabel.setFont(new java.awt.Font("Poppins", 0, 24)); // NOI18N
+        activityLabel.setForeground(new java.awt.Color(0, 0, 0));
+        activityLabel.setText("Activity");
+        homeContent.add(activityLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 10, -1, -1));
 
         mainBody.add(homeContent, "card2");
 
@@ -334,6 +388,7 @@ public class AdminPortal extends javax.swing.JFrame {
 
         nameInput.setEditable(false);
         nameInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        nameInput.setForeground(new java.awt.Color(102, 102, 102));
         nameInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameInputActionPerformed(evt);
@@ -343,6 +398,7 @@ public class AdminPortal extends javax.swing.JFrame {
 
         genderInput.setEditable(false);
         genderInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        genderInput.setForeground(new java.awt.Color(102, 102, 102));
         genderInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 genderInputActionPerformed(evt);
@@ -359,6 +415,7 @@ public class AdminPortal extends javax.swing.JFrame {
 
         emailInput.setEditable(false);
         emailInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        emailInput.setForeground(new java.awt.Color(102, 102, 102));
         emailInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emailInputActionPerformed(evt);
@@ -377,11 +434,12 @@ public class AdminPortal extends javax.swing.JFrame {
         joinedLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         joinedLabel.setForeground(new java.awt.Color(0, 0, 0));
         joinedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        joinedLabel.setText("Joined");
+        joinedLabel.setText("Joined At");
         profileContent.add(joinedLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 100, 30));
 
         joinedInput.setEditable(false);
         joinedInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        joinedInput.setForeground(new java.awt.Color(102, 102, 102));
         joinedInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 joinedInputActionPerformed(evt);
@@ -399,7 +457,7 @@ public class AdminPortal extends javax.swing.JFrame {
                 savePassBTNActionPerformed(evt);
             }
         });
-        profileContent.add(savePassBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 490, 120, -1));
+        profileContent.add(savePassBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 490, 120, -1));
 
         emailLabel2.setBackground(new java.awt.Color(0, 0, 0));
         emailLabel2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -410,6 +468,7 @@ public class AdminPortal extends javax.swing.JFrame {
 
         usernameInput.setEditable(false);
         usernameInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        usernameInput.setForeground(new java.awt.Color(102, 102, 102));
         usernameInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameInputActionPerformed(evt);
@@ -426,6 +485,7 @@ public class AdminPortal extends javax.swing.JFrame {
 
         phoneInput.setEditable(false);
         phoneInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        phoneInput.setForeground(new java.awt.Color(102, 102, 102));
         phoneInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 phoneInputActionPerformed(evt);
@@ -442,6 +502,7 @@ public class AdminPortal extends javax.swing.JFrame {
 
         addressInput.setEditable(false);
         addressInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        addressInput.setForeground(new java.awt.Color(102, 102, 102));
         addressInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addressInputActionPerformed(evt);
@@ -467,29 +528,13 @@ public class AdminPortal extends javax.swing.JFrame {
         oldpassLabel.setForeground(new java.awt.Color(0, 0, 0));
         oldpassLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         oldpassLabel.setText("Old Password");
-        profileContent.add(oldpassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 100, 30));
-
-        oldpassInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        oldpassInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                oldpassInputActionPerformed(evt);
-            }
-        });
-        profileContent.add(oldpassInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 250, 30));
+        profileContent.add(oldpassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 320, 100, 30));
         profileContent.add(privacyLine, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 160, 10));
 
         privacyLabel.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         privacyLabel.setForeground(new java.awt.Color(0, 0, 0));
         privacyLabel.setText("Privacy & Security");
         profileContent.add(privacyLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, -1));
-
-        newPassInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        newPassInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newPassInputActionPerformed(evt);
-            }
-        });
-        profileContent.add(newPassInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 350, 250, 30));
 
         newPassLabel.setBackground(new java.awt.Color(0, 0, 0));
         newPassLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -498,34 +543,250 @@ public class AdminPortal extends javax.swing.JFrame {
         newPassLabel.setText("New Password");
         profileContent.add(newPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 320, 100, 30));
 
-        confirmPassInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        confirmPassInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmPassInputActionPerformed(evt);
-            }
-        });
-        profileContent.add(confirmPassInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, 250, 30));
-
         confirmNewPassLabel.setBackground(new java.awt.Color(0, 0, 0));
         confirmNewPassLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         confirmNewPassLabel.setForeground(new java.awt.Color(0, 0, 0));
         confirmNewPassLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         confirmNewPassLabel.setText("Confirm New password");
-        profileContent.add(confirmNewPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 160, 30));
+        profileContent.add(confirmNewPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 160, 30));
 
-        editBTN1.setBackground(new java.awt.Color(51, 51, 51));
-        editBTN1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        editBTN1.setForeground(new java.awt.Color(255, 255, 255));
-        editBTN1.setText("Edit Profile");
-        editBTN1.setToolTipText("");
-        editBTN1.addActionListener(new java.awt.event.ActionListener() {
+        confirmPassInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        confirmPassInput.setToolTipText("<html>\n        <p>Password must contain at least one digit [0-9].</p><br>\n        <p>Password must contain at least one lowercase Latin character [a-z].</p><br>\n        <p>Password must contain at least one uppercase Latin character [A-Z].</p><br>\n        <p>Password must contain at least one special character like ! @ # & ( ).</p><br>\n        <p>Password must contain a length of at least 8 characters and a maximum of 20 characters.</p>\n</html>");
+        confirmPassInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editBTN1ActionPerformed(evt);
+                confirmPassInputActionPerformed(evt);
             }
         });
-        profileContent.add(editBTN1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 210, 120, -1));
+        profileContent.add(confirmPassInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 200, -1));
+
+        oldPassInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        oldPassInput.setToolTipText("<html>\n        <p>Password must contain at least one digit [0-9].</p><br>\n        <p>Password must contain at least one lowercase Latin character [a-z].</p><br>\n        <p>Password must contain at least one uppercase Latin character [A-Z].</p><br>\n        <p>Password must contain at least one special character like ! @ # & ( ).</p><br>\n        <p>Password must contain a length of at least 8 characters and a maximum of 20 characters.</p>\n</html>");
+        oldPassInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                oldPassInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(oldPassInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 200, -1));
+
+        newPassInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        newPassInput.setToolTipText("<html>\n        <p>Password must contain at least one digit [0-9].</p><br>\n        <p>Password must contain at least one lowercase Latin character [a-z].</p><br>\n        <p>Password must contain at least one uppercase Latin character [A-Z].</p><br>\n        <p>Password must contain at least one special character like ! @ # & ( ).</p><br>\n        <p>Password must contain a length of at least 8 characters and a maximum of 20 characters.</p>\n</html>");
+        newPassInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newPassInputActionPerformed(evt);
+            }
+        });
+        profileContent.add(newPassInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 350, 200, -1));
+
+        personalDetailsSeperator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        profileContent.add(personalDetailsSeperator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, 10, 200));
+
+        sidePanel.setBackground(new java.awt.Color(255, 255, 255));
+        sidePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/seriously.png"))); // NOI18N
+        jLabel2.setText("jLabel2");
+        jLabel2.setToolTipText("NERD");
+        sidePanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 530, 520));
+
+        profileContent.add(sidePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 50, 490, 510));
 
         mainBody.add(profileContent, "card2");
+
+        coursesContent.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        coursesContent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        viewModulesBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        viewModulesBTN.setText("View Modules");
+        viewModulesBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewModulesBTNActionPerformed(evt);
+            }
+        });
+        coursesContent.add(viewModulesBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 10, 130, -1));
+
+        viewCoursesBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        viewCoursesBTN.setText("View  Courses");
+        viewCoursesBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewCoursesBTNActionPerformed(evt);
+            }
+        });
+        coursesContent.add(viewCoursesBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, -1));
+
+        listOfCoursesTable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        listOfCoursesTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "S.N", "Course", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(listOfCoursesTable);
+
+        listOfCoursesLabel.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        listOfCoursesLabel.setText("List of Courses");
+        listOfCoursesLabel.setToolTipText("");
+
+        courseDeleteBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        courseDeleteBTN.setText("Delete");
+        courseDeleteBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                courseDeleteBTNActionPerformed(evt);
+            }
+        });
+
+        courseAddBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        courseAddBTN.setText("Add");
+        courseAddBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                courseAddBTNActionPerformed(evt);
+            }
+        });
+
+        courseEditBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        courseEditBTN.setText("Edit");
+        courseEditBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                courseEditBTNActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout coursesPanelLayout = new javax.swing.GroupLayout(coursesPanel);
+        coursesPanel.setLayout(coursesPanelLayout);
+        coursesPanelLayout.setHorizontalGroup(
+            coursesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(coursesPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(coursesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(coursesPanelLayout.createSequentialGroup()
+                        .addComponent(listOfCoursesLabel)
+                        .addGap(313, 313, 313)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 405, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, coursesPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(courseAddBTN)
+                        .addGap(18, 18, 18)
+                        .addComponent(courseEditBTN)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(courseDeleteBTN)))
+                .addContainerGap())
+        );
+        coursesPanelLayout.setVerticalGroup(
+            coursesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(coursesPanelLayout.createSequentialGroup()
+                .addGroup(coursesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(coursesPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(listOfCoursesLabel))
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(coursesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(courseDeleteBTN)
+                    .addComponent(courseAddBTN)
+                    .addComponent(courseEditBTN))
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
+
+        coursesContent.add(coursesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1140, 530));
+
+        listOfModulesTable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        listOfModulesTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "S.N", "Course", "Semester", "Level", "Module 1", "Module 2", "Module 3", "Module 4"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(listOfModulesTable);
+
+        listOfModulesLabel.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        listOfModulesLabel.setText("List Of Modules");
+        listOfModulesLabel.setToolTipText("");
+
+        moduleDeleteBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        moduleDeleteBTN.setText("Delete");
+        moduleDeleteBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moduleDeleteBTNActionPerformed(evt);
+            }
+        });
+
+        moduleAddBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        moduleAddBTN.setText("Add");
+
+        moduleEditBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        moduleEditBTN.setText("Edit");
+        moduleEditBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moduleEditBTNActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout modulesPanelLayout = new javax.swing.GroupLayout(modulesPanel);
+        modulesPanel.setLayout(modulesPanelLayout);
+        modulesPanelLayout.setHorizontalGroup(
+            modulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modulesPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(modulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(modulesPanelLayout.createSequentialGroup()
+                        .addComponent(listOfModulesLabel)
+                        .addGap(313, 313, 313)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 401, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, modulesPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(moduleAddBTN)
+                        .addGap(18, 18, 18)
+                        .addComponent(moduleEditBTN)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(moduleDeleteBTN)))
+                .addContainerGap())
+        );
+        modulesPanelLayout.setVerticalGroup(
+            modulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modulesPanelLayout.createSequentialGroup()
+                .addGroup(modulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(modulesPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(listOfModulesLabel))
+                    .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(modulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(moduleDeleteBTN)
+                    .addComponent(moduleAddBTN)
+                    .addComponent(moduleEditBTN))
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
+
+        coursesContent.add(modulesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1140, 530));
+
+        mainBody.add(coursesContent, "card2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -542,7 +803,7 @@ public class AdminPortal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(navBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mainBody, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
+                .addComponent(mainBody, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -602,7 +863,7 @@ public class AdminPortal extends javax.swing.JFrame {
         
         try {
             Connection dbConnection = checkConnection();
-            createQuery = dbConnection.prepareStatement("select * from admins where id = ?");
+            createQuery = dbConnection.prepareStatement("select firstname, lastname, gender, username, joinDate, phone, address, email from admins where id = ?");
             createQuery.setInt(1, userID);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
@@ -614,7 +875,7 @@ public class AdminPortal extends javax.swing.JFrame {
             nameInput.setText(sqlQuery.getString("firstname") + " " + sqlQuery.getString("lastname"));
             genderInput.setText(sqlQuery.getString("gender"));
             usernameInput.setText(sqlQuery.getString("username"));
-            joinedInput.setText(sqlQuery.getString("updatedOn"));
+            joinedInput.setText(sqlQuery.getString("joinDate"));
             phoneInput.setText(sqlQuery.getString("phone"));
             addressInput.setText(sqlQuery.getString("address"));
             emailInput.setText(sqlQuery.getString("email"));
@@ -648,7 +909,67 @@ public class AdminPortal extends javax.swing.JFrame {
     }//GEN-LAST:event_joinedInputActionPerformed
 
     private void savePassBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePassBTNActionPerformed
-        JOptionPane.showMessageDialog(this, "Feature Unavailable!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from admins where id = ?");
+            createQuery.setInt(1, userID);
+            sqlQuery = createQuery.executeQuery();
+            if (!sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "Something went wrong, #3436", "ERROR", JOptionPane.ERROR_MESSAGE);
+                dbConnection.close();
+                return;
+            }
+            
+            String oldpass = String.valueOf(oldPassInput.getPassword());
+            String newpass = String.valueOf(newPassInput.getPassword());
+            String confirmpass = String.valueOf(confirmPassInput.getPassword());
+            
+            if (!sqlQuery.getString("password").equals(oldpass)) {
+                JOptionPane.showMessageDialog(this, "Old password does not match!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                oldPassInput.setText("");
+                newPassInput.setText("");
+                confirmPassInput.setText("");
+                dbConnection.close();
+                return;
+            }
+            
+            if (!newpass.equals(confirmpass)) {
+                JOptionPane.showMessageDialog(this, "New password does not match!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                oldPassInput.setText("");
+                newPassInput.setText("");
+                confirmPassInput.setText("");
+                dbConnection.close();
+                return;
+            }
+            
+            if (oldpass.equals(newpass)) {
+                JOptionPane.showMessageDialog(this, "New password cannot be the same as old password!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                oldPassInput.setText("");
+                newPassInput.setText("");
+                confirmPassInput.setText("");
+                dbConnection.close();
+                return;
+            }
+         
+            createQuery = dbConnection.prepareStatement("update admins set password = ? where id = ?");
+            createQuery.setString(1, newpass);
+            createQuery.setInt(2, userID);
+            createQuery.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Password changed successfully!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+            String Description = sqlQuery.getString("username") + " has updated their password!";
+            String Type = "admin";
+            createQuery = dbConnection.prepareStatement("insert into logs (description, type) values (?, ?)");
+            createQuery.setString(1, Description);
+            createQuery.setString(2, Type);
+            createQuery.executeUpdate();
+            oldPassInput.setText("");
+            newPassInput.setText("");
+            confirmPassInput.setText("");
+            dbConnection.close();
+            return;
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
     }//GEN-LAST:event_savePassBTNActionPerformed
 
     private void usernameInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameInputActionPerformed
@@ -663,21 +984,176 @@ public class AdminPortal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_addressInputActionPerformed
 
-    private void oldpassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oldpassInputActionPerformed
+    private void confirmPassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmPassInputActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_oldpassInputActionPerformed
+    }//GEN-LAST:event_confirmPassInputActionPerformed
+
+    private void oldPassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oldPassInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_oldPassInputActionPerformed
 
     private void newPassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPassInputActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_newPassInputActionPerformed
 
-    private void confirmPassInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmPassInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_confirmPassInputActionPerformed
+    private void coursesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_coursesBTNActionPerformed
+        mainBody.removeAll();
+        mainBody.add(coursesContent);
+        mainBody.repaint();
+        mainBody.revalidate();
+        DefaultTableModel tableModel = (DefaultTableModel)listOfCoursesTable.getModel();
+        tableModel.setRowCount(0); // clearing table data.
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from courses");
+            sqlQuery = createQuery.executeQuery();
+            
+            while (sqlQuery.next()) {
+                String id = String.valueOf(sqlQuery.getInt("id"));
+                String name = sqlQuery.getString("name");
+                int isActive = sqlQuery.getInt("isActive");
+                String activeLabel = null;
+                if (isActive == 1) {
+                    activeLabel = "Available";
+                } else if (isActive == 0) {
+                    activeLabel = "Unavailable";
+                } else {
+                    activeLabel = "Error";
+                }
+                String tableData[] = {id, name, activeLabel};
+                tableModel.addRow(tableData);
+                listOfCoursesTable.setEnabled(false);
+            }
+            return;
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }//GEN-LAST:event_coursesBTNActionPerformed
 
-    private void editBTN1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBTN1ActionPerformed
-        JOptionPane.showMessageDialog(this, "Feature Unavailable!", "INFO", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_editBTN1ActionPerformed
+    private void courseDeleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseDeleteBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_courseDeleteBTNActionPerformed
+
+    private void courseEditBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseEditBTNActionPerformed
+//        JTextField field1 = new JTextField();
+//        JTextField field2 = new JTextField();
+//        
+//        Object [] fields = {
+//            "Field 1", field1,
+//            "Field 2", field2
+//        };
+//        
+//        JOptionPane.showConfirmDialog(null,fields,"this is a header",JOptionPane.OK_CANCEL_OPTION);
+    }//GEN-LAST:event_courseEditBTNActionPerformed
+
+    private void moduleDeleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleDeleteBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_moduleDeleteBTNActionPerformed
+
+    private void moduleEditBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleEditBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_moduleEditBTNActionPerformed
+
+    private void viewModulesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewModulesBTNActionPerformed
+        modulesPanel.setVisible(true);
+        coursesPanel.setVisible(false);
+        DefaultTableModel tableModel = (DefaultTableModel)listOfModulesTable.getModel();
+        tableModel.setRowCount(0); // clearing table data.
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from modules");
+            sqlQuery = createQuery.executeQuery();
+            
+            while (sqlQuery.next()) {
+                String id = String.valueOf(sqlQuery.getInt("id"));
+                String course = sqlQuery.getString("course");
+                String semester = sqlQuery.getString("semester");
+                String level = sqlQuery.getString("level");
+                String module1 = sqlQuery.getString("module1");
+                String module2 = sqlQuery.getString("module2");
+                String module3 = sqlQuery.getString("module3");
+                String module4 = sqlQuery.getString("module4");
+                String tableData[] = {id, course, semester, level, module1, module2, module3, module4};
+                tableModel.addRow(tableData);
+                listOfModulesLabel.setEnabled(false);
+            }
+            return;
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+        
+    }//GEN-LAST:event_viewModulesBTNActionPerformed
+
+    private void viewCoursesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewCoursesBTNActionPerformed
+        modulesPanel.setVisible(false);
+        coursesPanel.setVisible(true);
+        viewCoursesData();
+    }//GEN-LAST:event_viewCoursesBTNActionPerformed
+
+    private void courseAddBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseAddBTNActionPerformed
+        String addResult = JOptionPane.showInputDialog(this, "Enter course name", "Add Course", JOptionPane.QUESTION_MESSAGE);
+        
+        if (addResult == null) {
+            return;
+        }
+        
+        if (addResult.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "message box is enmpty", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        String capResult = addResult.toUpperCase();
+        
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select name from courses");
+            sqlQuery = createQuery.executeQuery();
+            if (!sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "Something went wrong!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                dbConnection.close();
+                return;
+            }
+            String courseValue = sqlQuery.getString("name");
+            if (capResult.equals(courseValue)) {
+                JOptionPane.showMessageDialog(this, "The course you have entered is already exists on our system!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                dbConnection.close();
+                return;
+            }
+            
+            String[] confirmObj = { "yes", "no" }; 
+            String addAvailability = (String) JOptionPane.showInputDialog(this, "Course Availability", "Add Course", JOptionPane.INFORMATION_MESSAGE, null, confirmObj, confirmObj[0]);
+            if (addAvailability == null) {
+                return;
+            }
+            
+            int isActiveValue = 0;
+            
+            if (addAvailability == "yes") {
+                isActiveValue = 1;
+            } else if (addAvailability == "no") {
+                isActiveValue = 0;
+            } else {
+                isActiveValue = 0;
+            }
+            
+            createQuery = dbConnection.prepareStatement("insert into courses(name, isActive) values(?, ?)");
+            createQuery.setString(1, capResult);
+            createQuery.setInt(2, isActiveValue);
+            int checkQuery = createQuery.executeUpdate();
+            if (checkQuery != 1) {
+                JOptionPane.showMessageDialog(this, "Someting went wrong while adding new courses. Please try again!", "INFO", JOptionPane.ERROR_MESSAGE);
+                dbConnection.close();
+                return;
+            }
+            
+            JOptionPane.showMessageDialog(this, "Sucessfully added new courses into the system", "INFO", JOptionPane.INFORMATION_MESSAGE);
+            viewCoursesData();
+            dbConnection.close();
+            return;
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }//GEN-LAST:event_courseAddBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -713,6 +1189,7 @@ public class AdminPortal extends javax.swing.JFrame {
             }
         });
     }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSeparator HorizontalSeperator;
@@ -724,9 +1201,13 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JTextField addressInput;
     private javax.swing.JLabel addressLabel;
     private javax.swing.JLabel confirmNewPassLabel;
-    private javax.swing.JTextField confirmPassInput;
+    private javax.swing.JPasswordField confirmPassInput;
+    private javax.swing.JButton courseAddBTN;
+    private javax.swing.JButton courseDeleteBTN;
+    private javax.swing.JButton courseEditBTN;
     private javax.swing.JButton coursesBTN;
-    private javax.swing.JButton editBTN1;
+    private javax.swing.JPanel coursesContent;
+    private javax.swing.JPanel coursesPanel;
     private javax.swing.JTextField emailInput;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel emailLabel2;
@@ -735,24 +1216,36 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JLabel headerText;
     private javax.swing.JButton homeBTN;
     private javax.swing.JPanel homeContent;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextField joinedInput;
     private javax.swing.JLabel joinedLabel;
+    private javax.swing.JLabel listOfCoursesLabel;
+    private javax.swing.JTable listOfCoursesTable;
+    private javax.swing.JLabel listOfModulesLabel;
+    private javax.swing.JTable listOfModulesTable;
     private javax.swing.JButton logoutBTN;
     private javax.swing.JPanel mainBody;
     private javax.swing.JSeparator mainProfileSeperator;
+    private javax.swing.JButton moduleAddBTN;
+    private javax.swing.JButton moduleDeleteBTN;
+    private javax.swing.JButton moduleEditBTN;
+    private javax.swing.JPanel modulesPanel;
     private javax.swing.JTextField nameInput;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JPanel navBar;
     private javax.swing.JPanel navMenuPanel;
-    private javax.swing.JTextField newPassInput;
+    private javax.swing.JPasswordField newPassInput;
     private javax.swing.JLabel newPassLabel;
-    private javax.swing.JTextField oldpassInput;
+    private javax.swing.JPasswordField oldPassInput;
     private javax.swing.JLabel oldpassLabel;
     private javax.swing.JSeparator personalDetailsSeperator;
+    private javax.swing.JSeparator personalDetailsSeperator1;
     private javax.swing.JTextField phoneInput;
     private javax.swing.JLabel phoneLabel;
     private javax.swing.JLabel privacyLabel;
@@ -762,7 +1255,10 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JLabel profileName;
     private javax.swing.JSeparator profileSeperator;
     private javax.swing.JButton savePassBTN;
+    private javax.swing.JPanel sidePanel;
     private javax.swing.JTextField usernameInput;
+    private javax.swing.JButton viewCoursesBTN;
+    private javax.swing.JButton viewModulesBTN;
     private javax.swing.JLabel yourProfileLabel1;
     // End of variables declaration//GEN-END:variables
 }
