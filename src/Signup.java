@@ -21,6 +21,22 @@ public class Signup extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
+        fetchCoursesData();
+    }
+    
+    public void fetchCoursesData() {
+        try {
+            Connection dbConnection = checkConnection();
+            prepareQuery = dbConnection.createStatement();
+            sqlQuery = prepareQuery.executeQuery("select name, isActive from courses where isActive = 1");
+            while (sqlQuery.next()) {
+                String getCoursesName = sqlQuery.getString("name");
+                courseInput.addItem(getCoursesName);
+            }
+            
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
     }
 
     /**
@@ -420,9 +436,11 @@ public class Signup extends javax.swing.JFrame {
                     }
                     
                     if (!getMiddlename.isEmpty()) {
-                        prepareQuery.executeUpdate("insert into students (firstname, middlename, lastname, gender, username, phone, address, email, course, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                        String fullname = getFirstname + " " + getMiddlename + " " + getLastname;
+                        prepareQuery.executeUpdate("insert into students (fullname, gender, username, phone, address, email, course, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
                     } else {
-                        prepareQuery.executeUpdate("insert into students (firstname, lastname, gender, username, phone, address, email, course, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                        String fullname = getFirstname + " " + getLastname;
+                        prepareQuery.executeUpdate("insert into students (fullname, gender, username, phone, address, email, course, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
                     }
                 } else if ("Instructor".equals(role)) {
                     sqlQuery = prepareQuery.executeQuery("select username, phone, email from teachers");
@@ -444,9 +462,11 @@ public class Signup extends javax.swing.JFrame {
                         }
                     }
                     if (!getMiddlename.isEmpty()) {
-                        prepareQuery.executeUpdate("insert into instructors (firstname, middlename, lastname, gender, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                        String fullname = getFirstname + " " + getMiddlename + " " + getLastname;
+                        prepareQuery.executeUpdate("insert into instructors (fullname, gender, username, phone, address, email, course, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
                     } else {
-                        prepareQuery.executeUpdate("insert into instructors (firstname, lastname, gender, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                        String fullname = getFirstname + " " + getLastname;
+                        prepareQuery.executeUpdate("insert into instructors (fullname, gender, username, phone, address, email, course, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
                     }
                 } else if ("Admin".equals(role)) {
                     sqlQuery = prepareQuery.executeQuery("select username, phone, email from admins");
@@ -468,9 +488,11 @@ public class Signup extends javax.swing.JFrame {
                         }
                     }
                     if (!getMiddlename.isEmpty()) {
-                        prepareQuery.executeUpdate("insert into admins (firstname, middlename, lastname, gender, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                        String fullname = getFirstname + " " + getMiddlename + " " + getLastname;
+                        prepareQuery.executeUpdate("insert into admins (fullname, gender, username, phone, address, email, course, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
                     } else {
-                        prepareQuery.executeUpdate("insert into admins (firstname, lastname, gender, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                        String fullname = getFirstname + " " + getLastname;
+                        prepareQuery.executeUpdate("insert into admins (fullname, gender, username, phone, address, email, course, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "Something went wrong! Error Code: #3435", "ERROR", JOptionPane.ERROR_MESSAGE);
