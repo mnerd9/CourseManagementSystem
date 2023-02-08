@@ -77,19 +77,9 @@ public class AssignModule extends javax.swing.JFrame {
         semesterBox = new javax.swing.JComboBox<>();
         levelLabel = new javax.swing.JLabel();
         levelBox = new javax.swing.JComboBox<>();
-        module1input = new javax.swing.JTextField();
-        module1label = new javax.swing.JLabel();
-        module2label = new javax.swing.JLabel();
-        module2input = new javax.swing.JTextField();
-        module3label = new javax.swing.JLabel();
-        module3input = new javax.swing.JTextField();
-        module4Label = new javax.swing.JLabel();
-        module4input = new javax.swing.JTextField();
-        module5label = new javax.swing.JLabel();
-        module5input = new javax.swing.JTextField();
-        module6label = new javax.swing.JLabel();
-        module6input = new javax.swing.JTextField();
         moduleCancelBTN = new javax.swing.JButton();
+        moduleLabel = new javax.swing.JLabel();
+        selectModuleBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -105,7 +95,7 @@ public class AssignModule extends javax.swing.JFrame {
         getContentPane().add(moduleSubmitBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 290, 90, -1));
 
         courseLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        courseLabel.setText("Select Course");
+        courseLabel.setText("Select Instructors");
         getContentPane().add(courseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         courseBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
@@ -142,78 +132,6 @@ public class AssignModule extends javax.swing.JFrame {
         });
         getContentPane().add(levelBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 50, 327, 39));
 
-        module1input.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        module1input.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                module1inputActionPerformed(evt);
-            }
-        });
-        getContentPane().add(module1input, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 327, 39));
-
-        module1label.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        module1label.setText("Module 1");
-        getContentPane().add(module1label, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
-
-        module2label.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        module2label.setText("Module 2");
-        getContentPane().add(module2label, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 100, -1, 30));
-
-        module2input.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        module2input.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                module2inputActionPerformed(evt);
-            }
-        });
-        getContentPane().add(module2input, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 130, 327, 39));
-
-        module3label.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        module3label.setText("Module 3");
-        getContentPane().add(module3label, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 100, -1, 30));
-
-        module3input.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        module3input.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                module3inputActionPerformed(evt);
-            }
-        });
-        getContentPane().add(module3input, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 130, 327, 39));
-
-        module4Label.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        module4Label.setText("Module 4");
-        getContentPane().add(module4Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
-
-        module4input.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        module4input.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                module4inputActionPerformed(evt);
-            }
-        });
-        getContentPane().add(module4input, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 327, 39));
-
-        module5label.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        module5label.setText("Module 5 (Optional)");
-        getContentPane().add(module5label, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 190, -1, -1));
-
-        module5input.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        module5input.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                module5inputActionPerformed(evt);
-            }
-        });
-        getContentPane().add(module5input, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, 327, 39));
-
-        module6label.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        module6label.setText("Module 6 (Optional)");
-        getContentPane().add(module6label, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 190, -1, -1));
-
-        module6input.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        module6input.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                module6inputActionPerformed(evt);
-            }
-        });
-        getContentPane().add(module6input, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 220, 327, 39));
-
         moduleCancelBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         moduleCancelBTN.setText("Cancel");
         moduleCancelBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -222,6 +140,18 @@ public class AssignModule extends javax.swing.JFrame {
             }
         });
         getContentPane().add(moduleCancelBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 290, 90, -1));
+
+        moduleLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        moduleLabel.setText("Select Module");
+        getContentPane().add(moduleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
+
+        selectModuleBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        selectModuleBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectModuleBoxActionPerformed(evt);
+            }
+        });
+        getContentPane().add(selectModuleBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 327, 39));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -321,33 +251,13 @@ public class AssignModule extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_levelBoxActionPerformed
 
-    private void module1inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_module1inputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_module1inputActionPerformed
-
-    private void module2inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_module2inputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_module2inputActionPerformed
-
-    private void module3inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_module3inputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_module3inputActionPerformed
-
-    private void module4inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_module4inputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_module4inputActionPerformed
-
-    private void module5inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_module5inputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_module5inputActionPerformed
-
-    private void module6inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_module6inputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_module6inputActionPerformed
-
     private void moduleCancelBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleCancelBTNActionPerformed
         dispose();
     }//GEN-LAST:event_moduleCancelBTNActionPerformed
+
+    private void selectModuleBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectModuleBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selectModuleBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -390,20 +300,10 @@ public class AssignModule extends javax.swing.JFrame {
     private javax.swing.JLabel courseLabel;
     private javax.swing.JComboBox<String> levelBox;
     private javax.swing.JLabel levelLabel;
-    private javax.swing.JTextField module1input;
-    private javax.swing.JLabel module1label;
-    private javax.swing.JTextField module2input;
-    private javax.swing.JLabel module2label;
-    private javax.swing.JTextField module3input;
-    private javax.swing.JLabel module3label;
-    private javax.swing.JLabel module4Label;
-    private javax.swing.JTextField module4input;
-    private javax.swing.JTextField module5input;
-    private javax.swing.JLabel module5label;
-    private javax.swing.JTextField module6input;
-    private javax.swing.JLabel module6label;
     private javax.swing.JButton moduleCancelBTN;
+    private javax.swing.JLabel moduleLabel;
     private javax.swing.JButton moduleSubmitBTN;
+    private javax.swing.JComboBox<String> selectModuleBox;
     private javax.swing.JComboBox<String> semesterBox;
     private javax.swing.JLabel semesterLabel;
     // End of variables declaration//GEN-END:variables
