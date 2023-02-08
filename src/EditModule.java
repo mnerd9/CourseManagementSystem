@@ -296,7 +296,6 @@ public class EditModule extends javax.swing.JFrame {
             String fifthModule = module5input.getText();
             String sixthModule = module6input.getText();
             if (getLevel != "Level 6") {
-                if (firstModule.isEmpty())
                 if (firstModule.equals(secondModule) || firstModule.equals(thirdModule) || firstModule.equals(fourthModule)|| secondModule.equals(thirdModule) || secondModule.equals(fourthModule) || thirdModule.equals(fourthModule) || fourthModule.equals(fifthModule)) {
                     JOptionPane.showMessageDialog(this, "Modules cannot be repeated", "ERROR", JOptionPane.ERROR_MESSAGE);
                     return;
