@@ -45,29 +45,43 @@ public class AdminPortal extends javax.swing.JFrame {
             Connection dbConnection = checkConnection();
             createQuery = dbConnection.prepareStatement("select * from instructors");
             sqlQuery = createQuery.executeQuery();
-            
             while (sqlQuery.next()) {
                 String id = String.valueOf(sqlQuery.getInt("id"));
-                String firstname = sqlQuery.getString("firstname");
-                String middlename = sqlQuery.getString("middlename");
-                String lastname = sqlQuery.getString("lastname");
+                String fullname = sqlQuery.getString("fullname");
                 String phone = sqlQuery.getString("phone");
                 String address = sqlQuery.getString("address");
                 String email = sqlQuery.getString("email");
-                String fullname;
-                if (middlename != "none") {
-                    fullname = firstname + " " + lastname;
-                    String tableData[] = {id, fullname, phone, address, email};
-                    instructorsModel.addRow(tableData);
-                    instructorsTable.setEnabled(false);
-                    dbConnection.close();
-                    return;
-                }
                 
-                fullname = firstname + " " + middlename + " " + lastname;
                 String tableData[] = {id, fullname, phone, address, email};
                 instructorsModel.addRow(tableData);
                 instructorsTable.setEnabled(false);
+                dbConnection.close();
+                return;
+            }
+            
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }
+    
+    public void viewAllStudents() {
+        DefaultTableModel studentsModel = (DefaultTableModel)studentsTable.getModel();
+        studentsModel.setRowCount(0); // clearing table data.
+            
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from students");
+            sqlQuery = createQuery.executeQuery();
+            while (sqlQuery.next()) {
+                String id = String.valueOf(sqlQuery.getInt("id"));
+                String fullname = sqlQuery.getString("fullname");
+                String phone = sqlQuery.getString("phone");
+                String address = sqlQuery.getString("address");
+                String email = sqlQuery.getString("email");
+                
+                String tableData[] = {id, fullname, phone, address, email};
+                studentsModel.addRow(tableData);
+                studentsTable.setEnabled(false);
                 dbConnection.close();
                 return;
             }
@@ -148,7 +162,7 @@ public class AdminPortal extends javax.swing.JFrame {
         try {
             Connection dbConnection = checkConnection();
             int userID = id;
-            createQuery = dbConnection.prepareStatement("select firstname from admins where id = ?");
+            createQuery = dbConnection.prepareStatement("select fullname from admins where id = ?");
             createQuery.setInt(1, userID);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
@@ -156,7 +170,7 @@ public class AdminPortal extends javax.swing.JFrame {
                 dbConnection.close();
                 return;
             }
-            profileName.setText("Hello, " + sqlQuery.getString("firstname"));
+            profileName.setText("Hello, " + sqlQuery.getString("fullname"));
             return;
         } catch (Exception exp) {
             System.out.println(exp);
@@ -268,7 +282,6 @@ public class AdminPortal extends javax.swing.JFrame {
         instructorsTable = new javax.swing.JTable();
         listOfCoursesLabel1 = new javax.swing.JLabel();
         addInstructorBTN = new javax.swing.JButton();
-        editAssignModule = new javax.swing.JButton();
         modulesPanel1 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         listOfModulesTable1 = new javax.swing.JTable();
@@ -276,6 +289,18 @@ public class AdminPortal extends javax.swing.JFrame {
         moduleAddBTN1 = new javax.swing.JButton();
         moduleEditBTN1 = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JSeparator();
+        studentContent = new javax.swing.JPanel();
+        coursesPanel2 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        studentsTable = new javax.swing.JTable();
+        listOfCoursesLabel2 = new javax.swing.JLabel();
+        modulesPanel2 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        listOfModulesTable2 = new javax.swing.JTable();
+        listOfModulesLabel2 = new javax.swing.JLabel();
+        moduleAddBTN2 = new javax.swing.JButton();
+        moduleEditBTN2 = new javax.swing.JButton();
+        jSeparator6 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -914,14 +939,6 @@ public class AdminPortal extends javax.swing.JFrame {
             }
         });
 
-        editAssignModule.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        editAssignModule.setText("Edit Assign Module");
-        editAssignModule.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editAssignModuleActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout coursesPanel1Layout = new javax.swing.GroupLayout(coursesPanel1);
         coursesPanel1.setLayout(coursesPanel1Layout);
         coursesPanel1Layout.setHorizontalGroup(
@@ -935,9 +952,7 @@ public class AdminPortal extends javax.swing.JFrame {
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1128, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, coursesPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(addInstructorBTN)
-                        .addGap(18, 18, 18)
-                        .addComponent(editAssignModule)))
+                        .addComponent(addInstructorBTN)))
                 .addContainerGap())
         );
         coursesPanel1Layout.setVerticalGroup(
@@ -948,9 +963,7 @@ public class AdminPortal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(coursesPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addInstructorBTN)
-                    .addComponent(editAssignModule))
+                .addComponent(addInstructorBTN)
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
@@ -1038,6 +1051,138 @@ public class AdminPortal extends javax.swing.JFrame {
 
         mainBody.add(teachersContent, "card2");
 
+        studentContent.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        studentContent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        studentsTable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        studentsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "S.N", "Name", "Phone", "Address", "Email"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane6.setViewportView(studentsTable);
+
+        listOfCoursesLabel2.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        listOfCoursesLabel2.setText("List of Students");
+        listOfCoursesLabel2.setToolTipText("");
+
+        javax.swing.GroupLayout coursesPanel2Layout = new javax.swing.GroupLayout(coursesPanel2);
+        coursesPanel2.setLayout(coursesPanel2Layout);
+        coursesPanel2Layout.setHorizontalGroup(
+            coursesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(coursesPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(coursesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(coursesPanel2Layout.createSequentialGroup()
+                        .addComponent(listOfCoursesLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1128, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        coursesPanel2Layout.setVerticalGroup(
+            coursesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(coursesPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(listOfCoursesLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE))
+        );
+
+        studentContent.add(coursesPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1140, 530));
+
+        listOfModulesTable2.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        listOfModulesTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "S.N", "Course", "Semester", "Level", "Module 1", "Module 2", "Module 3", "Module 4", "Module 5", "Module 6"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane7.setViewportView(listOfModulesTable2);
+
+        listOfModulesLabel2.setBackground(new java.awt.Color(0, 0, 0));
+        listOfModulesLabel2.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        listOfModulesLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        listOfModulesLabel2.setText("List Of Modules");
+        listOfModulesLabel2.setToolTipText("");
+
+        moduleAddBTN2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        moduleAddBTN2.setText("Add");
+        moduleAddBTN2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moduleAddBTN2ActionPerformed(evt);
+            }
+        });
+
+        moduleEditBTN2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        moduleEditBTN2.setText("Edit");
+        moduleEditBTN2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moduleEditBTN2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout modulesPanel2Layout = new javax.swing.GroupLayout(modulesPanel2);
+        modulesPanel2.setLayout(modulesPanel2Layout);
+        modulesPanel2Layout.setHorizontalGroup(
+            modulesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modulesPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(modulesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(modulesPanel2Layout.createSequentialGroup()
+                        .addComponent(listOfModulesLabel2)
+                        .addGap(313, 313, 313)
+                        .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 401, Short.MAX_VALUE))
+                    .addComponent(jScrollPane7)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, modulesPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(moduleAddBTN2)
+                        .addGap(18, 18, 18)
+                        .addComponent(moduleEditBTN2)))
+                .addContainerGap())
+        );
+        modulesPanel2Layout.setVerticalGroup(
+            modulesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modulesPanel2Layout.createSequentialGroup()
+                .addGroup(modulesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(modulesPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(listOfModulesLabel2))
+                    .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(modulesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(moduleAddBTN2)
+                    .addComponent(moduleEditBTN2))
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
+
+        studentContent.add(modulesPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1140, 530));
+
+        mainBody.add(studentContent, "card2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1113,7 +1258,7 @@ public class AdminPortal extends javax.swing.JFrame {
         
         try {
             Connection dbConnection = checkConnection();
-            createQuery = dbConnection.prepareStatement("select firstname, lastname, gender, username, joinDate, phone, address, email from admins where id = ?");
+            createQuery = dbConnection.prepareStatement("select fullname gender, username, joinDate, phone, address, email from admins where id = ?");
             createQuery.setInt(1, userID);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
@@ -1122,7 +1267,7 @@ public class AdminPortal extends javax.swing.JFrame {
                 return;
             }
             
-            nameInput.setText(sqlQuery.getString("firstname") + " " + sqlQuery.getString("lastname"));
+            nameInput.setText(sqlQuery.getString("fullname"));
             genderInput.setText(sqlQuery.getString("gender"));
             usernameInput.setText(sqlQuery.getString("username"));
             joinedInput.setText(sqlQuery.getString("joinDate"));
@@ -1309,6 +1454,15 @@ public class AdminPortal extends javax.swing.JFrame {
                 return;
             }
             
+            createQuery = dbConnection.prepareStatement("select * from courses where id = '"+deleteCourse+"'");
+            sqlQuery = createQuery.executeQuery();
+            if (!sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "Something went wrong");
+                return;
+            }
+            
+            String coursename = sqlQuery.getString("name");
+            
             createQuery = dbConnection.prepareStatement("delete from courses where id = '"+deleteCourse+"'");
             int checkResult = createQuery.executeUpdate();
             
@@ -1316,6 +1470,9 @@ public class AdminPortal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Someting went wrong while deleting the selected course!");
                 return;
             }
+            
+            createQuery = dbConnection.prepareStatement("delete from modules where course = '"+coursename+"'");
+            createQuery.executeUpdate(); 
             JOptionPane.showMessageDialog(this, "Successfully deleted the course");
             viewCoursesData();
             dbConnection.close();
@@ -1463,12 +1620,9 @@ public class AdminPortal extends javax.swing.JFrame {
     }//GEN-LAST:event_moduleAddBTNActionPerformed
 
     private void addInstructorBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addInstructorBTNActionPerformed
-        // TODO add your handling code here:
+        AssignModule showAssignPanel = new AssignModule();
+        showAssignPanel.setVisible(true);
     }//GEN-LAST:event_addInstructorBTNActionPerformed
-
-    private void editAssignModuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAssignModuleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editAssignModuleActionPerformed
 
     private void moduleAddBTN1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleAddBTN1ActionPerformed
         // TODO add your handling code here:
@@ -1487,8 +1641,20 @@ public class AdminPortal extends javax.swing.JFrame {
     }//GEN-LAST:event_instructorsBTNActionPerformed
 
     private void studentsBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentsBTNActionPerformed
-        // TODO add your handling code here:
+        mainBody.removeAll();
+        mainBody.add(studentContent);
+        mainBody.repaint();
+        mainBody.revalidate();
+        viewAllStudents();
     }//GEN-LAST:event_studentsBTNActionPerformed
+
+    private void moduleAddBTN2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleAddBTN2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_moduleAddBTN2ActionPerformed
+
+    private void moduleEditBTN2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleEditBTN2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_moduleEditBTN2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1545,7 +1711,7 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JPanel coursesContent;
     private javax.swing.JPanel coursesPanel;
     private javax.swing.JPanel coursesPanel1;
-    private javax.swing.JButton editAssignModule;
+    private javax.swing.JPanel coursesPanel2;
     private javax.swing.JTextField emailInput;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel emailLabel2;
@@ -1562,28 +1728,37 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTextField joinedInput;
     private javax.swing.JLabel joinedLabel;
     private javax.swing.JLabel listOfCoursesLabel;
     private javax.swing.JLabel listOfCoursesLabel1;
+    private javax.swing.JLabel listOfCoursesLabel2;
     private javax.swing.JTable listOfCoursesTable;
     private javax.swing.JLabel listOfModulesLabel;
     private javax.swing.JLabel listOfModulesLabel1;
+    private javax.swing.JLabel listOfModulesLabel2;
     private javax.swing.JTable listOfModulesTable;
     private javax.swing.JTable listOfModulesTable1;
+    private javax.swing.JTable listOfModulesTable2;
     private javax.swing.JButton logoutBTN;
     private javax.swing.JPanel mainBody;
     private javax.swing.JSeparator mainProfileSeperator;
     private javax.swing.JButton moduleAddBTN;
     private javax.swing.JButton moduleAddBTN1;
+    private javax.swing.JButton moduleAddBTN2;
     private javax.swing.JButton moduleEditBTN;
     private javax.swing.JButton moduleEditBTN1;
+    private javax.swing.JButton moduleEditBTN2;
     private javax.swing.JPanel modulesPanel;
     private javax.swing.JPanel modulesPanel1;
+    private javax.swing.JPanel modulesPanel2;
     private javax.swing.JTextField nameInput;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JPanel navBar;
@@ -1604,7 +1779,9 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JSeparator profileSeperator;
     private javax.swing.JButton savePassBTN;
     private javax.swing.JPanel sidePanel;
+    private javax.swing.JPanel studentContent;
     private javax.swing.JButton studentsBTN;
+    private javax.swing.JTable studentsTable;
     private javax.swing.JPanel teachersContent;
     private javax.swing.JTextField usernameInput;
     private javax.swing.JButton viewCoursesBTN;
