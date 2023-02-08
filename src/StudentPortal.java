@@ -15,10 +15,12 @@ public class StudentPortal extends javax.swing.JFrame {
     /**
      * Creates new form StudentPortal
      */
-    public StudentPortal() {
+    public StudentPortal(int id, String course) {
+        super();
         initComponents();
         this.setLocationRelativeTo(null);
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
+        headerText1.setText(course);
     }
 
     /**
@@ -39,11 +41,6 @@ public class StudentPortal extends javax.swing.JFrame {
         profileBTN = new javax.swing.JButton();
         mainBody = new javax.swing.JPanel();
         headerText1 = new javax.swing.JLabel();
-        notiPanel = new javax.swing.JPanel();
-        notiHeadLabel = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        notifList = new javax.swing.JList<>();
-        straightLine1 = new javax.swing.JSeparator();
 
         jLabel1.setText("jLabel1");
 
@@ -148,42 +145,7 @@ public class StudentPortal extends javax.swing.JFrame {
             .addGroup(mainBodyLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(headerText1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        notiPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        notiHeadLabel.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
-        notiHeadLabel.setForeground(new java.awt.Color(0, 0, 0));
-        notiHeadLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        notiHeadLabel.setText("Notifications");
-
-        notifList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Aagya sharma posted an assignment", "Aagya sharma posted an announcement", "C for Cat", "D for Dog" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(notifList);
-
-        javax.swing.GroupLayout notiPanelLayout = new javax.swing.GroupLayout(notiPanel);
-        notiPanel.setLayout(notiPanelLayout);
-        notiPanelLayout.setHorizontalGroup(
-            notiPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(notiPanelLayout.createSequentialGroup()
-                .addComponent(notiHeadLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(straightLine1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-        );
-        notiPanelLayout.setVerticalGroup(
-            notiPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(notiPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(notiHeadLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(straightLine1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(539, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -194,8 +156,6 @@ public class StudentPortal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(mainBody, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(notiPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -203,9 +163,7 @@ public class StudentPortal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(navBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(notiPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mainBody, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(mainBody, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -242,27 +200,26 @@ public class StudentPortal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new StudentPortal().setVisible(true);
+                new StudentPortal(0,"null").setVisible(true);
             }
         });
+        
+        
+      
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton coursesBTN;
     private javax.swing.JLabel headerText;
-    private javax.swing.JLabel headerText1;
+    private static javax.swing.JLabel headerText1;
     private javax.swing.JButton homeBTN;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton logoutBTN;
     private javax.swing.JPanel mainBody;
     private javax.swing.JPanel navBar;
     private javax.swing.JPanel navMenuPanel;
-    private javax.swing.JLabel notiHeadLabel;
-    private javax.swing.JPanel notiPanel;
-    private javax.swing.JList<String> notifList;
     private javax.swing.JButton profileBTN;
     private javax.swing.JLabel profileName;
-    private javax.swing.JSeparator straightLine1;
     // End of variables declaration//GEN-END:variables
 }
