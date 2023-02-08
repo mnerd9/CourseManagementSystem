@@ -11,6 +11,8 @@ import java.awt.Toolkit;
 import java.sql.*;
 import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
+    public static int getID;
+    public static String getRole;
     PreparedStatement createQuery;
     ResultSet sqlQuery;
     
@@ -79,6 +81,11 @@ public class Login extends javax.swing.JFrame {
 
         loginGroup.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         loginGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Instructor", "Admin" }));
+        loginGroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginGroupActionPerformed(evt);
+            }
+        });
 
         loginBTN.setBackground(new java.awt.Color(51, 51, 51));
         loginBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -200,14 +207,24 @@ public class Login extends javax.swing.JFrame {
                     dbConnection.close();
                     return;
                 }
-                JOptionPane.showMessageDialog(this, "You have sucessfully logged in!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                
+                String Description = sqlQuery.getString("username") + " has logged in!";
+                String Type = role.toLowerCase();
+                createQuery = dbConnection.prepareStatement("insert into logs (description, type) values (?, ?)");
+                createQuery.setString(1, Description);
+                createQuery.setString(2, Type);
+                createQuery.executeUpdate();
+                
+                getID = sqlQuery.getInt("id");
+                getRole = sqlQuery.getString("course");
+                
                 dispose();
-                StudentPortal showPage = new StudentPortal();
+                StudentPortal showPage = new StudentPortal(getID, getRole);
                 showPage.setVisible(true);
                 dbConnection.close();
                 return;
             } else if (role == "Instructor") {
-                createQuery = dbConnection.prepareStatement("select id, username, email, password, course from instructors where (username = ? or email = ?) and password = ?");
+                createQuery = dbConnection.prepareStatement("select id, username, email, password from instructors where (username = ? or email = ?) and password = ?");
                 createQuery.setString(1, loginUEmail);
                 createQuery.setString(2, loginUEmail);
                 createQuery.setString(3, loginPassword);
@@ -219,14 +236,21 @@ public class Login extends javax.swing.JFrame {
                     dbConnection.close();
                     return;
                 }
-                JOptionPane.showMessageDialog(this, "You have sucessfully logged in!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                
+                String Description = sqlQuery.getString("username") + " has logged in!";
+                String Type = role.toLowerCase();
+                createQuery = dbConnection.prepareStatement("insert into logs (description, type) values (?, ?)");
+                createQuery.setString(1, Description);
+                createQuery.setString(2, Type);
+                createQuery.executeUpdate();
+                
                 dispose();
-                InstructorPortal showPage = new InstructorPortal();
+                InstructorPortal showPage = new InstructorPortal(0, null);
                 showPage.setVisible(true);
                 dbConnection.close();
                 return;
             } else if (role == "Admin") {
-                createQuery = dbConnection.prepareStatement("select id, username, email, password, course from admin where (username = ? or email = ?) and password = ?");
+                createQuery = dbConnection.prepareStatement("select id, username, email, password from admins where (username = ? or email = ?) and password = ?");
                 createQuery.setString(1, loginUEmail);
                 createQuery.setString(2, loginUEmail);
                 createQuery.setString(3, loginPassword);
@@ -238,9 +262,18 @@ public class Login extends javax.swing.JFrame {
                     dbConnection.close();
                     return;
                 }
-                JOptionPane.showMessageDialog(this, "You have sucessfully logged in!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                
+                String Description = sqlQuery.getString("username") + " has logged in!";
+                String Type = role.toLowerCase();
+                createQuery = dbConnection.prepareStatement("insert into logs (description, type) values (?, ?)");
+                createQuery.setString(1, Description);
+                createQuery.setString(2, Type);
+                createQuery.executeUpdate();
+                
+                getID = sqlQuery.getInt("id");
+                
                 dispose();
-                AdminPortal showPage = new AdminPortal();
+                AdminPortal showPage = new AdminPortal(getID);
                 showPage.setVisible(true);
                 dbConnection.close();
                 return;
@@ -259,6 +292,10 @@ public class Login extends javax.swing.JFrame {
         Signup showSignup = new Signup();
         showSignup.setVisible(true);
     }//GEN-LAST:event_signupBTNActionPerformed
+
+    private void loginGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginGroupActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_loginGroupActionPerformed
 
     /**
      * @param args the command line arguments
