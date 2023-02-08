@@ -28,21 +28,14 @@ public class AssignModule extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
+        fetchInstructorData();
         fetchCoursesData();
-        disableOptionalModule();
     }
     
     public Connection checkConnection() {
         db startDB = new db();
         Connection confirmConn = startDB.checkConnection();
         return confirmConn;
-    }
-    
-    public void disableOptionalModule() {
-        module5label.setVisible(false);
-        module6label.setVisible(false);
-        module5input.setVisible(false);
-        module6input.setVisible(false);
     }
     
     public void fetchCoursesData() {
@@ -54,10 +47,27 @@ public class AssignModule extends javax.swing.JFrame {
                 String getCoursesName = sqlQuery.getString("name");
                 int getAvailability = sqlQuery.getInt("isActive");
                 if (getAvailability == 1) {
-                    courseBox.addItem(getCoursesName);
+                    courseComboBox.addItem(getCoursesName);
                 }
             }
             
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }
+    
+    public void fetchInstructorData() {
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from instructors");
+            sqlQuery = createQuery.executeQuery();
+            
+            while (sqlQuery.next()) {
+                String getFullname = sqlQuery.getString("fullname");
+                instructorBox.addItem(getFullname);
+                dbConnection.close();
+                return;
+            }
         } catch (Exception exp) {
             System.out.println(exp);
         }
@@ -71,15 +81,17 @@ public class AssignModule extends javax.swing.JFrame {
     private void initComponents() {
 
         moduleSubmitBTN = new javax.swing.JButton();
-        courseLabel = new javax.swing.JLabel();
-        courseBox = new javax.swing.JComboBox<>();
+        instructorsLabel = new javax.swing.JLabel();
+        instructorBox = new javax.swing.JComboBox<>();
         semesterLabel = new javax.swing.JLabel();
         semesterBox = new javax.swing.JComboBox<>();
         levelLabel = new javax.swing.JLabel();
         levelBox = new javax.swing.JComboBox<>();
         moduleCancelBTN = new javax.swing.JButton();
         moduleLabel = new javax.swing.JLabel();
-        selectModuleBox = new javax.swing.JComboBox<>();
+        enterModuleInput = new javax.swing.JTextField();
+        courseLabel = new javax.swing.JLabel();
+        courseComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -94,21 +106,21 @@ public class AssignModule extends javax.swing.JFrame {
         });
         getContentPane().add(moduleSubmitBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 290, 90, -1));
 
-        courseLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        courseLabel.setText("Select Instructors");
-        getContentPane().add(courseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        instructorsLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        instructorsLabel.setText("Select Instructors");
+        getContentPane().add(instructorsLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, -1, -1));
 
-        courseBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        courseBox.addActionListener(new java.awt.event.ActionListener() {
+        instructorBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        instructorBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                courseBoxActionPerformed(evt);
+                instructorBoxActionPerformed(evt);
             }
         });
-        getContentPane().add(courseBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 327, 39));
+        getContentPane().add(instructorBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 327, 39));
 
         semesterLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         semesterLabel.setText("Select Semester");
-        getContentPane().add(semesterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, -1, -1));
+        getContentPane().add(semesterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 30, -1, -1));
 
         semesterBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         semesterBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semester 1", "Semester 2", "Semester 3", "Semester 4" }));
@@ -117,11 +129,11 @@ public class AssignModule extends javax.swing.JFrame {
                 semesterBoxActionPerformed(evt);
             }
         });
-        getContentPane().add(semesterBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, 327, 39));
+        getContentPane().add(semesterBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 60, 327, 39));
 
         levelLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         levelLabel.setText("Select Level");
-        getContentPane().add(levelLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 20, -1, -1));
+        getContentPane().add(levelLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
 
         levelBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         levelBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Level 4", "Level 5", "Level 6" }));
@@ -130,7 +142,7 @@ public class AssignModule extends javax.swing.JFrame {
                 levelBoxActionPerformed(evt);
             }
         });
-        getContentPane().add(levelBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 50, 327, 39));
+        getContentPane().add(levelBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 327, 39));
 
         moduleCancelBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         moduleCancelBTN.setText("Cancel");
@@ -142,16 +154,28 @@ public class AssignModule extends javax.swing.JFrame {
         getContentPane().add(moduleCancelBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 290, 90, -1));
 
         moduleLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        moduleLabel.setText("Select Module");
-        getContentPane().add(moduleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
+        moduleLabel.setText("Enter Module");
+        getContentPane().add(moduleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 110, -1, -1));
 
-        selectModuleBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        selectModuleBox.addActionListener(new java.awt.event.ActionListener() {
+        enterModuleInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        enterModuleInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectModuleBoxActionPerformed(evt);
+                enterModuleInputActionPerformed(evt);
             }
         });
-        getContentPane().add(selectModuleBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 327, 39));
+        getContentPane().add(enterModuleInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 140, 320, 40));
+
+        courseLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        courseLabel.setText("Select Course");
+        getContentPane().add(courseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
+
+        courseComboBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        courseComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                courseComboBoxActionPerformed(evt);
+            }
+        });
+        getContentPane().add(courseComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 327, 39));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -159,105 +183,99 @@ public class AssignModule extends javax.swing.JFrame {
     private void moduleSubmitBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleSubmitBTNActionPerformed
         try {
             Connection dbConnection = checkConnection();
-            if (courseBox.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(this, "You have not selected any course.");
+            
+            if (instructorBox.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(this, "You have not selected any instructors.");
                 return;
             }
-            String getcourse = courseBox.getSelectedItem().toString();
+            
+            String getCourse = courseComboBox.getSelectedItem().toString();
+            String getInstructor = instructorBox.getSelectedItem().toString();
             String getSemester = semesterBox.getSelectedItem().toString();
             String getLevel = levelBox.getSelectedItem().toString();
-            String firstModule = module1input.getText();
-            String secondModule = module2input.getText();
-            String thirdModule = module3input.getText();
-            String fourthModule = module4input.getText();
-            String fifthModule = module5input.getText();
-            String sixthModule = module6input.getText();
-            createQuery = dbConnection.prepareStatement("select * from modules where semester = ? and level = ?");
+            String selectModule = enterModuleInput.getText();
+            createQuery = dbConnection.prepareStatement("select * from modules where semester = ? and level = ? and module1 = ? or module2 = ? or module3 = ? or module4 = ? or module5 = ? or module6 = ?");
             createQuery.setString(1, getSemester);
             createQuery.setString(2, getLevel);
+            createQuery.setString(3, selectModule);
+            createQuery.setString(4, selectModule);
+            createQuery.setString(5, selectModule);
+            createQuery.setString(6, selectModule);
+            createQuery.setString(7, selectModule);
+            createQuery.setString(8, selectModule);
             sqlQuery = createQuery.executeQuery();
             
-            if (sqlQuery.next()) {
-                JOptionPane.showMessageDialog(this, "The module already exists on " + getLevel + " and " + getSemester + ".");
+            if (!sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "The module does not exists on " + getLevel + " and " + getSemester + ".");
                 dbConnection.close();
                 return;
             }
             
-            if (getLevel != "Level 6") {
-                if (firstModule.equals(secondModule) || firstModule.equals(thirdModule) || firstModule.equals(fourthModule)|| secondModule.equals(thirdModule) || secondModule.equals(fourthModule) || thirdModule.equals(fourthModule) || fourthModule.equals(fifthModule)) {
-                    JOptionPane.showMessageDialog(this, "Modules cannot be repeated", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                createQuery = dbConnection.prepareStatement("insert into modules(course, semester, level, module1, module2, module3, module4, module5, module6) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                createQuery.setString(1, getcourse);
-                createQuery.setString(2, getSemester);
-                createQuery.setString(3, getLevel);
-                createQuery.setString(4, firstModule);
-                createQuery.setString(5, secondModule);
-                createQuery.setString(6, thirdModule);
-                createQuery.setString(7, fourthModule);
-                createQuery.setString(8, "none");
-                createQuery.setString(9, "none");
-            } else {
-                if (firstModule.equals(secondModule) || firstModule.equals(thirdModule) || firstModule.equals(fourthModule) || firstModule.equals(fifthModule) || firstModule.equals(sixthModule) || secondModule.equals(thirdModule) || secondModule.equals(fourthModule) || secondModule.equals(fifthModule) || secondModule.equals(sixthModule) || thirdModule.equals(fourthModule) || thirdModule.equals(fifthModule) || thirdModule.equals(sixthModule) || fourthModule.equals(fifthModule) || fourthModule.equals(sixthModule) || fifthModule.equals(sixthModule)) {
-                    JOptionPane.showMessageDialog(this, "Modules cannot be repeated", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                createQuery = dbConnection.prepareStatement("insert into modules(course, semester, level, module1, module2, module3, module4, module5, module6) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                createQuery.setString(1, getcourse);
-                createQuery.setString(2, getSemester);
-                createQuery.setString(3, getLevel);
-                createQuery.setString(4, firstModule);
-                createQuery.setString(5, secondModule);
-                createQuery.setString(6, thirdModule);
-                createQuery.setString(7, fourthModule);
-                createQuery.setString(8, fifthModule);
-                createQuery.setString(9, sixthModule);
+            createQuery = dbConnection.prepareStatement("select * from instructors where fullname = ?");
+            createQuery.setString(1, getInstructor);
+            sqlQuery = createQuery.executeQuery();
+            if (!sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "Something went wrong!");
+                return;
             }
+            
+            String getUserphone = sqlQuery.getString("phone");
+            String getUserAddress = sqlQuery.getString("address");
+            String getUserEmail = sqlQuery.getString("email");
+            
+            
+            createQuery = dbConnection.prepareStatement("select * from enrolled_module_instructors where instructors = ? and module = ?");
+            createQuery.setString(1, getInstructor);
+            createQuery.setString(2, selectModule);
+            sqlQuery = createQuery.executeQuery();
+            if (sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "The instructors is already assigned to that module", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            createQuery = dbConnection.prepareStatement("insert into enrolled_module_instructors (instructors, phone, address, email, semester, level, module, course) values (?, ?, ?, ?, ?, ?, ?, ?)");
+            createQuery.setString(1, getInstructor);
+            createQuery.setString(2, getUserphone);
+            createQuery.setString(3, getUserAddress);
+            createQuery.setString(4, getUserEmail);
+            createQuery.setString(5, getSemester);
+            createQuery.setString(6, getLevel);
+            createQuery.setString(7, selectModule);
+            createQuery.setString(8, getCourse);
             int checkResult = createQuery.executeUpdate();
             if (checkResult != 1) {
-                JOptionPane.showMessageDialog(this, "Something went wrong while adding new modules", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Something went wrong while assigning modules to the instructors", "ERROR", JOptionPane.ERROR_MESSAGE);
                 dbConnection.close();
                 return;
             }
-            JOptionPane.showMessageDialog(this, "Successfully added new modules", "INFO", JOptionPane.INFORMATION_MESSAGE);
-            dbConnection.close();
-            return;
+            JOptionPane.showMessageDialog(this, "Sucessfully assigned " + getInstructor + " to " + selectModule);
         } catch (Exception exp) {
             System.out.println(exp);
         }
     }//GEN-LAST:event_moduleSubmitBTNActionPerformed
 
-    private void courseBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseBoxActionPerformed
+    private void instructorBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instructorBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_courseBoxActionPerformed
+    }//GEN-LAST:event_instructorBoxActionPerformed
 
     private void semesterBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semesterBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_semesterBoxActionPerformed
 
     private void levelBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelBoxActionPerformed
-        String chooseLevel = levelBox.getSelectedItem().toString();
-        if (chooseLevel != "Level 6") {
-            module5label.setVisible(false);
-            module6label.setVisible(false);
-            module5input.setVisible(false);
-            module6input.setVisible(false);
-        } else {
-            module5label.setVisible(true);
-            module6label.setVisible(true);
-            module5input.setVisible(true);
-            module6input.setVisible(true);
-        }
+
     }//GEN-LAST:event_levelBoxActionPerformed
 
     private void moduleCancelBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleCancelBTNActionPerformed
         dispose();
     }//GEN-LAST:event_moduleCancelBTNActionPerformed
 
-    private void selectModuleBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectModuleBoxActionPerformed
+    private void enterModuleInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterModuleInputActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_selectModuleBoxActionPerformed
+    }//GEN-LAST:event_enterModuleInputActionPerformed
+
+    private void courseComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_courseComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -289,21 +307,23 @@ public class AssignModule extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddModule().setVisible(true);
+                new AssignModule().setVisible(true);
             }
         });
     }
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> courseBox;
+    private javax.swing.JComboBox<String> courseComboBox;
     private javax.swing.JLabel courseLabel;
+    private javax.swing.JTextField enterModuleInput;
+    private javax.swing.JComboBox<String> instructorBox;
+    private javax.swing.JLabel instructorsLabel;
     private javax.swing.JComboBox<String> levelBox;
     private javax.swing.JLabel levelLabel;
     private javax.swing.JButton moduleCancelBTN;
     private javax.swing.JLabel moduleLabel;
     private javax.swing.JButton moduleSubmitBTN;
-    private javax.swing.JComboBox<String> selectModuleBox;
     private javax.swing.JComboBox<String> semesterBox;
     private javax.swing.JLabel semesterLabel;
     // End of variables declaration//GEN-END:variables
