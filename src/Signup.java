@@ -80,6 +80,7 @@ public class Signup extends javax.swing.JFrame {
         passwordLabel.setText("Password");
 
         passInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        passInput.setToolTipText("<html>\n        <p>Password must contain at least one digit [0-9].</p><br>\n        <p>Password must contain at least one lowercase Latin character [a-z].</p><br>\n        <p>Password must contain at least one uppercase Latin character [A-Z].</p><br>\n        <p>Password must contain at least one special character like ! @ # & ( ).</p><br>\n        <p>Password must contain a length of at least 8 characters and a maximum of 20 characters.</p>\n</html>");
         passInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passInputActionPerformed(evt);
@@ -105,6 +106,7 @@ public class Signup extends javax.swing.JFrame {
         passwordLabel1.setText("Confirm Password");
 
         confirmpassInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        confirmpassInput.setToolTipText("<html>         <p>Password must contain at least one digit [0-9].</p><br>         <p>Password must contain at least one lowercase Latin character [a-z].</p><br>         <p>Password must contain at least one uppercase Latin character [A-Z].</p><br>         <p>Password must contain at least one special character like ! @ # & ( ).</p><br>         <p>Password must contain a length of at least 8 characters and a maximum of 20 characters.</p> </html>");
         confirmpassInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirmpassInputActionPerformed(evt);
@@ -151,6 +153,11 @@ public class Signup extends javax.swing.JFrame {
 
         courseInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         courseInput.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "BIT", "IBM", "MBA" }));
+        courseInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                courseInputActionPerformed(evt);
+            }
+        });
 
         username.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         username.setText("Username");
@@ -341,10 +348,12 @@ public class Signup extends javax.swing.JFrame {
             String availRegex = "^[\\S]+@(heraldcollege\\.edu\\.np|heraldcollegekathmandu\\.com)$";
             String getGender = sexGroup.getSelectedItem().toString();
             String getPhone = phoneInput.getText();
+            String phoneRegex = "([0-9]).{9}$";
             String getAddress = addressInput.getText();
             String role = roleGroup.getSelectedItem().toString();
             String getCourse = courseInput.getSelectedItem().toString();
             String password = String.valueOf(passInput.getPassword());
+            String passRegex = "^(?!.*\\\\s)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
             String confirmpassword = String.valueOf(confirmpassInput.getPassword());
             prepareQuery = dbConnection.createStatement();
             
@@ -379,8 +388,18 @@ public class Signup extends javax.swing.JFrame {
                 return;
             }
             
+            if (!Pattern.matches(passRegex, password)) {
+                JOptionPane.showMessageDialog(this, "Pasword is not strong!");
+                return;
+            }
+            
+            if (!Pattern.matches(phoneRegex, getPhone)) {
+                JOptionPane.showMessageDialog(this, "Phone number must be 10 digits!");
+                return;
+            }
+            
             if (password.equals(confirmpassword)) {
-                if (role == "Student") {
+                if ("Student".equals(role)) {
                     sqlQuery = prepareQuery.executeQuery("select username, phone, email from students");
                     if (sqlQuery.next()) {
                         if (sqlQuery.getString("username").equals(getUsername)) {
@@ -401,11 +420,11 @@ public class Signup extends javax.swing.JFrame {
                     }
                     
                     if (!getMiddlename.isEmpty()) {
-                        prepareQuery.executeUpdate("insert into students (firstname, middlename, lastname, sex, username, phone, address, email, course, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into students (firstname, middlename, lastname, gender, username, phone, address, email, course, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
                     } else {
-                        prepareQuery.executeUpdate("insert into students (firstname, lastname, sex, username, phone, address, email, course, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into students (firstname, lastname, gender, username, phone, address, email, course, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
                     }
-                } else if (role == "Instructor") {
+                } else if ("Instructor".equals(role)) {
                     sqlQuery = prepareQuery.executeQuery("select username, phone, email from teachers");
                     if (sqlQuery.next()) {
                         if (sqlQuery.getString("username").equals(getUsername)) {
@@ -425,12 +444,12 @@ public class Signup extends javax.swing.JFrame {
                         }
                     }
                     if (!getMiddlename.isEmpty()) {
-                        prepareQuery.executeUpdate("insert into instructors (firstname, middlename, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into instructors (firstname, middlename, lastname, gender, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
                     } else {
-                        prepareQuery.executeUpdate("insert into instructors (firstname, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into instructors (firstname, lastname, gender, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
                     }
-                } else if (role == "Admin") {
-                    sqlQuery = prepareQuery.executeQuery("select username, phone, email from admin");
+                } else if ("Admin".equals(role)) {
+                    sqlQuery = prepareQuery.executeQuery("select username, phone, email from admins");
                     if (sqlQuery.next()) {
                         if (sqlQuery.getString("username").equals(getUsername)) {
                             JOptionPane.showMessageDialog(this, "Sorry, this username is already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -449,9 +468,9 @@ public class Signup extends javax.swing.JFrame {
                         }
                     }
                     if (!getMiddlename.isEmpty()) {
-                        prepareQuery.executeUpdate("insert into admin (firstname, middlename, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into admins (firstname, middlename, lastname, gender, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getMiddlename +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
                     } else {
-                        prepareQuery.executeUpdate("insert into admin (firstname, lastname, sex, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into admins (firstname, lastname, gender, username, phone, address, email, password) values ('"+ getFirstname +"', '" + getLastname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "Something went wrong! Error Code: #3435", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -497,6 +516,10 @@ public class Signup extends javax.swing.JFrame {
         courseInput.setVisible(true);
         return;
     }//GEN-LAST:event_roleGroupActionPerformed
+
+    private void courseInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_courseInputActionPerformed
 
     /**
      * @param args the command line arguments
