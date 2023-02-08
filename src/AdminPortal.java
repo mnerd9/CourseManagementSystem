@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
  * @author manoj
  */
 import java.util.ArrayList;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 public class AdminPortal extends javax.swing.JFrame {
     PreparedStatement createQuery;
@@ -34,21 +35,48 @@ public class AdminPortal extends javax.swing.JFrame {
         this.userID = id;
         setHeadLabel(id);
         displayLogs("student");
-        test();
-        
     }
     
-    public void test() {
-        ArrayList<String> name = new ArrayList<String>();
-        name.add("a");
-        name.add("b");
-        
-        for(String student: name){
-            System.out.println(student);
+    public void viewAllInstructors() {
+        DefaultTableModel instructorsModel = (DefaultTableModel)instructorsTable.getModel();
+        instructorsModel.setRowCount(0); // clearing table data.
+            
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from instructors");
+            sqlQuery = createQuery.executeQuery();
+            
+            while (sqlQuery.next()) {
+                String id = String.valueOf(sqlQuery.getInt("id"));
+                String firstname = sqlQuery.getString("firstname");
+                String middlename = sqlQuery.getString("middlename");
+                String lastname = sqlQuery.getString("lastname");
+                String phone = sqlQuery.getString("phone");
+                String address = sqlQuery.getString("address");
+                String email = sqlQuery.getString("email");
+                String fullname;
+                if (middlename != "none") {
+                    fullname = firstname + " " + lastname;
+                    String tableData[] = {id, fullname, phone, address, email};
+                    instructorsModel.addRow(tableData);
+                    instructorsTable.setEnabled(false);
+                    dbConnection.close();
+                    return;
+                }
+                
+                fullname = firstname + " " + middlename + " " + lastname;
+                String tableData[] = {id, fullname, phone, address, email};
+                instructorsModel.addRow(tableData);
+                instructorsTable.setEnabled(false);
+                dbConnection.close();
+                return;
+            }
+            
+        } catch (Exception exp) {
+            System.out.println(exp);
         }
-        
-        return;
     }
+    
     
     public void viewCoursesData() {
         DefaultTableModel tableModel = (DefaultTableModel)listOfCoursesTable.getModel();
@@ -73,6 +101,35 @@ public class AdminPortal extends javax.swing.JFrame {
                 String tableData[] = {id, name, activeLabel};
                 tableModel.addRow(tableData);
                 listOfCoursesTable.setEnabled(false);
+            }
+            return;
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }
+    
+    public void viewModulesData() {
+        DefaultTableModel tableModel = (DefaultTableModel)listOfModulesTable.getModel();
+        tableModel.setRowCount(0); // clearing table data.
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from modules");
+            sqlQuery = createQuery.executeQuery();
+            
+            while (sqlQuery.next()) {
+                String id = String.valueOf(sqlQuery.getInt("id"));
+                String course = sqlQuery.getString("course");
+                String semester = sqlQuery.getString("semester");
+                String level = sqlQuery.getString("level");
+                String module1 = sqlQuery.getString("module1");
+                String module2 = sqlQuery.getString("module2");
+                String module3 = sqlQuery.getString("module3");
+                String module4 = sqlQuery.getString("module4");
+                String module5 = sqlQuery.getString("module5");
+                String module6 = sqlQuery.getString("module6");
+                String tableData[] = {id, course, semester, level, module1, module2, module3, module4, module5, module6};
+                tableModel.addRow(tableData);
+                listOfModulesLabel.setEnabled(false);
             }
             return;
         } catch (Exception exp) {
@@ -144,6 +201,8 @@ public class AdminPortal extends javax.swing.JFrame {
         homeBTN = new javax.swing.JButton();
         coursesBTN = new javax.swing.JButton();
         profileBTN = new javax.swing.JButton();
+        instructorsBTN = new javax.swing.JButton();
+        studentsBTN = new javax.swing.JButton();
         mainBody = new javax.swing.JPanel();
         homeContent = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -200,10 +259,23 @@ public class AdminPortal extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         listOfModulesTable = new javax.swing.JTable();
         listOfModulesLabel = new javax.swing.JLabel();
-        moduleDeleteBTN = new javax.swing.JButton();
         moduleAddBTN = new javax.swing.JButton();
         moduleEditBTN = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
+        teachersContent = new javax.swing.JPanel();
+        coursesPanel1 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        instructorsTable = new javax.swing.JTable();
+        listOfCoursesLabel1 = new javax.swing.JLabel();
+        addInstructorBTN = new javax.swing.JButton();
+        editAssignModule = new javax.swing.JButton();
+        modulesPanel1 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        listOfModulesTable1 = new javax.swing.JTable();
+        listOfModulesLabel1 = new javax.swing.JLabel();
+        moduleAddBTN1 = new javax.swing.JButton();
+        moduleEditBTN1 = new javax.swing.JButton();
+        jSeparator5 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -256,20 +328,42 @@ public class AdminPortal extends javax.swing.JFrame {
             }
         });
 
+        instructorsBTN.setBackground(new java.awt.Color(102, 102, 102));
+        instructorsBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        instructorsBTN.setText("Instructors");
+        instructorsBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                instructorsBTNActionPerformed(evt);
+            }
+        });
+
+        studentsBTN.setBackground(new java.awt.Color(102, 102, 102));
+        studentsBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        studentsBTN.setText("Students");
+        studentsBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentsBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout navMenuPanelLayout = new javax.swing.GroupLayout(navMenuPanel);
         navMenuPanel.setLayout(navMenuPanelLayout);
         navMenuPanelLayout.setHorizontalGroup(
             navMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navMenuPanelLayout.createSequentialGroup()
-                .addGap(393, 393, 393)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navMenuPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(homeBTN)
                 .addGap(18, 18, 18)
                 .addComponent(coursesBTN)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(instructorsBTN)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(studentsBTN)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(profileBTN)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(logoutBTN)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(265, 265, 265))
         );
         navMenuPanelLayout.setVerticalGroup(
             navMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -279,7 +373,9 @@ public class AdminPortal extends javax.swing.JFrame {
                     .addComponent(homeBTN)
                     .addComponent(logoutBTN)
                     .addComponent(coursesBTN)
-                    .addComponent(profileBTN))
+                    .addComponent(profileBTN)
+                    .addComponent(instructorsBTN)
+                    .addComponent(studentsBTN))
                 .addGap(576, 576, 576))
         );
 
@@ -708,11 +804,11 @@ public class AdminPortal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "S.N", "Course", "Semester", "Level", "Module 1", "Module 2", "Module 3", "Module 4"
+                "S.N", "Course", "Semester", "Level", "Module 1", "Module 2", "Module 3", "Module 4", "Module 5", "Module 6"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true, true, true, true
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -721,20 +817,19 @@ public class AdminPortal extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(listOfModulesTable);
 
+        listOfModulesLabel.setBackground(new java.awt.Color(0, 0, 0));
         listOfModulesLabel.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        listOfModulesLabel.setForeground(new java.awt.Color(0, 0, 0));
         listOfModulesLabel.setText("List Of Modules");
         listOfModulesLabel.setToolTipText("");
 
-        moduleDeleteBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        moduleDeleteBTN.setText("Delete");
-        moduleDeleteBTN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                moduleDeleteBTNActionPerformed(evt);
-            }
-        });
-
         moduleAddBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         moduleAddBTN.setText("Add");
+        moduleAddBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moduleAddBTNActionPerformed(evt);
+            }
+        });
 
         moduleEditBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         moduleEditBTN.setText("Edit");
@@ -761,9 +856,7 @@ public class AdminPortal extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(moduleAddBTN)
                         .addGap(18, 18, 18)
-                        .addComponent(moduleEditBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(moduleDeleteBTN)))
+                        .addComponent(moduleEditBTN)))
                 .addContainerGap())
         );
         modulesPanelLayout.setVerticalGroup(
@@ -778,7 +871,6 @@ public class AdminPortal extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(modulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(moduleDeleteBTN)
                     .addComponent(moduleAddBTN)
                     .addComponent(moduleEditBTN))
                 .addContainerGap(8, Short.MAX_VALUE))
@@ -787,6 +879,164 @@ public class AdminPortal extends javax.swing.JFrame {
         coursesContent.add(modulesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1140, 530));
 
         mainBody.add(coursesContent, "card2");
+
+        teachersContent.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        teachersContent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        instructorsTable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        instructorsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "S.N", "Name", "Phone", "Address", "Email"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(instructorsTable);
+
+        listOfCoursesLabel1.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        listOfCoursesLabel1.setText("List of Instructors");
+        listOfCoursesLabel1.setToolTipText("");
+
+        addInstructorBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        addInstructorBTN.setText("Assign Module");
+        addInstructorBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addInstructorBTNActionPerformed(evt);
+            }
+        });
+
+        editAssignModule.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editAssignModule.setText("Edit Assign Module");
+        editAssignModule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editAssignModuleActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout coursesPanel1Layout = new javax.swing.GroupLayout(coursesPanel1);
+        coursesPanel1.setLayout(coursesPanel1Layout);
+        coursesPanel1Layout.setHorizontalGroup(
+            coursesPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(coursesPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(coursesPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(coursesPanel1Layout.createSequentialGroup()
+                        .addComponent(listOfCoursesLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1128, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, coursesPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(addInstructorBTN)
+                        .addGap(18, 18, 18)
+                        .addComponent(editAssignModule)))
+                .addContainerGap())
+        );
+        coursesPanel1Layout.setVerticalGroup(
+            coursesPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(coursesPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(listOfCoursesLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(coursesPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addInstructorBTN)
+                    .addComponent(editAssignModule))
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
+
+        teachersContent.add(coursesPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1140, 530));
+
+        listOfModulesTable1.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        listOfModulesTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "S.N", "Course", "Semester", "Level", "Module 1", "Module 2", "Module 3", "Module 4", "Module 5", "Module 6"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(listOfModulesTable1);
+
+        listOfModulesLabel1.setBackground(new java.awt.Color(0, 0, 0));
+        listOfModulesLabel1.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        listOfModulesLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        listOfModulesLabel1.setText("List Of Modules");
+        listOfModulesLabel1.setToolTipText("");
+
+        moduleAddBTN1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        moduleAddBTN1.setText("Add");
+        moduleAddBTN1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moduleAddBTN1ActionPerformed(evt);
+            }
+        });
+
+        moduleEditBTN1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        moduleEditBTN1.setText("Edit");
+        moduleEditBTN1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moduleEditBTN1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout modulesPanel1Layout = new javax.swing.GroupLayout(modulesPanel1);
+        modulesPanel1.setLayout(modulesPanel1Layout);
+        modulesPanel1Layout.setHorizontalGroup(
+            modulesPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modulesPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(modulesPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(modulesPanel1Layout.createSequentialGroup()
+                        .addComponent(listOfModulesLabel1)
+                        .addGap(313, 313, 313)
+                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 401, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, modulesPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(moduleAddBTN1)
+                        .addGap(18, 18, 18)
+                        .addComponent(moduleEditBTN1)))
+                .addContainerGap())
+        );
+        modulesPanel1Layout.setVerticalGroup(
+            modulesPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modulesPanel1Layout.createSequentialGroup()
+                .addGroup(modulesPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(modulesPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(listOfModulesLabel1))
+                    .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(modulesPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(moduleAddBTN1)
+                    .addComponent(moduleEditBTN1))
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
+
+        teachersContent.add(modulesPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1140, 530));
+
+        mainBody.add(teachersContent, "card2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1031,57 +1281,114 @@ public class AdminPortal extends javax.swing.JFrame {
     }//GEN-LAST:event_coursesBTNActionPerformed
 
     private void courseDeleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseDeleteBTNActionPerformed
-        // TODO add your handling code here:
+        try {
+            Connection dbConnection = checkConnection();
+            
+            createQuery = dbConnection.prepareStatement("select count(*) from courses");
+            sqlQuery = createQuery.executeQuery();
+            int countRows = 0;
+            
+            if (!sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "Something went wrong!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            
+            countRows = sqlQuery.getInt(1);
+            if (countRows < 1) {
+                JOptionPane.showMessageDialog(this, "Data is empty!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            
+            String deleteCourse = (String) JOptionPane.showInputDialog(this, "Course ID", "Delete Course", JOptionPane.INFORMATION_MESSAGE);
+            if (deleteCourse == null) {
+                return;
+            }
+            
+            if (deleteCourse.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "The field is empty", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            
+            createQuery = dbConnection.prepareStatement("delete from courses where id = '"+deleteCourse+"'");
+            int checkResult = createQuery.executeUpdate();
+            
+            if (checkResult != 1) {
+                JOptionPane.showMessageDialog(this, "Someting went wrong while deleting the selected course!");
+                return;
+            }
+            JOptionPane.showMessageDialog(this, "Successfully deleted the course");
+            viewCoursesData();
+            dbConnection.close();
+            return;
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
     }//GEN-LAST:event_courseDeleteBTNActionPerformed
 
     private void courseEditBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseEditBTNActionPerformed
-//        JTextField field1 = new JTextField();
-//        JTextField field2 = new JTextField();
-//        
-//        Object [] fields = {
-//            "Field 1", field1,
-//            "Field 2", field2
-//        };
-//        
-//        JOptionPane.showConfirmDialog(null,fields,"this is a header",JOptionPane.OK_CANCEL_OPTION);
-    }//GEN-LAST:event_courseEditBTNActionPerformed
-
-    private void moduleDeleteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleDeleteBTNActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_moduleDeleteBTNActionPerformed
-
-    private void moduleEditBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleEditBTNActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_moduleEditBTNActionPerformed
-
-    private void viewModulesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewModulesBTNActionPerformed
-        modulesPanel.setVisible(true);
-        coursesPanel.setVisible(false);
-        DefaultTableModel tableModel = (DefaultTableModel)listOfModulesTable.getModel();
-        tableModel.setRowCount(0); // clearing table data.
         try {
             Connection dbConnection = checkConnection();
-            createQuery = dbConnection.prepareStatement("select * from modules");
-            sqlQuery = createQuery.executeQuery();
-            
-            while (sqlQuery.next()) {
-                String id = String.valueOf(sqlQuery.getInt("id"));
-                String course = sqlQuery.getString("course");
-                String semester = sqlQuery.getString("semester");
-                String level = sqlQuery.getString("level");
-                String module1 = sqlQuery.getString("module1");
-                String module2 = sqlQuery.getString("module2");
-                String module3 = sqlQuery.getString("module3");
-                String module4 = sqlQuery.getString("module4");
-                String tableData[] = {id, course, semester, level, module1, module2, module3, module4};
-                tableModel.addRow(tableData);
-                listOfModulesLabel.setEnabled(false);
+            JTextField courseid = new JTextField();
+            JTextField course = new JTextField();
+      
+            Object [] fields = {
+                "Enter course id", courseid,
+                "Enter course name", course,
+            };
+
+            int checkDialog = JOptionPane.showConfirmDialog(null,fields,"Edit Course",JOptionPane.OK_CANCEL_OPTION);
+            if (checkDialog != JOptionPane.OK_OPTION) {
+                return;
             }
+
+            int getCourseID = Integer.parseInt(courseid.getText());
+            String getCourseName = course.getText();
+
+            String[] confirmObj = { "yes", "no" }; 
+            String addAvailability = (String) JOptionPane.showInputDialog(this, "Course Availability", "Add Course", JOptionPane.INFORMATION_MESSAGE, null, confirmObj, confirmObj[0]);
+            if (addAvailability == null) {
+                return;
+            }
+
+            int isActiveValue = 0;
+
+            if (addAvailability == "yes") {
+                isActiveValue = 1;
+            } else if (addAvailability == "no") {
+                isActiveValue = 0;
+            } else {
+                isActiveValue = 0;
+            }
+
+            createQuery = dbConnection.prepareStatement("update courses set name = ?, isActive = ? where id = ?");
+            createQuery.setString(1, getCourseName);
+            createQuery.setInt(2, isActiveValue);
+            createQuery.setInt(3, getCourseID);
+            int row = createQuery.executeUpdate();
+            if (row != 1) {
+                dbConnection.close();
+                JOptionPane.showMessageDialog(this, "Something went wrong while update course details.", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            JOptionPane.showMessageDialog(this, "Successfully updated course details", "INFO", JOptionPane.INFORMATION_MESSAGE);
+            viewCoursesData();
+            dbConnection.close();
             return;
         } catch (Exception exp) {
             System.out.println(exp);
         }
         
+    }//GEN-LAST:event_courseEditBTNActionPerformed
+
+    private void moduleEditBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleEditBTNActionPerformed
+        EditModule editModulePage = new EditModule();
+        editModulePage.setVisible(true);
+    }//GEN-LAST:event_moduleEditBTNActionPerformed
+
+    private void viewModulesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewModulesBTNActionPerformed
+        modulesPanel.setVisible(true);
+        coursesPanel.setVisible(false);
+        viewModulesData();
     }//GEN-LAST:event_viewModulesBTNActionPerformed
 
     private void viewCoursesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewCoursesBTNActionPerformed
@@ -1098,7 +1405,7 @@ public class AdminPortal extends javax.swing.JFrame {
         }
         
         if (addResult.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "message box is enmpty", "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "The message box is empty", "ERROR", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
@@ -1106,16 +1413,11 @@ public class AdminPortal extends javax.swing.JFrame {
         
         try {
             Connection dbConnection = checkConnection();
-            createQuery = dbConnection.prepareStatement("select name from courses");
+            createQuery = dbConnection.prepareStatement("select * from courses where name = ?");
+            createQuery.setString(1, capResult);
             sqlQuery = createQuery.executeQuery();
-            if (!sqlQuery.next()) {
-                JOptionPane.showMessageDialog(this, "Something went wrong!", "ERROR", JOptionPane.ERROR_MESSAGE);
-                dbConnection.close();
-                return;
-            }
-            String courseValue = sqlQuery.getString("name");
-            if (capResult.equals(courseValue)) {
-                JOptionPane.showMessageDialog(this, "The course you have entered is already exists on our system!", "INFO", JOptionPane.INFORMATION_MESSAGE);
+            if (sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "The course you have entered is already exists on our system!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 dbConnection.close();
                 return;
             }
@@ -1154,6 +1456,39 @@ public class AdminPortal extends javax.swing.JFrame {
             System.out.println(exp);
         }
     }//GEN-LAST:event_courseAddBTNActionPerformed
+
+    private void moduleAddBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleAddBTNActionPerformed
+        AddModule moduleBox = new AddModule();
+        moduleBox.setVisible(true);
+    }//GEN-LAST:event_moduleAddBTNActionPerformed
+
+    private void addInstructorBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addInstructorBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addInstructorBTNActionPerformed
+
+    private void editAssignModuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAssignModuleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editAssignModuleActionPerformed
+
+    private void moduleAddBTN1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleAddBTN1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_moduleAddBTN1ActionPerformed
+
+    private void moduleEditBTN1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleEditBTN1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_moduleEditBTN1ActionPerformed
+
+    private void instructorsBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instructorsBTNActionPerformed
+        mainBody.removeAll();
+        mainBody.add(teachersContent);
+        mainBody.repaint();
+        mainBody.revalidate();
+        viewAllInstructors();
+    }//GEN-LAST:event_instructorsBTNActionPerformed
+
+    private void studentsBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentsBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_studentsBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1198,6 +1533,7 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JTable activityLogs;
     private javax.swing.JButton activityStudentBTN;
     private javax.swing.JButton activityTeacherBTN;
+    private javax.swing.JButton addInstructorBTN;
     private javax.swing.JTextField addressInput;
     private javax.swing.JLabel addressLabel;
     private javax.swing.JLabel confirmNewPassLabel;
@@ -1208,6 +1544,8 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JButton coursesBTN;
     private javax.swing.JPanel coursesContent;
     private javax.swing.JPanel coursesPanel;
+    private javax.swing.JPanel coursesPanel1;
+    private javax.swing.JButton editAssignModule;
     private javax.swing.JTextField emailInput;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel emailLabel2;
@@ -1216,26 +1554,36 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JLabel headerText;
     private javax.swing.JButton homeBTN;
     private javax.swing.JPanel homeContent;
+    private javax.swing.JButton instructorsBTN;
+    private javax.swing.JTable instructorsTable;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTextField joinedInput;
     private javax.swing.JLabel joinedLabel;
     private javax.swing.JLabel listOfCoursesLabel;
+    private javax.swing.JLabel listOfCoursesLabel1;
     private javax.swing.JTable listOfCoursesTable;
     private javax.swing.JLabel listOfModulesLabel;
+    private javax.swing.JLabel listOfModulesLabel1;
     private javax.swing.JTable listOfModulesTable;
+    private javax.swing.JTable listOfModulesTable1;
     private javax.swing.JButton logoutBTN;
     private javax.swing.JPanel mainBody;
     private javax.swing.JSeparator mainProfileSeperator;
     private javax.swing.JButton moduleAddBTN;
-    private javax.swing.JButton moduleDeleteBTN;
+    private javax.swing.JButton moduleAddBTN1;
     private javax.swing.JButton moduleEditBTN;
+    private javax.swing.JButton moduleEditBTN1;
     private javax.swing.JPanel modulesPanel;
+    private javax.swing.JPanel modulesPanel1;
     private javax.swing.JTextField nameInput;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JPanel navBar;
@@ -1256,6 +1604,8 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JSeparator profileSeperator;
     private javax.swing.JButton savePassBTN;
     private javax.swing.JPanel sidePanel;
+    private javax.swing.JButton studentsBTN;
+    private javax.swing.JPanel teachersContent;
     private javax.swing.JTextField usernameInput;
     private javax.swing.JButton viewCoursesBTN;
     private javax.swing.JButton viewModulesBTN;
