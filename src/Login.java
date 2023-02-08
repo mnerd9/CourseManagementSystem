@@ -202,11 +202,6 @@ public class Login extends javax.swing.JFrame {
                     dbConnection.close();
                     return;
                 }
-                if (!sqlQuery.getString("course").equals("BIT")) {
-                    JOptionPane.showMessageDialog(this, "Sorry, this program is usable for BIT courses only!", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    dbConnection.close();
-                    return;
-                }
                 
                 String Description = sqlQuery.getString("username") + " has logged in!";
                 String Type = role.toLowerCase();
@@ -216,10 +211,9 @@ public class Login extends javax.swing.JFrame {
                 createQuery.executeUpdate();
                 
                 getID = sqlQuery.getInt("id");
-                getRole = sqlQuery.getString("course");
                 
                 dispose();
-                StudentPortal showPage = new StudentPortal(getID, getRole);
+                StudentPortal showPage = new StudentPortal(getID);
                 showPage.setVisible(true);
                 dbConnection.close();
                 return;
