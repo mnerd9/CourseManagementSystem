@@ -237,9 +237,9 @@ public class Login extends javax.swing.JFrame {
                 createQuery.setString(1, Description);
                 createQuery.setString(2, Type);
                 createQuery.executeUpdate();
-                
+                getID = sqlQuery.getInt("id");
                 dispose();
-                InstructorPortal showPage = new InstructorPortal(0, null);
+                InstructorPortal showPage = new InstructorPortal(getID);
                 showPage.setVisible(true);
                 dbConnection.close();
                 return;
