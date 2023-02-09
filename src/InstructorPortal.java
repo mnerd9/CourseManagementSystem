@@ -663,7 +663,7 @@ public class InstructorPortal extends javax.swing.JFrame {
             createQuery.setInt(1, userID);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
-                JOptionPane.showMessageDialog(this, "Something went wrong, #3436", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Something went wrong", "ERROR", JOptionPane.ERROR_MESSAGE);
                 dbConnection.close();
                 return;
             }
@@ -763,7 +763,7 @@ public class InstructorPortal extends javax.swing.JFrame {
             createQuery.setInt(1, userID);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
-                JOptionPane.showMessageDialog(this, "Something went wrong, #3436", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Something went wrong", "ERROR", JOptionPane.ERROR_MESSAGE);
                 dbConnection.close();
                 return;
             }
