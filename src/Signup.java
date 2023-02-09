@@ -443,7 +443,7 @@ public class Signup extends javax.swing.JFrame {
                         prepareQuery.executeUpdate("insert into students (fullname, gender, username, phone, address, email, course, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
                     }
                 } else if ("Instructor".equals(role)) {
-                    sqlQuery = prepareQuery.executeQuery("select username, phone, email from teachers");
+                    sqlQuery = prepareQuery.executeQuery("select username, phone, email from instructors");
                     if (sqlQuery.next()) {
                         if (sqlQuery.getString("username").equals(getUsername)) {
                             JOptionPane.showMessageDialog(this, "Sorry, this username is already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -463,10 +463,10 @@ public class Signup extends javax.swing.JFrame {
                     }
                     if (!getMiddlename.isEmpty()) {
                         String fullname = getFirstname + " " + getMiddlename + " " + getLastname;
-                        prepareQuery.executeUpdate("insert into instructors (fullname, gender, username, phone, address, email, course, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into instructors (fullname, gender, username, phone, address, email, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
                     } else {
                         String fullname = getFirstname + " " + getLastname;
-                        prepareQuery.executeUpdate("insert into instructors (fullname, gender, username, phone, address, email, course, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into instructors (fullname, gender, username, phone, address, email, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"','" + password + "')");
                     }
                 } else if ("Admin".equals(role)) {
                     sqlQuery = prepareQuery.executeQuery("select username, phone, email from admins");
@@ -489,10 +489,10 @@ public class Signup extends javax.swing.JFrame {
                     }
                     if (!getMiddlename.isEmpty()) {
                         String fullname = getFirstname + " " + getMiddlename + " " + getLastname;
-                        prepareQuery.executeUpdate("insert into admins (fullname, gender, username, phone, address, email, course, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into admins (fullname, gender, username, phone, address, email, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + password + "')");
                     } else {
                         String fullname = getFirstname + " " + getLastname;
-                        prepareQuery.executeUpdate("insert into admins (fullname, gender, username, phone, address, email, course, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + getCourse +"','" + password + "')");
+                        prepareQuery.executeUpdate("insert into admins (fullname, gender, username, phone, address, email, password) values ('"+ fullname +"', '" + getGender +"', '" + getUsername + "', '" + getPhone +"', '" + getAddress +"', '" + getEmail +"', '" + password + "')");
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "Something went wrong! Error Code: #3435", "ERROR", JOptionPane.ERROR_MESSAGE);
