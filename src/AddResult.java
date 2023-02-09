@@ -29,7 +29,7 @@ public class AddResult extends javax.swing.JFrame {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
         this.isCourse = isCourse;
         this.isTeacher = isTeacher;
-        displayModule();
+        moduleBox.addItem(isCourse);
         fetchstudentData();
     }
     
@@ -37,11 +37,6 @@ public class AddResult extends javax.swing.JFrame {
         db startDB = new db();
         Connection confirmConn = startDB.checkConnection();
         return confirmConn;
-    }
-    
-    public void displayModule() {
-        moduleBox.addItem(isCourse);
-        return;
     }
     
     public void fetchstudentData() {
@@ -57,13 +52,12 @@ public class AddResult extends javax.swing.JFrame {
             sqlQuery = createQuery.executeQuery();
             
             while (sqlQuery.next()) {
-                String getStudentName = sqlQuery.getString("student");
-                studentBox.addItem(getStudentName);
+                String getStudentID = sqlQuery.getString("id");
+                studentBox.addItem(getStudentID);
             }
         } catch (Exception exp) {
             System.out.println(exp);
         }
-        return;
     }
     
     
@@ -102,7 +96,7 @@ public class AddResult extends javax.swing.JFrame {
         getContentPane().add(moduleSubmitBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 290, 90, -1));
 
         studentLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        studentLabel.setText("Select Student");
+        studentLabel.setText("Select Student ID");
         getContentPane().add(studentLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         moduleBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
@@ -111,11 +105,11 @@ public class AddResult extends javax.swing.JFrame {
                 moduleBoxActionPerformed(evt);
             }
         });
-        getContentPane().add(moduleBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 327, 39));
+        getContentPane().add(moduleBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 327, 39));
 
         semesterLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         semesterLabel.setText("Select Semester");
-        getContentPane().add(semesterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, -1, -1));
+        getContentPane().add(semesterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, -1, -1));
 
         semesterBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         semesterBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semester 1", "Semester 2", "Semester 3", "Semester 4" }));
@@ -124,11 +118,11 @@ public class AddResult extends javax.swing.JFrame {
                 semesterBoxActionPerformed(evt);
             }
         });
-        getContentPane().add(semesterBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, 327, 39));
+        getContentPane().add(semesterBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 50, 327, 39));
 
         levelLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         levelLabel.setText("Select Level");
-        getContentPane().add(levelLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 20, -1, -1));
+        getContentPane().add(levelLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 20, -1, -1));
 
         levelBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         levelBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Level 4", "Level 5", "Level 6" }));
@@ -137,15 +131,15 @@ public class AddResult extends javax.swing.JFrame {
                 levelBoxActionPerformed(evt);
             }
         });
-        getContentPane().add(levelBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 50, 327, 39));
+        getContentPane().add(levelBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 50, 327, 39));
 
         moduleLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         moduleLabel.setText("Select Module");
-        getContentPane().add(moduleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
+        getContentPane().add(moduleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
 
         marksLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         marksLabel.setText("Enter Marks");
-        getContentPane().add(marksLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 130, -1, 30));
+        getContentPane().add(marksLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 120, -1, 30));
 
         marksInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         marksInput.addActionListener(new java.awt.event.ActionListener() {
@@ -153,7 +147,7 @@ public class AddResult extends javax.swing.JFrame {
                 marksInputActionPerformed(evt);
             }
         });
-        getContentPane().add(marksInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 160, 327, 39));
+        getContentPane().add(marksInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 327, 39));
 
         moduleCancelBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         moduleCancelBTN.setText("Cancel");
@@ -184,13 +178,33 @@ public class AddResult extends javax.swing.JFrame {
             String getLevel = levelBox.getSelectedItem().toString();
             String getModule = moduleBox.getSelectedItem().toString();
             String getMarks = marksInput.getText();
-            createQuery = dbConnection.prepareStatement("insert into result (student, instructor, module, semester, level, marks) values (?, ?, ?, ?, ?, ?)");
+            createQuery = dbConnection.prepareStatement("select * from enrolled_module_students where id = ?");
             createQuery.setString(1, getStudent);
-            createQuery.setString(2, getTeacher);
-            createQuery.setString(3, getModule);
-            createQuery.setString(4, getSemester);
-            createQuery.setString(5, getLevel);
-            createQuery.setString(6, getMarks);
+            sqlQuery = createQuery.executeQuery();
+            if (!sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "Something went wrong while fetching student data");
+                return;
+            }
+            
+            
+            String finalStudentName = sqlQuery.getString("student");
+            String finalStudentEmail = sqlQuery.getString("email");
+            createQuery = dbConnection.prepareStatement("select * from result where email = ?");
+            createQuery.setString(1, finalStudentEmail);
+            sqlQuery = createQuery.executeQuery();
+            if (sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "You have already mark for this student!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            createQuery = dbConnection.prepareStatement("insert into result (student, email, instructor, module, semester, level, marks) values (?, ?, ?, ?, ?, ?, ?)");
+            createQuery.setString(1, finalStudentName);
+            createQuery.setString(2, finalStudentEmail);
+            createQuery.setString(3, getTeacher);
+            createQuery.setString(4, getModule);
+            createQuery.setString(5, getSemester);
+            createQuery.setString(6, getLevel);
+            createQuery.setString(7, getMarks);
             int checkResult = createQuery.executeUpdate();
             
             if (checkResult != 1) {
@@ -212,7 +226,7 @@ public class AddResult extends javax.swing.JFrame {
     }//GEN-LAST:event_moduleBoxActionPerformed
 
     private void semesterBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semesterBoxActionPerformed
-        
+      
     }//GEN-LAST:event_semesterBoxActionPerformed
 
     private void levelBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelBoxActionPerformed
@@ -228,7 +242,7 @@ public class AddResult extends javax.swing.JFrame {
     }//GEN-LAST:event_moduleCancelBTNActionPerformed
 
     private void studentBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentBoxActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_studentBoxActionPerformed
 
     /**
