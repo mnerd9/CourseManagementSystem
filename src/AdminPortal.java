@@ -1,6 +1,5 @@
 
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,8 +15,6 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author manoj
  */
-import java.util.ArrayList;
-import javax.swing.JComboBox;
 import javax.swing.JTextField;
 public class AdminPortal extends javax.swing.JFrame {
     PreparedStatement createQuery;
@@ -294,6 +291,7 @@ public class AdminPortal extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         studentsTable = new javax.swing.JTable();
         listOfCoursesLabel2 = new javax.swing.JLabel();
+        moduleSubmitBTN = new javax.swing.JButton();
         modulesPanel2 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         listOfModulesTable2 = new javax.swing.JTable();
@@ -1077,6 +1075,14 @@ public class AdminPortal extends javax.swing.JFrame {
         listOfCoursesLabel2.setText("List of Students");
         listOfCoursesLabel2.setToolTipText("");
 
+        moduleSubmitBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        moduleSubmitBTN.setText("View Result");
+        moduleSubmitBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moduleSubmitBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout coursesPanel2Layout = new javax.swing.GroupLayout(coursesPanel2);
         coursesPanel2.setLayout(coursesPanel2Layout);
         coursesPanel2Layout.setHorizontalGroup(
@@ -1087,7 +1093,10 @@ public class AdminPortal extends javax.swing.JFrame {
                     .addGroup(coursesPanel2Layout.createSequentialGroup()
                         .addComponent(listOfCoursesLabel2)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1128, Short.MAX_VALUE))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1128, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, coursesPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(moduleSubmitBTN)))
                 .addContainerGap())
         );
         coursesPanel2Layout.setVerticalGroup(
@@ -1096,7 +1105,10 @@ public class AdminPortal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(listOfCoursesLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(moduleSubmitBTN)
+                .addContainerGap())
         );
 
         studentContent.add(coursesPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1140, 530));
@@ -1654,6 +1666,10 @@ public class AdminPortal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_moduleEditBTN2ActionPerformed
 
+    private void moduleSubmitBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleSubmitBTNActionPerformed
+        
+    }//GEN-LAST:event_moduleSubmitBTNActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1754,6 +1770,7 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JButton moduleEditBTN;
     private javax.swing.JButton moduleEditBTN1;
     private javax.swing.JButton moduleEditBTN2;
+    private javax.swing.JButton moduleSubmitBTN;
     private javax.swing.JPanel modulesPanel;
     private javax.swing.JPanel modulesPanel1;
     private javax.swing.JPanel modulesPanel2;
