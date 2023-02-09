@@ -152,8 +152,6 @@ public class InstructorPortal extends javax.swing.JFrame {
                 String tableData[] = {id, studentName, studentEmail, module};
                 studentTableModel.addRow(tableData);
                 studentTable.setEnabled(false);
-                dbConnection.close();
-                return;
             }
         } catch (Exception exp) {
             System.out.println(exp);
