@@ -73,6 +73,30 @@ public class StudentPortal extends javax.swing.JFrame {
         }
     }
     
+    public void displayResultTable() {
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from result where email = ?");
+            createQuery.setString(1, isEmail);
+            sqlQuery = createQuery.executeQuery();
+            DefaultTableModel resultTableModel = (DefaultTableModel)resultTable.getModel();
+            resultTableModel.setRowCount(0); // clearing table data.
+            while (sqlQuery.next()) {
+                String getid = sqlQuery.getString("id");
+                String getModule = sqlQuery.getString("module");
+                String getLevel = sqlQuery.getString("level");
+                String getSemester = sqlQuery.getString("semester");
+                String getMarks = sqlQuery.getString("marks");
+                
+                String tableData[] = {getid, getModule, getLevel, getSemester, getMarks};
+                resultTableModel.addRow(tableData);
+                resultTable.setEnabled(false);
+            }
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }
+    
     public void viewInstructorsData() {
         try {
             Connection dbConnection = checkConnection();
@@ -93,8 +117,6 @@ public class StudentPortal extends javax.swing.JFrame {
                 String tableData[] = {id, firstModule, secondModule, thirdModule, fourthModule, fifthModule, sixthModule};
                 enrollTableModel.addRow(tableData);
                 enrollTable.setEnabled(false);
-                dbConnection.close();
-                return;
             }
         } catch (Exception exp) {
             System.out.println(exp);
@@ -117,7 +139,7 @@ public class StudentPortal extends javax.swing.JFrame {
             String fourthModule = sqlQuery.getString("module4");
             String fifthModule = sqlQuery.getString("module5");
             String sixthModule = sqlQuery.getString("module6");
-//            dbConnection.close();
+            
             createQuery = dbConnection.prepareStatement("select * from enrolled_module_instructors where course = ? and semester = ? and level = ? and (module = ? or module = ? or module = ? or module = ? or module = ? or module = ?)");
             createQuery.setString(1, isCourse);
             createQuery.setString(2, isSemester);
@@ -129,11 +151,7 @@ public class StudentPortal extends javax.swing.JFrame {
             createQuery.setString(8, fifthModule);
             createQuery.setString(9, sixthModule);
             sqlQuery = createQuery.executeQuery();
-//            if (!sqlQuery.next()) {
-//                JOptionPane.showMessageDialog(this, "Something went wrong while displaying instructors data");
-//                return;
-//            }
-            
+
             DefaultTableModel instTableModel = (DefaultTableModel)instructorsTable.getModel();
             instTableModel.setRowCount(0); // clearing table data.
             while (sqlQuery.next()) {
@@ -288,6 +306,9 @@ public class StudentPortal extends javax.swing.JFrame {
         teachersContent = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         instructorsTable = new javax.swing.JTable();
+        resultContent = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        resultTable = new javax.swing.JTable();
 
         jLabel1.setText("jLabel1");
 
@@ -712,6 +733,32 @@ public class StudentPortal extends javax.swing.JFrame {
 
         mainBody.add(teachersContent, "card2");
 
+        resultContent.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        resultContent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        resultTable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        resultTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "S.N", "Module", "Level", "Semester", "Marks"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane6.setViewportView(resultTable);
+
+        resultContent.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 1140, 560));
+
+        mainBody.add(resultContent, "card2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -888,7 +935,11 @@ public class StudentPortal extends javax.swing.JFrame {
     }//GEN-LAST:event_InstructorsBTNActionPerformed
 
     private void viewResultBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewResultBTNActionPerformed
-        // TODO add your handling code here:
+        mainBody.removeAll();
+        mainBody.add(resultContent);
+        mainBody.repaint();
+        mainBody.revalidate();
+        displayResultTable();
     }//GEN-LAST:event_viewResultBTNActionPerformed
 
     private void logoutBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBTNActionPerformed
@@ -964,6 +1015,7 @@ public class StudentPortal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JButton logoutBTN;
     private javax.swing.JPanel mainBody;
@@ -986,6 +1038,8 @@ public class StudentPortal extends javax.swing.JFrame {
     private javax.swing.JPanel profileContent;
     private javax.swing.JLabel profileName;
     private javax.swing.JSeparator profileSeperator;
+    private javax.swing.JPanel resultContent;
+    private javax.swing.JTable resultTable;
     private javax.swing.JButton savePassBTN;
     private javax.swing.JPanel sidePanel;
     private javax.swing.JPanel teachersContent;
