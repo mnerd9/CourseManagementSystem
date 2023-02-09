@@ -163,7 +163,7 @@ public class AdminPortal extends javax.swing.JFrame {
             createQuery.setInt(1, userID);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
-                JOptionPane.showMessageDialog(this, "Something went wrong, #3436", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Something went wrong", "ERROR", JOptionPane.ERROR_MESSAGE);
                 dbConnection.close();
                 return;
             }
@@ -292,13 +292,6 @@ public class AdminPortal extends javax.swing.JFrame {
         studentsTable = new javax.swing.JTable();
         listOfCoursesLabel2 = new javax.swing.JLabel();
         moduleSubmitBTN = new javax.swing.JButton();
-        modulesPanel2 = new javax.swing.JPanel();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        listOfModulesTable2 = new javax.swing.JTable();
-        listOfModulesLabel2 = new javax.swing.JLabel();
-        moduleAddBTN2 = new javax.swing.JButton();
-        moduleEditBTN2 = new javax.swing.JButton();
-        jSeparator6 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -1113,86 +1106,6 @@ public class AdminPortal extends javax.swing.JFrame {
 
         studentContent.add(coursesPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1140, 530));
 
-        listOfModulesTable2.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        listOfModulesTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "S.N", "Course", "Semester", "Level", "Module 1", "Module 2", "Module 3", "Module 4", "Module 5", "Module 6"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane7.setViewportView(listOfModulesTable2);
-
-        listOfModulesLabel2.setBackground(new java.awt.Color(0, 0, 0));
-        listOfModulesLabel2.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
-        listOfModulesLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        listOfModulesLabel2.setText("List Of Modules");
-        listOfModulesLabel2.setToolTipText("");
-
-        moduleAddBTN2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        moduleAddBTN2.setText("Add");
-        moduleAddBTN2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                moduleAddBTN2ActionPerformed(evt);
-            }
-        });
-
-        moduleEditBTN2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        moduleEditBTN2.setText("Edit");
-        moduleEditBTN2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                moduleEditBTN2ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout modulesPanel2Layout = new javax.swing.GroupLayout(modulesPanel2);
-        modulesPanel2.setLayout(modulesPanel2Layout);
-        modulesPanel2Layout.setHorizontalGroup(
-            modulesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(modulesPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(modulesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(modulesPanel2Layout.createSequentialGroup()
-                        .addComponent(listOfModulesLabel2)
-                        .addGap(313, 313, 313)
-                        .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 401, Short.MAX_VALUE))
-                    .addComponent(jScrollPane7)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, modulesPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(moduleAddBTN2)
-                        .addGap(18, 18, 18)
-                        .addComponent(moduleEditBTN2)))
-                .addContainerGap())
-        );
-        modulesPanel2Layout.setVerticalGroup(
-            modulesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(modulesPanel2Layout.createSequentialGroup()
-                .addGroup(modulesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(modulesPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(listOfModulesLabel2))
-                    .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(modulesPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(moduleAddBTN2)
-                    .addComponent(moduleEditBTN2))
-                .addContainerGap(8, Short.MAX_VALUE))
-        );
-
-        studentContent.add(modulesPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1140, 530));
-
         mainBody.add(studentContent, "card2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1273,7 +1186,7 @@ public class AdminPortal extends javax.swing.JFrame {
             createQuery.setInt(1, userID);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
-                JOptionPane.showMessageDialog(this, "Something went wrong, #3436", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Something went wrong", "ERROR", JOptionPane.ERROR_MESSAGE);
                 dbConnection.close();
                 return;
             }
@@ -1320,7 +1233,7 @@ public class AdminPortal extends javax.swing.JFrame {
             createQuery.setInt(1, userID);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
-                JOptionPane.showMessageDialog(this, "Something went wrong, #3436", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Something went wrong", "ERROR", JOptionPane.ERROR_MESSAGE);
                 dbConnection.close();
                 return;
             }
@@ -1658,16 +1571,9 @@ public class AdminPortal extends javax.swing.JFrame {
         viewAllStudents();
     }//GEN-LAST:event_studentsBTNActionPerformed
 
-    private void moduleAddBTN2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleAddBTN2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_moduleAddBTN2ActionPerformed
-
-    private void moduleEditBTN2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleEditBTN2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_moduleEditBTN2ActionPerformed
-
     private void moduleSubmitBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moduleSubmitBTNActionPerformed
-        
+        ViewResult showPage = new ViewResult();
+        showPage.setVisible(true);
     }//GEN-LAST:event_moduleSubmitBTNActionPerformed
 
     /**
@@ -1743,12 +1649,10 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTextField joinedInput;
     private javax.swing.JLabel joinedLabel;
     private javax.swing.JLabel listOfCoursesLabel;
@@ -1757,23 +1661,18 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JTable listOfCoursesTable;
     private javax.swing.JLabel listOfModulesLabel;
     private javax.swing.JLabel listOfModulesLabel1;
-    private javax.swing.JLabel listOfModulesLabel2;
     private javax.swing.JTable listOfModulesTable;
     private javax.swing.JTable listOfModulesTable1;
-    private javax.swing.JTable listOfModulesTable2;
     private javax.swing.JButton logoutBTN;
     private javax.swing.JPanel mainBody;
     private javax.swing.JSeparator mainProfileSeperator;
     private javax.swing.JButton moduleAddBTN;
     private javax.swing.JButton moduleAddBTN1;
-    private javax.swing.JButton moduleAddBTN2;
     private javax.swing.JButton moduleEditBTN;
     private javax.swing.JButton moduleEditBTN1;
-    private javax.swing.JButton moduleEditBTN2;
     private javax.swing.JButton moduleSubmitBTN;
     private javax.swing.JPanel modulesPanel;
     private javax.swing.JPanel modulesPanel1;
-    private javax.swing.JPanel modulesPanel2;
     private javax.swing.JTextField nameInput;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JPanel navBar;
