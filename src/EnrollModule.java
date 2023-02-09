@@ -16,24 +16,29 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author manoj
  */
-import java.util.ArrayList;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
 public class EnrollModule extends javax.swing.JFrame {
     PreparedStatement createQuery;
     ResultSet sqlQuery;
     String isCourse;
     String isSemester;
     String isLevel;
+    String name;
+    String address;
+    String phone;
+    String email;
     
-    public EnrollModule(String isCourse, String islevel, String issemester) {
+    public EnrollModule(String isCourse, String isLevel, String isSemester, String name, String address, String phone, String email) {
         super();
         initComponents();
         this.setLocationRelativeTo(null);
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
         this.isCourse = isCourse;
-        this.isLevel = islevel;
-        this.isSemester = issemester;
+        this.isLevel = isLevel;
+        this.isSemester = isSemester;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
         fetchCoursesData();
         disableOptionalModule();
         fetchOldModuleData();
@@ -71,19 +76,16 @@ public class EnrollModule extends javax.swing.JFrame {
         try {
             Connection dbConnection = checkConnection();
             courseBox.addItem(isCourse);
-            String getcourse = courseBox.getSelectedItem().toString();
-            String getSemester = isSemester;
-            String getLevel = isLevel;
             createQuery = dbConnection.prepareStatement("select * from modules where course = ? and semester = ? and level = ?");
-            createQuery.setString(1, getcourse);
-            createQuery.setString(2, getSemester);
-            createQuery.setString(3, getLevel);
+            createQuery.setString(1, isCourse);
+            createQuery.setString(2, isSemester);
+            createQuery.setString(3, isLevel);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
-                System.out.println("exp");
+                JOptionPane.showMessageDialog(this, "Failed to display modules");
                 return;
             }
-            if (getLevel != "Level 6") {
+            if (isLevel != "Level 6") {
                 module1input.setText(sqlQuery.getString("module1"));
                 module2input.setText(sqlQuery.getString("module2"));
                 module3input.setText(sqlQuery.getString("module3"));
@@ -267,43 +269,49 @@ public class EnrollModule extends javax.swing.JFrame {
             String getcourse = courseBox.getSelectedItem().toString();
             String getSemester = isSemester;
             String getLevel = isLevel;
+            String getName = name;
+            String getAddress = address;
+            String getPhone = phone;
+            String getEmail = email;
             String firstModule = module1input.getText();
             String secondModule = module2input.getText();
             String thirdModule = module3input.getText();
             String fourthModule = module4input.getText();
             String fifthModule = module5input.getText();
             String sixthModule = module6input.getText();
+            
             if (getLevel != "Level 6") {
-                if (firstModule.equals(secondModule) || firstModule.equals(thirdModule) || firstModule.equals(fourthModule)|| secondModule.equals(thirdModule) || secondModule.equals(fourthModule) || thirdModule.equals(fourthModule) || fourthModule.equals(fifthModule)) {
-                    JOptionPane.showMessageDialog(this, "Modules cannot be repeated", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                createQuery = dbConnection.prepareStatement("update modules set course = ?, semester = ?, level = ?, module1 = ?,  module2 = ?, module3 = ?, module4 = ?, module5 = ?, module6 = ?");
-                createQuery.setString(1, getcourse);
-                createQuery.setString(2, getSemester);
-                createQuery.setString(3, getLevel);
-                createQuery.setString(4, firstModule);
-                createQuery.setString(5, secondModule);
-                createQuery.setString(6, thirdModule);
-                createQuery.setString(7, fourthModule);
-                createQuery.setString(8, "none");
-                createQuery.setString(9, "none");
+                createQuery = dbConnection.prepareStatement("insert into enrolled_module_students(student, phone, address, email, semester, level, module1, module2, module3, module4, module5, module6, course) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                createQuery.setString(1, name);
+                createQuery.setString(2, phone);
+                createQuery.setString(3, address);
+                createQuery.setString(4, email);
+                createQuery.setString(5, getSemester);
+                createQuery.setString(6, getLevel);
+                createQuery.setString(7, firstModule);
+                createQuery.setString(8, secondModule);
+                createQuery.setString(9, thirdModule);
+                createQuery.setString(10, fourthModule);
+                createQuery.setString(11, "none");
+                createQuery.setString(12, "none");
+                createQuery.setString(13, getcourse);
             } else {
-                if (firstModule.equals(secondModule) || firstModule.equals(thirdModule) || firstModule.equals(fourthModule) || firstModule.equals(fifthModule) || firstModule.equals(sixthModule) || secondModule.equals(thirdModule) || secondModule.equals(fourthModule) || secondModule.equals(fifthModule) || secondModule.equals(sixthModule) || thirdModule.equals(fourthModule) || thirdModule.equals(fifthModule) || thirdModule.equals(sixthModule) || fourthModule.equals(fifthModule) || fourthModule.equals(sixthModule) || fifthModule.equals(sixthModule)) {
-                    JOptionPane.showMessageDialog(this, "Modules cannot be repeated", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                createQuery = dbConnection.prepareStatement("update modules set course = ?, semester = ?, level = ?, module1 = ?,  module2 = ?, module3 = ?, module4 = ?, module5 = ?, module6 = ?");
-                createQuery.setString(1, getcourse);
-                createQuery.setString(2, getSemester);
-                createQuery.setString(3, getLevel);
-                createQuery.setString(4, firstModule);
-                createQuery.setString(5, secondModule);
-                createQuery.setString(6, thirdModule);
-                createQuery.setString(7, fourthModule);
-                createQuery.setString(8, fifthModule);
-                createQuery.setString(9, sixthModule);
+                createQuery = dbConnection.prepareStatement("insert into enrolled_module_students(student, phone, address, email, semester, level, module1, module2, module3, module4, module5, module6, course) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                createQuery.setString(1, name);
+                createQuery.setString(2, phone);
+                createQuery.setString(3, address);
+                createQuery.setString(4, email);
+                createQuery.setString(5, getSemester);
+                createQuery.setString(6, getLevel);
+                createQuery.setString(7, firstModule);
+                createQuery.setString(8, secondModule);
+                createQuery.setString(9, thirdModule);
+                createQuery.setString(10, fourthModule);
+                createQuery.setString(11, fifthModule);
+                createQuery.setString(12, sixthModule);
+                createQuery.setString(13, getcourse);
             }
+            
             int checkResult = createQuery.executeUpdate();
             if (checkResult != 1) {
                 JOptionPane.showMessageDialog(this, "Something went wrong while updating new modules", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -311,6 +319,7 @@ public class EnrollModule extends javax.swing.JFrame {
                 return;
             }
             JOptionPane.showMessageDialog(this, "Successfully updated new modules", "INFO", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
             dbConnection.close();
             return;
         } catch (Exception exp) {
@@ -380,7 +389,7 @@ public class EnrollModule extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EnrollModule("null", "null", "null").setVisible(true);
+                new EnrollModule("null", "null", "null", "null", "null", "null", "null").setVisible(true);
             }
         });
     }
