@@ -17,9 +17,13 @@ public class StudentPortal extends javax.swing.JFrame {
     PreparedStatement createQuery;
     ResultSet sqlQuery;
     int userID;
-    String course;
+    String isCourse;
     String isSemester;
     String isLevel;
+    String isName;
+    String isPhone;
+    String isAddress;
+    String isEmail;
     
     /**
      * Creates new form StudentPortal
@@ -32,6 +36,7 @@ public class StudentPortal extends javax.swing.JFrame {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon/herald_icon.png")));
         setHeadLabel(id);
         displayModulesData();
+        displayEnrolledData();
     }
     
     public Connection checkConnection() {
@@ -44,7 +49,7 @@ public class StudentPortal extends javax.swing.JFrame {
         try {
             Connection dbConnection = checkConnection();
             int userID = id;
-            createQuery = dbConnection.prepareStatement("select fullname from students where id = ?");
+            createQuery = dbConnection.prepareStatement("select * from students where id = ?");
             createQuery.setInt(1, userID);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
@@ -53,6 +58,15 @@ public class StudentPortal extends javax.swing.JFrame {
                 return;
             }
             profileName.setText("Hello, " + sqlQuery.getString("fullname"));
+            this.isCourse = sqlQuery.getString("course");
+            this.isSemester = sqlQuery.getString("semester");
+            this.isName = sqlQuery.getString("fullname");
+            this.isPhone = sqlQuery.getString("phone");
+            this.isAddress = sqlQuery.getString("address");
+            this.isEmail = sqlQuery.getString("email");
+            this.isLevel = sqlQuery.getString("level");
+            currentLabel.setText("Current Level: " + isLevel);
+            currentSemester.setText("Current Semester: " + isSemester);
             return;
         } catch (Exception exp) {
             System.out.println(exp);
@@ -62,7 +76,78 @@ public class StudentPortal extends javax.swing.JFrame {
     public void viewInstructorsData() {
         try {
             Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from enrolled_module_students where student = ?");
+            createQuery.setString(1, isName);        
+            sqlQuery = createQuery.executeQuery();
+            DefaultTableModel enrollTableModel = (DefaultTableModel)enrollTable.getModel();
+            enrollTableModel.setRowCount(0); // clearing table data.
+            while (sqlQuery.next()) {
+                String id = String.valueOf(sqlQuery.getInt("id"));
+                String firstModule = sqlQuery.getString("module1");
+                String secondModule = sqlQuery.getString("module2");
+                String thirdModule = sqlQuery.getString("module3");
+                String fourthModule = sqlQuery.getString("module4");
+                String fifthModule = sqlQuery.getString("module5");
+                String sixthModule = sqlQuery.getString("module6");
+
+                String tableData[] = {id, firstModule, secondModule, thirdModule, fourthModule, fifthModule, sixthModule};
+                enrollTableModel.addRow(tableData);
+                enrollTable.setEnabled(false);
+                dbConnection.close();
+                return;
+            }
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }
+    
+    public void displayInstructors() {
+        try {
+            Connection dbConnection = checkConnection();
             
+            createQuery = dbConnection.prepareStatement("select * from enrolled_module_students");
+            sqlQuery = createQuery.executeQuery();
+            if (!sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "Something went wrong!");
+                return;
+            }
+            String firstModule = sqlQuery.getString("module1");
+            String secondModule = sqlQuery.getString("module2");
+            String thirdModule = sqlQuery.getString("module3");
+            String fourthModule = sqlQuery.getString("module4");
+            String fifthModule = sqlQuery.getString("module5");
+            String sixthModule = sqlQuery.getString("module6");
+//            dbConnection.close();
+            createQuery = dbConnection.prepareStatement("select * from enrolled_module_instructors where course = ? and semester = ? and level = ? and (module = ? or module = ? or module = ? or module = ? or module = ? or module = ?)");
+            createQuery.setString(1, isCourse);
+            createQuery.setString(2, isSemester);
+            createQuery.setString(3, isLevel);
+            createQuery.setString(4, firstModule);
+            createQuery.setString(5, secondModule);
+            createQuery.setString(6, thirdModule);
+            createQuery.setString(7, fourthModule);
+            createQuery.setString(8, fifthModule);
+            createQuery.setString(9, sixthModule);
+            sqlQuery = createQuery.executeQuery();
+//            if (!sqlQuery.next()) {
+//                JOptionPane.showMessageDialog(this, "Something went wrong while displaying instructors data");
+//                return;
+//            }
+            
+            DefaultTableModel instTableModel = (DefaultTableModel)instructorsTable.getModel();
+            instTableModel.setRowCount(0); // clearing table data.
+            while (sqlQuery.next()) {
+                String id = String.valueOf(sqlQuery.getInt("id"));
+                String first = sqlQuery.getString("module");
+                String second = sqlQuery.getString("instructors");
+                String third = sqlQuery.getString("email");
+
+                String tableData[] = {id, first, second, third};
+                instTableModel.addRow(tableData);
+                instructorsTable.setEnabled(false);
+                dbConnection.close();
+                return;
+            }
         } catch (Exception exp) {
             System.out.println(exp);
         }
@@ -72,24 +157,18 @@ public class StudentPortal extends javax.swing.JFrame {
         try {
             Connection dbConnection = checkConnection();
             createQuery = dbConnection.prepareStatement("select * from courses where name = ? and isActive = 1");
-            createQuery.setString(1, course);
+            createQuery.setString(1, isCourse);
             sqlQuery = createQuery.executeQuery();
             if (sqlQuery.next()) {
                 createQuery = dbConnection.prepareStatement("select * from modules where course = ? and semester = ? and level = ?");
-                createQuery.setString(1, course);
+                createQuery.setString(1, isCourse);
                 createQuery.setString(2, isSemester);
                 createQuery.setString(3, isLevel);
                 sqlQuery = createQuery.executeQuery();
                 if (sqlQuery.next()) {
                     String getCourse = sqlQuery.getString("course");
                     String getSemester = sqlQuery.getString("semester");
-                    String getLevel = sqlQuery.getString("level");
-                    this.course = getCourse;
-                    this.isLevel = getLevel;
-                    this.isSemester = getSemester;
-                    currentLabel.setText("Current Level: " + isLevel);
-                    currentSemester.setText("Current Semester: " + isSemester);
-                    
+                    String getLevel = sqlQuery.getString("level"); 
                     createQuery = dbConnection.prepareStatement("select * from modules where course = ? and semester = ? and level = ?");
                     createQuery.setString(1, getCourse);
                     createQuery.setString(2, getSemester);
@@ -114,6 +193,34 @@ public class StudentPortal extends javax.swing.JFrame {
                         return;
                     }
                 }
+            }
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
+    }
+    
+    public void displayEnrolledData() {
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select * from enrolled_module_students where student = ?");
+            createQuery.setString(1, isName);        
+            sqlQuery = createQuery.executeQuery();
+            DefaultTableModel enrollTableModel = (DefaultTableModel)enrollTable.getModel();
+            enrollTableModel.setRowCount(0); // clearing table data.
+            while (sqlQuery.next()) {
+                String id = String.valueOf(sqlQuery.getInt("id"));
+                String firstModule = sqlQuery.getString("module1");
+                String secondModule = sqlQuery.getString("module2");
+                String thirdModule = sqlQuery.getString("module3");
+                String fourthModule = sqlQuery.getString("module4");
+                String fifthModule = sqlQuery.getString("module5");
+                String sixthModule = sqlQuery.getString("module6");
+
+                String tableData[] = {id, firstModule, secondModule, thirdModule, fourthModule, fifthModule, sixthModule};
+                enrollTableModel.addRow(tableData);
+                enrollTable.setEnabled(false);
+                dbConnection.close();
+                return;
             }
         } catch (Exception exp) {
             System.out.println(exp);
@@ -155,8 +262,6 @@ public class StudentPortal extends javax.swing.JFrame {
         genderLabel = new javax.swing.JLabel();
         emailInput = new javax.swing.JTextField();
         emailLabel = new javax.swing.JLabel();
-        joinedLabel = new javax.swing.JLabel();
-        joinedInput = new javax.swing.JTextField();
         savePassBTN = new javax.swing.JButton();
         emailLabel2 = new javax.swing.JLabel();
         usernameInput = new javax.swing.JTextField();
@@ -436,23 +541,6 @@ public class StudentPortal extends javax.swing.JFrame {
         emailLabel.setText("Email");
         profileContent.add(emailLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 160, 100, 30));
 
-        joinedLabel.setBackground(new java.awt.Color(0, 0, 0));
-        joinedLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        joinedLabel.setForeground(new java.awt.Color(0, 0, 0));
-        joinedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        joinedLabel.setText("Joined At");
-        profileContent.add(joinedLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 100, 30));
-
-        joinedInput.setEditable(false);
-        joinedInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        joinedInput.setForeground(new java.awt.Color(102, 102, 102));
-        joinedInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                joinedInputActionPerformed(evt);
-            }
-        });
-        profileContent.add(joinedInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 210, 190, 30));
-
         savePassBTN.setBackground(new java.awt.Color(51, 51, 51));
         savePassBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         savePassBTN.setForeground(new java.awt.Color(255, 255, 255));
@@ -658,10 +746,6 @@ public class StudentPortal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_emailInputActionPerformed
 
-    private void joinedInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinedInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_joinedInputActionPerformed
-
     private void savePassBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePassBTNActionPerformed
         try {
             Connection dbConnection = checkConnection();
@@ -705,13 +789,13 @@ public class StudentPortal extends javax.swing.JFrame {
                 return;
             }
 
-            createQuery = dbConnection.prepareStatement("update admins set password = ? where id = ?");
+            createQuery = dbConnection.prepareStatement("update students set password = ? where id = ?");
             createQuery.setString(1, newpass);
             createQuery.setInt(2, userID);
             createQuery.executeUpdate();
             JOptionPane.showMessageDialog(this, "Password changed successfully!", "INFO", JOptionPane.INFORMATION_MESSAGE);
             String Description = sqlQuery.getString("username") + " has updated their password!";
-            String Type = "admin";
+            String Type = "students";
             createQuery = dbConnection.prepareStatement("insert into logs (description, type) values (?, ?)");
             createQuery.setString(1, Description);
             createQuery.setString(2, Type);
@@ -755,6 +839,35 @@ public class StudentPortal extends javax.swing.JFrame {
         mainBody.add(profileContent);
         mainBody.repaint();
         mainBody.revalidate();
+        
+        nameInput.setText("");
+        genderInput.setText("");
+        usernameInput.setText("");
+        phoneInput.setText("");
+        addressInput.setText("");
+        emailInput.setText("");
+        
+        try {
+            Connection dbConnection = checkConnection();
+            createQuery = dbConnection.prepareStatement("select fullname, gender, username, phone, address, email from students where id = ?");
+            createQuery.setInt(1, userID);
+            sqlQuery = createQuery.executeQuery();
+            if (!sqlQuery.next()) {
+                JOptionPane.showMessageDialog(this, "Something went wrong, #3436", "ERROR", JOptionPane.ERROR_MESSAGE);
+                dbConnection.close();
+                return;
+            }
+            
+            nameInput.setText(sqlQuery.getString("fullname"));
+            genderInput.setText(sqlQuery.getString("gender"));
+            usernameInput.setText(sqlQuery.getString("username"));
+            phoneInput.setText(sqlQuery.getString("phone"));
+            addressInput.setText(sqlQuery.getString("address"));
+            emailInput.setText(sqlQuery.getString("email"));
+            return;
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
     }//GEN-LAST:event_profileBTNActionPerformed
 
     private void coursesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_coursesBTNActionPerformed
@@ -763,6 +876,7 @@ public class StudentPortal extends javax.swing.JFrame {
         mainBody.repaint();
         mainBody.revalidate();
         displayModulesData();
+        displayEnrolledData();
     }//GEN-LAST:event_coursesBTNActionPerformed
 
     private void InstructorsBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstructorsBTNActionPerformed
@@ -770,7 +884,7 @@ public class StudentPortal extends javax.swing.JFrame {
         mainBody.add(teachersContent);
         mainBody.repaint();
         mainBody.revalidate();
-        viewInstructorsData();
+        displayInstructors();
     }//GEN-LAST:event_InstructorsBTNActionPerformed
 
     private void viewResultBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewResultBTNActionPerformed
@@ -784,7 +898,7 @@ public class StudentPortal extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutBTNActionPerformed
 
     private void enrollBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enrollBTNActionPerformed
-        EnrollModule showPage = new EnrollModule(course, isLevel, isSemester);
+        EnrollModule showPage = new EnrollModule(isCourse, isLevel, isSemester, isName, isAddress, isPhone, isEmail);
         showPage.setVisible(true);
     }//GEN-LAST:event_enrollBTNActionPerformed
 
@@ -820,11 +934,7 @@ public class StudentPortal extends javax.swing.JFrame {
             public void run() {
                 new StudentPortal(0).setVisible(true);
             }
-        });
-        
-        
-      
-        
+        });  
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -855,8 +965,6 @@ public class StudentPortal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JTextField joinedInput;
-    private javax.swing.JLabel joinedLabel;
     private javax.swing.JButton logoutBTN;
     private javax.swing.JPanel mainBody;
     private javax.swing.JSeparator mainProfileSeperator;
