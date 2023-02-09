@@ -1251,14 +1251,13 @@ public class AdminPortal extends javax.swing.JFrame {
         nameInput.setText("");
         genderInput.setText("");
         usernameInput.setText("");
-        joinedInput.setText("");
         phoneInput.setText("");
         addressInput.setText("");
         emailInput.setText("");
         
         try {
             Connection dbConnection = checkConnection();
-            createQuery = dbConnection.prepareStatement("select fullname gender, username, joinDate, phone, address, email from admins where id = ?");
+            createQuery = dbConnection.prepareStatement("select fullname, gender, username, phone, address, email from admins where id = ?");
             createQuery.setInt(1, userID);
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
@@ -1270,7 +1269,6 @@ public class AdminPortal extends javax.swing.JFrame {
             nameInput.setText(sqlQuery.getString("fullname"));
             genderInput.setText(sqlQuery.getString("gender"));
             usernameInput.setText(sqlQuery.getString("username"));
-            joinedInput.setText(sqlQuery.getString("joinDate"));
             phoneInput.setText(sqlQuery.getString("phone"));
             addressInput.setText(sqlQuery.getString("address"));
             emailInput.setText(sqlQuery.getString("email"));
