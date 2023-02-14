@@ -130,7 +130,6 @@ public class StudentPortal extends javax.swing.JFrame {
             createQuery = dbConnection.prepareStatement("select * from enrolled_module_students");
             sqlQuery = createQuery.executeQuery();
             if (!sqlQuery.next()) {
-                JOptionPane.showMessageDialog(this, "Something went wrong!");
                 return;
             }
             String firstModule = sqlQuery.getString("module1");
@@ -163,9 +162,9 @@ public class StudentPortal extends javax.swing.JFrame {
                 String tableData[] = {id, first, second, third};
                 instTableModel.addRow(tableData);
                 instructorsTable.setEnabled(false);
-                dbConnection.close();
-                return;
             }
+            dbConnection.close();
+            return;
         } catch (Exception exp) {
             System.out.println(exp);
         }
@@ -207,10 +206,11 @@ public class StudentPortal extends javax.swing.JFrame {
                         String tableData[] = {id, firstModule, secondModule, thirdModule, fourthModule, fifthModule, sixthModule};
                         moduletable.addRow(tableData);
                         availableModuleTable.setEnabled(false);
-                        dbConnection.close();
-                        return;
+                        
                     }
                 }
+                dbConnection.close();
+                return;
             }
         } catch (Exception exp) {
             System.out.println(exp);
