@@ -28,12 +28,13 @@ public class Signup extends javax.swing.JFrame {
         try {
             Connection dbConnection = checkConnection();
             prepareQuery = dbConnection.createStatement();
-            sqlQuery = prepareQuery.executeQuery("select name, isActive from courses where isActive = 1");
+            sqlQuery = prepareQuery.executeQuery("select * from courses where isActive = '1'");
             while (sqlQuery.next()) {
                 String getCoursesName = sqlQuery.getString("name");
                 courseInput.addItem(getCoursesName);
             }
-            
+            dbConnection.close();
+            return;
         } catch (Exception exp) {
             System.out.println(exp);
         }
@@ -67,7 +68,6 @@ public class Signup extends javax.swing.JFrame {
         loginGroupLabel = new javax.swing.JLabel();
         roleGroup = new javax.swing.JComboBox<>();
         courseLabel = new javax.swing.JLabel();
-        courseInput = new javax.swing.JComboBox<>();
         username = new javax.swing.JLabel();
         usernameInput = new javax.swing.JTextField();
         phoneInput = new javax.swing.JTextField();
@@ -76,6 +76,7 @@ public class Signup extends javax.swing.JFrame {
         addressInput = new javax.swing.JTextField();
         sexLabel = new javax.swing.JLabel();
         sexGroup = new javax.swing.JComboBox<>();
+        courseInput = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CMS | Signup");
@@ -167,14 +168,6 @@ public class Signup extends javax.swing.JFrame {
         courseLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         courseLabel.setText("Select Course");
 
-        courseInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        courseInput.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "BIT", "IBM", "MBA" }));
-        courseInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                courseInputActionPerformed(evt);
-            }
-        });
-
         username.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         username.setText("Username");
 
@@ -195,6 +188,8 @@ public class Signup extends javax.swing.JFrame {
 
         sexGroup.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         sexGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female", "Prefer not say" }));
+
+        courseInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -251,9 +246,11 @@ public class Signup extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(roleGroup, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(courseInput, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(courseLabel)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(courseLabel)
+                                .addGap(136, 136, 136))
+                            .addComponent(courseInput, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(99, 99, 99)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -318,16 +315,13 @@ public class Signup extends javax.swing.JFrame {
                 .addComponent(passwordLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(confirmpassInput, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(loginGroupLabel)
-                            .addComponent(courseLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(roleGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(courseInput, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loginGroupLabel)
+                    .addComponent(courseLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(courseInput)
+                    .addComponent(roleGroup, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(signupBTN)
                 .addGap(18, 18, 18)
@@ -538,10 +532,6 @@ public class Signup extends javax.swing.JFrame {
         courseInput.setVisible(true);
         return;
     }//GEN-LAST:event_roleGroupActionPerformed
-
-    private void courseInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_courseInputActionPerformed
 
     /**
      * @param args the command line arguments
