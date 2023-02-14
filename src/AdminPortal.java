@@ -52,8 +52,6 @@ public class AdminPortal extends javax.swing.JFrame {
                 String tableData[] = {id, fullname, phone, address, email};
                 instructorsModel.addRow(tableData);
                 instructorsTable.setEnabled(false);
-                dbConnection.close();
-                return;
             }
             
         } catch (Exception exp) {
@@ -79,8 +77,6 @@ public class AdminPortal extends javax.swing.JFrame {
                 String tableData[] = {id, fullname, phone, address, email};
                 studentsModel.addRow(tableData);
                 studentsTable.setEnabled(false);
-                dbConnection.close();
-                return;
             }
             
         } catch (Exception exp) {
@@ -230,8 +226,6 @@ public class AdminPortal extends javax.swing.JFrame {
         genderLabel = new javax.swing.JLabel();
         emailInput = new javax.swing.JTextField();
         emailLabel = new javax.swing.JLabel();
-        joinedLabel = new javax.swing.JLabel();
-        joinedInput = new javax.swing.JTextField();
         savePassBTN = new javax.swing.JButton();
         emailLabel2 = new javax.swing.JLabel();
         usernameInput = new javax.swing.JTextField();
@@ -541,23 +535,6 @@ public class AdminPortal extends javax.swing.JFrame {
         emailLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         emailLabel.setText("Email");
         profileContent.add(emailLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 160, 100, 30));
-
-        joinedLabel.setBackground(new java.awt.Color(0, 0, 0));
-        joinedLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        joinedLabel.setForeground(new java.awt.Color(0, 0, 0));
-        joinedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        joinedLabel.setText("Joined At");
-        profileContent.add(joinedLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 100, 30));
-
-        joinedInput.setEditable(false);
-        joinedInput.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        joinedInput.setForeground(new java.awt.Color(102, 102, 102));
-        joinedInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                joinedInputActionPerformed(evt);
-            }
-        });
-        profileContent.add(joinedInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 210, 190, 30));
 
         savePassBTN.setBackground(new java.awt.Color(51, 51, 51));
         savePassBTN.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -1222,10 +1199,6 @@ public class AdminPortal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_emailInputActionPerformed
 
-    private void joinedInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinedInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_joinedInputActionPerformed
-
     private void savePassBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePassBTNActionPerformed
         try {
             Connection dbConnection = checkConnection();
@@ -1653,8 +1626,6 @@ public class AdminPortal extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JTextField joinedInput;
-    private javax.swing.JLabel joinedLabel;
     private javax.swing.JLabel listOfCoursesLabel;
     private javax.swing.JLabel listOfCoursesLabel1;
     private javax.swing.JLabel listOfCoursesLabel2;
