@@ -65,8 +65,6 @@ public class AssignModule extends javax.swing.JFrame {
             while (sqlQuery.next()) {
                 String getFullname = sqlQuery.getString("fullname");
                 instructorBox.addItem(getFullname);
-                dbConnection.close();
-                return;
             }
         } catch (Exception exp) {
             System.out.println(exp);

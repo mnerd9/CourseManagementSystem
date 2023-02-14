@@ -46,8 +46,6 @@ public class EditAssignModule extends javax.swing.JFrame {
             while (sqlQuery.next()) {
                 String instructorsName = sqlQuery.getString("instructors");
                 instructorBox.addItem(instructorsName);
-                dbConnection.close();
-                return;
             }
         } catch (Exception exp) {
             System.out.println(exp);
