@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS `courses` (
   PRIMARY KEY (`id`)
 );
 
+INSERT INTO `courses` (`name`, `isActive`) VALUES ('BIT', 1);
+
 CREATE TABLE IF NOT EXISTS `enrolled_module_instructors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `instructors` varchar(50) DEFAULT 'none',
